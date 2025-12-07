@@ -1,0 +1,249 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { X } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import toast, { Toaster } from "react-hot-toast";
+import { Card, CardContent } from "@/components/ui/card";
+import { privateApi } from "@/lib/axios";
+import { Slot } from "@/hooks/types/types";
+import { submitSlots } from "@/app/_apis/doctor/doctor";
+
+export default function SlotForm() {
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [day, setDay] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [isTelemedicine, setIsTelemedicine] = useState(false);
+
+  // Generate time options in HH:mm (10 min intervals)
+  const generateTimes = () => {
+    const times: string[] = [];
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 60; m += 10) {
+        const hour = h.toString().padStart(2, "0");
+        const minute = m.toString().padStart(2, "0");
+        times.push(`${hour}:${minute}`);
+      }
+    }
+    return times;
+  };
+  const timeOptions = generateTimes();
+
+  const calculateDuration = (start: string, end: string) => {
+    const [sh, sm] = start.split(":").map(Number);
+    const [eh, em] = end.split(":").map(Number);
+    return eh * 60 + em - (sh * 60 + sm);
+  };
+
+  const checkConflict = (newSlot: Slot) => {
+    return slots.some((slot) => {
+      if (slot.day_of_week !== newSlot.day_of_week) return false;
+
+      const [sh1, sm1] = slot.start_time.split(":").map(Number);
+      const [eh1, em1] = slot.end_time.split(":").map(Number);
+      const [sh2, sm2] = newSlot.start_time.split(":").map(Number);
+      const [eh2, em2] = newSlot.end_time.split(":").map(Number);
+
+      const start1 = sh1 * 60 + sm1;
+      const end1 = eh1 * 60 + em1;
+      const start2 = sh2 * 60 + sm2;
+      const end2 = eh2 * 60 + em2;
+
+      return Math.max(start1, start2) < Math.min(end1, end2);
+    });
+  };
+
+  const handleAddSlot = () => {
+    if (!day || !startTime || !endTime) {
+      toast.error("Please select all fields");
+      return;
+    }
+
+    const duration = calculateDuration(startTime, endTime);
+    if (duration <= 0) {
+      toast.error("End time must be greater than start time");
+      return;
+    }
+
+    const newSlot: Slot = {
+      day_of_week: day,
+      start_time: startTime,
+      end_time: endTime,
+      is_telemedicine: isTelemedicine,
+      slot_duration_minutes: duration,
+    };
+
+    if (checkConflict(newSlot)) {
+      toast.error("Conflict detected with existing slot!");
+      return;
+    }
+
+    setSlots([...slots, newSlot]);
+    setStartTime("");
+    setEndTime("");
+    setDay("");
+    setIsTelemedicine(false);
+    toast.success("Slot added!");
+  };
+
+  const handleRemoveSlot = (index: number) => {
+    setSlots(slots.filter((_, i) => i !== index));
+    toast.success("Slot removed!");
+  };
+
+  const handleSubmit = async () => {
+    let toastId;
+    try {
+      toastId = toast.loading("Submitting slots...");
+
+      // ✅ Transform slot times into ISO 8601
+      const formattedSlots: Slot[] = slots.map((slot) => {
+        // Turn "HH:mm" → "HH:mm:00.000Z"
+        const startISO = `${slot.start_time}:00.000Z`;
+        const endISO = `${slot.end_time}:00.000Z`;
+
+        return {
+          day_of_week: slot.day_of_week,
+          start_time: startISO,
+          end_time: endISO,
+          slot_duration_minutes: slot.slot_duration_minutes,
+          is_telemedicine: slot.is_telemedicine,
+        };
+      });
+
+      // Send formatted slots
+      const res = await submitSlots(formattedSlots);
+
+      toast.success("Slots submitted successfully!", { id: toastId });
+      setSlots([]);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(`Submission failed: ${error.message}`, { id: toastId });
+      } else {
+        toast.error("Error submitting slots", { id: toastId });
+      }
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <Card className="max-w-2xl mx-auto shadow-lg">
+        <CardContent className="p-6">
+          <div className="grid gap-4">
+            {/* Full width Day of Week */}
+            <div>
+              <Label>Day of Week</Label>
+              <Select value={day} onValueChange={setDay}>
+                <SelectTrigger className="w-full mt-2">
+                  <SelectValue placeholder="Select day" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Monday">Monday</SelectItem>
+                  <SelectItem value="Tuesday">Tuesday</SelectItem>
+                  <SelectItem value="Wednesday">Wednesday</SelectItem>
+                  <SelectItem value="Thursday">Thursday</SelectItem>
+                  <SelectItem value="Friday">Friday</SelectItem>
+                  <SelectItem value="Saturday">Saturday</SelectItem>
+                  <SelectItem value="Sunday">Sunday</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Half-width Start & End Time side by side */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="mb-2">Start Time</Label>
+                <Select value={startTime} onValueChange={setStartTime}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select start time" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    {timeOptions.map((time) => (
+                      <SelectItem key={time} value={time}>
+                        {time}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="mb-2">End Time</Label>
+                <Select value={endTime} onValueChange={setEndTime}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select end time" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    {timeOptions.map((time) => (
+                      <SelectItem key={time} value={time}>
+                        {time}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Checkbox below */}
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={isTelemedicine}
+                onCheckedChange={setIsTelemedicine}
+              />
+              <Label>Telemedicine</Label>
+            </div>
+
+            <Button onClick={handleAddSlot} className="w-full bg-green-primary">
+              Add Slot
+            </Button>
+          </div>
+
+          <div className="mt-6 space-y-2">
+            <h2 className="font-semibold">Slots</h2>
+            {slots.length === 0 && (
+              <p className="text-gray-500">No slots added</p>
+            )}
+            {slots.map((slot, idx) => (
+              <div
+                key={idx}
+                className="flex justify-between items-center border rounded p-2"
+              >
+                <span>
+                  {slot.day_of_week} - {slot.start_time} to {slot.end_time} (
+                  {slot.slot_duration_minutes} mins){" "}
+                  {slot.is_telemedicine ? "[Telemedicine]" : ""}
+                </span>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleRemoveSlot(idx)}
+                >
+                  <X />
+                </Button>
+              </div>
+            ))}
+          </div>
+
+          {slots.length > 0 && (
+            <Button
+              className="w-full bg-green-primary mt-2"
+              onClick={handleSubmit}
+            >
+              Submit All Slots
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Connection Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        #logs {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔌 Socket.IO Connection Test</h1>
+
+        <div id="connection-status" class="status info">
+            Status: Not Connected
+        </div>
+
+        <div class="controls">
+            <button id="connect-btn" onclick="connectSocket()">Connect to Server</button>
+            <button id="disconnect-btn" onclick="disconnectSocket()" disabled>Disconnect</button>
+            <button id="ping-btn" onclick="sendPing()" disabled>Send Ping</button>
+            <button id="clear-logs-btn" onclick="clearLogs()">Clear Logs</button>
+        </div>
+
+        <div class="message-section">
+            <h3>Send Test Message</h3>
+            <input type="text" id="message-input" placeholder="Type your message here..." value="Hello from test page!">
+            <button id="send-msg-btn" onclick="sendTestMessage()" disabled>Send Message</button>
+        </div>
+
+        <div class="token-info">
+            <h3>🔑 Authentication Token</h3>
+            <div class="info">
+                <strong>Using Token:</strong><br>
+                <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzaHNoYXZoc3N2dkBnbWFpbC5jb20iLCJyb2xlIjoiUmVjZXB0aW9uaXN0IiwiZXhwIjoxNzU3MDkzNjU3fQ.0Iki-I5z6vj6O_Pq0jwFquxE5yaew2wX-fMTaBfcRPE</code>
+            </div>
+        </div>
+
+        <h3>📋 Connection Logs</h3>
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        let socket = null;
+        const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzaHNoYXZoc3N2dkBnbWFpbC5jb20iLCJyb2xlIjoiUmVjZXB0aW9uaXN0IiwiZXhwIjoxNzU3MDkzNjU3fQ.0Iki-I5z6vj6O_Pq0jwFquxE5yaew2wX-fMTaBfcRPE";
+
+        // DOM elements
+        const statusDiv = document.getElementById('connection-status');
+        const logsDiv = document.getElementById('logs');
+        const connectBtn = document.getElementById('connect-btn');
+        const disconnectBtn = document.getElementById('disconnect-btn');
+        const pingBtn = document.getElementById('ping-btn');
+        const sendMsgBtn = document.getElementById('send-msg-btn');
+        const messageInput = document.getElementById('message-input');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            logsDiv.textContent += logEntry;
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+
+            console.log(`${type.toUpperCase()}: ${message}`);
+        }
+
+        function updateStatus(message, type) {
+            statusDiv.textContent = `Status: ${message}`;
+            statusDiv.className = `status ${type}`;
+        }
+
+        function updateButtons(connected) {
+            connectBtn.disabled = connected;
+            disconnectBtn.disabled = !connected;
+            pingBtn.disabled = !connected;
+            sendMsgBtn.disabled = !connected;
+        }
+
+        function connectSocket() {
+            if (socket && socket.connected) {
+                log("Already connected!", "warning");
+                return;
+            }
+
+            log("🔄 Attempting to connect to Socket.IO server...");
+            updateStatus("Connecting...", "info");
+
+            // Connect to your backend
+            socket = io('http://localhost:8000', {
+                path: '/socket.io',
+                auth: {
+                    token: TOKEN  // Send token directly (backend handles Bearer prefix)
+                },
+                transports: ['websocket'],
+                timeout: 20000,
+                forceNew: true
+            });
+
+            // Connection events
+            socket.on('connect', () => {
+                log(`✅ Connected successfully! Socket ID: ${socket.id}`, "success");
+                updateStatus("Connected", "success");
+                updateButtons(true);
+            });
+
+            socket.on('connect_success', (data) => {
+                log(`🎉 Authentication successful: ${JSON.stringify(data)}`, "success");
+            });
+
+            socket.on('connect_error', (error) => {
+                log(`❌ Connection error: ${error.message}`, "error");
+                updateStatus("Connection Failed", "error");
+                updateButtons(false);
+            });
+
+            socket.on('disconnect', (reason) => {
+                log(`🔌 Disconnected: ${reason}`, "info");
+                updateStatus("Disconnected", "error");
+                updateButtons(false);
+            });
+
+            socket.on('error', (error) => {
+                log(`❌ Socket error: ${JSON.stringify(error)}`, "error");
+            });
+
+            // Response events
+            socket.on('pong', (data) => {
+                log(`🏓 Pong received: ${JSON.stringify(data)}`, "success");
+            });
+
+            socket.on('message_received', (data) => {
+                log(`📨 Message response: ${JSON.stringify(data)}`, "success");
+            });
+
+            // Reconnection events
+            socket.on('reconnect', (attemptNumber) => {
+                log(`🔄 Reconnected after ${attemptNumber} attempts`, "success");
+                updateStatus("Reconnected", "success");
+                updateButtons(true);
+            });
+
+            socket.on('reconnect_error', (error) => {
+                log(`❌ Reconnection error: ${error.message}`, "error");
+            });
+        }
+
+        function disconnectSocket() {
+            if (socket) {
+                socket.disconnect();
+                log("🔌 Manual disconnect requested");
+                updateStatus("Disconnected", "info");
+                updateButtons(false);
+            }
+        }
+
+        function sendPing() {
+            if (socket && socket.connected) {
+                const pingData = {
+                    message: "Test ping from browser",
+                    timestamp: new Date().toISOString()
+                };
+                socket.emit('ping', pingData);
+                log(`🏓 Ping sent: ${JSON.stringify(pingData)}`);
+            } else {
+                log("❌ Cannot send ping - not connected", "error");
+            }
+        }
+
+        function sendTestMessage() {
+            if (socket && socket.connected) {
+                const message = messageInput.value.trim();
+                if (!message) {
+                    log("❌ Please enter a message", "error");
+                    return;
+                }
+
+                const messageData = {
+                    content: message,
+                    timestamp: new Date().toISOString(),
+                    test: true
+                };
+
+                socket.emit('send_message', messageData);
+                log(`📤 Message sent: ${JSON.stringify(messageData)}`);
+                messageInput.value = "";
+            } else {
+                log("❌ Cannot send message - not connected", "error");
+            }
+        }
+
+        function clearLogs() {
+            logsDiv.textContent = "";
+        }
+
+        // Allow Enter key to send message
+        messageInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendTestMessage();
+            }
+        });
+
+        // Initial log
+        log("Socket.IO Test Page Loaded");
+        log(`Using token for user: shshavisvv@gmail.com`);
+        log("👆 Click 'Connect to Server' to start testing");
+    </script>
+</body>
+
+</html>

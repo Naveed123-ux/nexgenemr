@@ -1,0 +1,625 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import {
+  createSlotPattern,
+  fetchSlotPatterns,
+  deleteSlotPattern,
+  clearCreateStatus,
+  SimpleSlot,
+  AdvancedSlot,
+  RecurrenceConfig,
+} from "@/store/slices/slotsSlice";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Calendar, 
+  Clock, 
+  Trash2, 
+  Loader2, 
+  MapPin, 
+  Video,
+  CheckCircle2,
+  AlertCircle
+} from "lucide-react";
+import toast from "react-hot-toast";
+import { InfinitySpin } from "react-loader-spinner";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+const daysOfWeek = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
+const shortDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+export default function ManageAvailability() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { patterns, status, createStatus, deleteStatus, error } = useSelector(
+    (state: RootState) => state.slots
+  );
+
+  // Simple Mode State
+  const [simpleSlot, setSimpleSlot] = useState<Partial<SimpleSlot>>({
+    name: "",
+    day_of_week: "Monday",
+    start_time: "09:00",
+    end_time: "17:00",
+    slot_type: "on_site",
+    duration_weeks: 8,
+  });
+
+  // Advanced Mode State
+  const [advancedSlot, setAdvancedSlot] = useState<Partial<AdvancedSlot>>({
+    name: "",
+    slot_type: "on_site",
+    start_time_of_day: "09:00",
+    end_time_of_day: "17:00",
+    recurrence_config: {
+      duration: "weekly",
+      start_date: new Date().toISOString().split("T")[0],
+      end_date: null,
+      selected_option: "on_day",
+      selected_days: ["Mon"],
+      month_days: null,
+      week: null,
+      week_day: null,
+    },
+  });
+
+  const [selectedDays, setSelectedDays] = useState<string[]>(["Mon"]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [patternToDelete, setPatternToDelete] = useState<string | null>(null);
+
+  // Fetch patterns on mount
+  useEffect(() => {
+    dispatch(fetchSlotPatterns());
+  }, [dispatch]);
+
+  // Handle create success
+  useEffect(() => {
+    if (createStatus === "succeeded") {
+      toast.success("Slot pattern created successfully!");
+      dispatch(clearCreateStatus());
+      // Reset forms
+      setSimpleSlot({
+        name: "",
+        day_of_week: "Monday",
+        start_time: "09:00",
+        end_time: "17:00",
+        slot_type: "on_site",
+        duration_weeks: 8,
+      });
+      setAdvancedSlot({
+        name: "",
+        slot_type: "on_site",
+        start_time_of_day: "09:00",
+        end_time_of_day: "17:00",
+        recurrence_config: {
+          duration: "weekly",
+          start_date: new Date().toISOString().split("T")[0],
+          end_date: null,
+          selected_option: "on_day",
+          selected_days: ["Mon"],
+          month_days: null,
+          week: null,
+          week_day: null,
+        },
+      });
+      setSelectedDays(["Mon"]);
+    } else if (createStatus === "failed") {
+      toast.error(error || "Failed to create slot pattern");
+    }
+  }, [createStatus, error, dispatch]);
+
+  const handleCreateSimpleSlot = () => {
+    if (!simpleSlot.name || !simpleSlot.day_of_week || !simpleSlot.start_time || !simpleSlot.end_time) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    if (simpleSlot.start_time! >= simpleSlot.end_time!) {
+      toast.error("End time must be after start time");
+      return;
+    }
+
+    dispatch(
+      createSlotPattern({
+        is_recurring: false,
+        simple_slot: simpleSlot as SimpleSlot,
+      })
+    );
+  };
+
+  const handleCreateAdvancedSlot = () => {
+    if (!advancedSlot.name || !advancedSlot.start_time_of_day || !advancedSlot.end_time_of_day) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    if (advancedSlot.start_time_of_day! >= advancedSlot.end_time_of_day!) {
+      toast.error("End time must be after start time");
+      return;
+    }
+
+    if (selectedDays.length === 0) {
+      toast.error("Please select at least one day");
+      return;
+    }
+
+    const config: RecurrenceConfig = {
+      ...advancedSlot.recurrence_config!,
+      selected_days: selectedDays,
+    };
+
+    dispatch(
+      createSlotPattern({
+        is_recurring: true,
+        advanced_slot: {
+          ...advancedSlot,
+          recurrence_config: config,
+        } as AdvancedSlot,
+      })
+    );
+  };
+
+  const handleDeletePattern = (recurrenceGroupId: string) => {
+    setPatternToDelete(recurrenceGroupId);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (patternToDelete) {
+      toast.promise(
+        dispatch(deleteSlotPattern(patternToDelete)).unwrap(),
+        {
+          loading: "Deleting pattern...",
+          success: "Pattern deleted successfully!",
+          error: "Failed to delete pattern",
+        }
+      );
+    }
+    setDeleteDialogOpen(false);
+    setPatternToDelete(null);
+  };
+
+  const toggleDay = (day: string) => {
+    setSelectedDays((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    );
+  };
+
+  if (status === "loading" && patterns.length === 0) {
+    return (
+      <div className="flex justify-center p-10">
+        <InfinitySpin color="#388fe5" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-6">
+      {/* Create Slot Pattern Card */}
+      <Card className="shadow-sm">
+        <CardHeader className="bg-gradient-to-r from-[#388fe5]/10 to-transparent">
+          <div className="flex items-center gap-2">
+            <div className="p-2 bg-[#388fe5] rounded-lg">
+              <Calendar className="h-5 w-5 text-white" />
+            </div>
+            <CardTitle>Create Availability Pattern</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <Tabs defaultValue="simple" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="simple">Simple Weekly</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced Pattern</TabsTrigger>
+            </TabsList>
+
+            {/* Simple Weekly Tab */}
+            <TabsContent value="simple" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <Label htmlFor="simple-name">Pattern Name</Label>
+                  <Input
+                    id="simple-name"
+                    placeholder="e.g., Monday Morning Clinic"
+                    value={simpleSlot.name}
+                    onChange={(e) =>
+                      setSimpleSlot({ ...simpleSlot, name: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="simple-day">Day of Week</Label>
+                  <Select
+                    value={simpleSlot.day_of_week}
+                    onValueChange={(value) =>
+                      setSimpleSlot({ ...simpleSlot, day_of_week: value })
+                    }
+                  >
+                    <SelectTrigger id="simple-day">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {daysOfWeek.map((day) => (
+                        <SelectItem key={day} value={day}>
+                          {day}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="simple-type">Slot Type</Label>
+                  <Select
+                    value={simpleSlot.slot_type}
+                    onValueChange={(value: "on_site" | "off_site") =>
+                      setSimpleSlot({ ...simpleSlot, slot_type: value })
+                    }
+                  >
+                    <SelectTrigger id="simple-type">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="on_site">On-Site</SelectItem>
+                      <SelectItem value="off_site">Off-Site (Telemedicine)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="simple-start">Start Time</Label>
+                  <Input
+                    id="simple-start"
+                    type="time"
+                    value={simpleSlot.start_time}
+                    onChange={(e) =>
+                      setSimpleSlot({ ...simpleSlot, start_time: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="simple-end">End Time</Label>
+                  <Input
+                    id="simple-end"
+                    type="time"
+                    value={simpleSlot.end_time}
+                    onChange={(e) =>
+                      setSimpleSlot({ ...simpleSlot, end_time: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label htmlFor="simple-weeks">Duration (weeks)</Label>
+                  <Input
+                    id="simple-weeks"
+                    type="number"
+                    min="1"
+                    max="52"
+                    value={simpleSlot.duration_weeks}
+                    onChange={(e) =>
+                      setSimpleSlot({
+                        ...simpleSlot,
+                        duration_weeks: parseInt(e.target.value, 10),
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <Button
+                onClick={handleCreateSimpleSlot}
+                disabled={createStatus === "loading"}
+                className="w-full bg-[#388fe5] hover:bg-[#6fb043] text-white"
+              >
+                {createStatus === "loading" ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Simple Pattern"
+                )}
+              </Button>
+            </TabsContent>
+
+            {/* Advanced Pattern Tab */}
+            <TabsContent value="advanced" className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <Label htmlFor="adv-name">Pattern Name</Label>
+                  <Input
+                    id="adv-name"
+                    placeholder="e.g., MWF Clinic Hours"
+                    value={advancedSlot.name}
+                    onChange={(e) =>
+                      setAdvancedSlot({ ...advancedSlot, name: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="adv-type">Slot Type</Label>
+                  <Select
+                    value={advancedSlot.slot_type}
+                    onValueChange={(value: "on_site" | "off_site") =>
+                      setAdvancedSlot({ ...advancedSlot, slot_type: value })
+                    }
+                  >
+                    <SelectTrigger id="adv-type">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="on_site">On-Site</SelectItem>
+                      <SelectItem value="off_site">Off-Site (Telemedicine)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="adv-duration">Recurrence</Label>
+                  <Select
+                    value={advancedSlot.recurrence_config?.duration}
+                    onValueChange={(value: "daily" | "weekly" | "monthly") =>
+                      setAdvancedSlot({
+                        ...advancedSlot,
+                        recurrence_config: {
+                          ...advancedSlot.recurrence_config!,
+                          duration: value,
+                        },
+                      })
+                    }
+                  >
+                    <SelectTrigger id="adv-duration">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="adv-start-time">Start Time</Label>
+                  <Input
+                    id="adv-start-time"
+                    type="time"
+                    value={advancedSlot.start_time_of_day}
+                    onChange={(e) =>
+                      setAdvancedSlot({
+                        ...advancedSlot,
+                        start_time_of_day: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="adv-end-time">End Time</Label>
+                  <Input
+                    id="adv-end-time"
+                    type="time"
+                    value={advancedSlot.end_time_of_day}
+                    onChange={(e) =>
+                      setAdvancedSlot({
+                        ...advancedSlot,
+                        end_time_of_day: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="adv-start-date">Start Date</Label>
+                  <Input
+                    id="adv-start-date"
+                    type="date"
+                    value={advancedSlot.recurrence_config?.start_date}
+                    onChange={(e) =>
+                      setAdvancedSlot({
+                        ...advancedSlot,
+                        recurrence_config: {
+                          ...advancedSlot.recurrence_config!,
+                          start_date: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="adv-end-date">End Date (Optional)</Label>
+                  <Input
+                    id="adv-end-date"
+                    type="date"
+                    value={advancedSlot.recurrence_config?.end_date || ""}
+                    onChange={(e) =>
+                      setAdvancedSlot({
+                        ...advancedSlot,
+                        recurrence_config: {
+                          ...advancedSlot.recurrence_config!,
+                          end_date: e.target.value || null,
+                        },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label>Select Days</Label>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {shortDays.map((day) => (
+                      <Button
+                        key={day}
+                        type="button"
+                        variant={selectedDays.includes(day) ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleDay(day)}
+                        className={
+                          selectedDays.includes(day)
+                            ? "bg-[#388fe5] hover:bg-[#6fb043]"
+                            : ""
+                        }
+                      >
+                        {day}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                onClick={handleCreateAdvancedSlot}
+                disabled={createStatus === "loading"}
+                className="w-full bg-[#388fe5] hover:bg-[#6fb043] text-white"
+              >
+                {createStatus === "loading" ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Advanced Pattern"
+                )}
+              </Button>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+
+      {/* Your Patterns Card */}
+      <Card className="shadow-sm">
+        <CardHeader className="bg-gradient-to-r from-[#388fe5]/10 to-transparent">
+          <div className="flex items-center gap-2">
+            <div className="p-2 bg-[#388fe5] rounded-lg">
+              <Clock className="h-5 w-5 text-white" />
+            </div>
+            <CardTitle>Your Availability Patterns</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6">
+          {patterns.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <AlertCircle className="h-12 w-12 mx-auto mb-3 text-gray-400" />
+              <p>No availability patterns created yet.</p>
+              <p className="text-sm">Create your first pattern above to get started.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {patterns.map((pattern) => (
+                <div
+                  key={pattern.recurrence_group_id}
+                  className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-[#388fe5] hover:shadow-sm transition-all"
+                >
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="p-2 bg-[#388fe5]/10 rounded-lg">
+                      {pattern.slot_type === "on_site" ? (
+                        <MapPin className="h-5 w-5 text-[#388fe5]" />
+                      ) : (
+                        <Video className="h-5 w-5 text-[#388fe5]" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-900">{pattern.name}</h3>
+                      <div className="flex items-center gap-3 mt-1 text-sm text-gray-600">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {pattern.start_time_of_day} - {pattern.end_time_of_day}
+                        </span>
+                        <Badge
+                          variant="secondary"
+                          className={
+                            pattern.slot_type === "on_site"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-purple-100 text-purple-700"
+                          }
+                        >
+                          {pattern.slot_type === "on_site" ? "On-Site" : "Telemedicine"}
+                        </Badge>
+                        <Badge variant="outline" className="flex items-center gap-1">
+                          <CheckCircle2 className="h-3 w-3" />
+                          {pattern.slots_generated_count} slots
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleDeletePattern(pattern.recurrence_group_id)}
+                    disabled={deleteStatus === "loading"}
+                    className="hover:bg-red-50"
+                  >
+                    <Trash2 className="h-4 w-4 text-red-500" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Availability Pattern?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this pattern and all associated slots.
+              Patients will no longer be able to book appointments for these times.
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              Delete Pattern
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+}

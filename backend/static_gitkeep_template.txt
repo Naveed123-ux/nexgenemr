@@ -1,0 +1,27 @@
+# .gitkeep Template for Static Directories
+
+# After the server creates the static directories, add .gitkeep files to track them in git:
+
+# Create .gitkeep files
+touch static/.gitkeep
+touch static/images/.gitkeep
+touch static/images/logos/.gitkeep
+touch static/images/stamps/.gitkeep
+touch static/images/signatures/.gitkeep
+touch static/images/icons/.gitkeep
+
+# Or on Windows (PowerShell):
+New-Item -Path "static\.gitkeep" -ItemType File -Force
+New-Item -Path "static\images\.gitkeep" -ItemType File -Force
+New-Item -Path "static\images\logos\.gitkeep" -ItemType File -Force
+New-Item -Path "static\images\stamps\.gitkeep" -ItemType File -Force
+New-Item -Path "static\images\signatures\.gitkeep" -ItemType File -Force
+New-Item -Path "static\images\icons\.gitkeep" -ItemType File -Force
+
+# Add to .gitignore to ignore actual files but keep structure:
+# Add this to your .gitignore:
+static/images/logos/*
+static/images/stamps/*
+static/images/signatures/*
+static/images/icons/*
+!static/**/.gitkeep
