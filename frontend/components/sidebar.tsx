@@ -21,13 +21,13 @@ import { toast } from "react-hot-toast";
 const navigation = [
   { name: "Dashboard", href: "/superadmin", icon: BarChart3 },
   { name: "Create Hospital", href: "/superadmin/create-hospital", icon: Plus },
-  {
-    name: "Subscriptions",
-    href: "/superadmin/subscriptions",
-    icon: DollarSign,
-  },
-  { name: "Configure", href: "/superadmin/configure", icon: Settings },
-  { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
+  // {
+  //   name: "Subscriptions",
+  //   href: "/superadmin/subscriptions",
+  //   icon: DollarSign,
+  // },
+  // { name: "Configure", href: "/superadmin/configure", icon: Settings },
+  // { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
 ];
 
 interface SidebarProps {

@@ -10,16 +10,16 @@ load_dotenv()
 
 def get_logo_base64():
     """
-    Reads the Curealog.svg file from the project root,
+    Reads the Nexgenemr.svg file from the project root,
     encodes it in Base64, and returns a data URI.
     """
     try:
-        with open("Curealog.svg", "rb") as f:
+        with open("nexgen.png", "rb") as f:
             svg_data = f.read()
             base64_encoded_data = base64.b64encode(svg_data).decode('utf-8')
-            return f"data:image/svg+xml;base64,{base64_encoded_data}"
+            return f"data:image/png;base64,{base64_encoded_data}"
     except FileNotFoundError:
-        print("WARNING: Curealog.svg not found in the project root. Logo will be missing from emails.")
+        print("WARNING: nexgen.png not found in the project root. Logo will be missing from emails.")
         return "" # Return an empty string if the logo is not found
 
 LOGO_BASE64 = get_logo_base64()
