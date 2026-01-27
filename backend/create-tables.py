@@ -21,6 +21,8 @@ from models.appointment_session_model import AppointmentSession
 from models.appointment_model import Appointment
 from models.availability_template_model import AvailabilityTemplate
 from models.google_auth_token_model import GoogleAuthToken
+from models.lab_request_model import LabRequest
+from models.brain_tumor_result_model import BrainTumorResult
 # from models.conversation_model import Conversation, ConversationParticipant, Message
 
 

@@ -6,8 +6,10 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useStore";
 
 // Import the thunk from your new, dedicated slice
 import { uploadProfilePicture } from "@/store/slices/profilePictureSlice";
+import { Logout } from "@/store/slices/authSlice";
 
 // UI Components from shadcn/ui
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -97,8 +99,41 @@ export default function SharedProfile({
   };
 
 
+  const handleLogout = () => {
+    dispatch(Logout());
+    toast.success("Logged out successfully!");
+    document.cookie = "token=; path=/; max-age=0";
+    if (typeof window !== "undefined") {
+      window.location.href = "/auth/login";
+    }
+  };
+
+  const handleExportData = () => {
+    const data = {
+      username: userName,
+      role: adminType,
+      email: user?.email,
+      exportedAt: new Date().toISOString(),
+      userId: user?.id,
+      jobTitle: user?.job_title,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${userName.replace(/\s+/g, "_")}_data_export.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast.success("Data exported successfully!");
+  };
+
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8">
+
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 lg:p-8">
+
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -226,7 +261,11 @@ export default function SharedProfile({
                     </div>
                   </button>
                 )}
-                <button className="w-full flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all group">
+                <button
+                  className="w-full flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all group"
+                  onClick={handleExportData}
+                >
+
                   <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-500 transition-colors">
                     <FileDown className="w-5 h-5 text-blue-600 group-hover:text-white" />
                   </div>
@@ -235,7 +274,11 @@ export default function SharedProfile({
                     <p className="text-sm text-gray-500">Download your information</p>
                   </div>
                 </button>
-                <button className="w-full flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-gray-400 hover:bg-gray-50 transition-all group">
+                <button
+                  className="w-full flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-gray-400 hover:bg-gray-50 transition-all group"
+                  onClick={handleLogout}
+                >
+
                   <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-gray-300 transition-colors">
                     <LogOut className="w-5 h-5 text-gray-600 group-hover:text-gray-800" />
                   </div>

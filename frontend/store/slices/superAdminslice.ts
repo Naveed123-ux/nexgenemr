@@ -12,6 +12,15 @@ interface Allhospital {
   phone_number: string;
   country: string;
   logo_url: string;
+  is_active: boolean;
+}
+
+
+interface Stats {
+  totalHospitals: number;
+  newHospitalsToday: number;
+  oldHospitals: number;
+  visitors: number;
 }
 
 // State interface
@@ -23,6 +32,7 @@ interface HospitalState {
   page: number;
   totalPages: number;
   pageSize: number;
+  stats: Stats;
 }
 
 const initialState: HospitalState = {
@@ -33,7 +43,14 @@ const initialState: HospitalState = {
   page: 1,
   totalPages: 0,
   pageSize: 5,
+  stats: {
+    totalHospitals: 0,
+    newHospitalsToday: 0,
+    oldHospitals: 0,
+    visitors: 0,
+  },
 };
+
 
 // Async thunk for fetching hospitals
 export const fetchAllHospitals = createAsyncThunk(
@@ -55,7 +72,9 @@ export const fetchAllHospitals = createAsyncThunk(
         phone_number: hospital.phone_number,
         country: hospital.country,
         logo_url: hospital.logo_url,
+        is_active: hospital.is_active,
       }));
+
       return {
         data: hospitals,
         total: data.total,
@@ -70,6 +89,37 @@ export const fetchAllHospitals = createAsyncThunk(
     }
   }
 );
+
+export const fetchDashboardStats = createAsyncThunk(
+  "allHospitals/fetchDashboardStats",
+  async (_, ThunkApi) => {
+    try {
+      const res = await privateApi.get<Stats>("/hospitals/dashboard/stats");
+      return res.data;
+    } catch (err: any) {
+      return ThunkApi.rejectWithValue(
+        err.response?.data?.detail || "Failed to fetch stats"
+      );
+    }
+  }
+);
+
+export const toggleHospitalStatus = createAsyncThunk(
+  "allHospitals/toggleHospitalStatus",
+  async (hospitalId: number, ThunkApi) => {
+    try {
+      const res = await privateApi.post(`/hospitals/${hospitalId}/toggle-status`);
+      toast.success("Hospital status updated successfully");
+      return res.data;
+    } catch (err: any) {
+      toast.error("Failed to update hospital status");
+      return ThunkApi.rejectWithValue(
+        err.response?.data?.detail || "Failed to toggle status"
+      );
+    }
+  }
+);
+
 
 const hospitalSlice = createSlice({
   name: "allHospitals",
@@ -90,13 +140,27 @@ const hospitalSlice = createSlice({
         state.total = action.payload.total;
         state.page = action.payload.page;
         state.pageSize = action.payload.pageSize;
-        state.totalPages = action.payload.totalPages; // Update totalPages
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(fetchAllHospitals.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "Failed to fetch hospitals";
+      })
+      .addCase(fetchDashboardStats.fulfilled, (state, action) => {
+        state.stats = action.payload;
+      })
+      .addCase(toggleHospitalStatus.fulfilled, (state, action) => {
+        const updatedHospital = action.payload;
+        const index = state.Allhospitals.findIndex(h => h.id === updatedHospital.id);
+        if (index !== -1) {
+          state.Allhospitals[index] = {
+            ...state.Allhospitals[index],
+            ...updatedHospital
+          };
+        }
       });
   },
 });
+
 
 export default hospitalSlice.reducer;

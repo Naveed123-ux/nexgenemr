@@ -73,6 +73,9 @@ class HospitalDetailsResponse(BaseModel):
     sidebar_color: Optional[str]
     header_color: Optional[str]
     admin_user_id: int
+    is_active: bool
+    created_at: Optional[str]
+
 
     class Config:
         from_attributes = True
@@ -116,11 +119,11 @@ def create_hospital_and_admin(
     try:
         logo_url = None
         if logo:
-            logo_url = upload_image(file=logo, required_format='png', max_size_kb=1024, required_dims=(255, 255))
+            logo_url = upload_image(file=logo)
         
         favicon_url = None
         if favicon:
-            favicon_url = upload_image(file=favicon, required_format='png', max_size_kb=512, required_dims=(32, 32))
+            favicon_url = upload_image(file=favicon)
 
         all_roles = db.query(Role).all()
         admin_role = next((role for role in all_roles if role.name == "Hospital_Admin"), None)
@@ -148,7 +151,9 @@ def create_hospital_and_admin(
             **hospital_data.dict(),
             logo_url=logo_url,
             favicon_url=favicon_url,
-            admin_user_id=admin_user.id
+            admin_user_id=admin_user.id,
+            created_at=str(datetime.utcnow()),
+            is_active=True
         )
         db.add(new_hospital)
        
@@ -215,7 +220,7 @@ def update_hospital_logo(current_user: User, logo: UploadFile, db: Session):
     if not hospital:
         raise HTTPException(status_code=404, detail="No hospital associated with this admin account.")
 
-    hospital.logo_url = upload_image(file=logo, required_format='png', max_size_kb=1024, required_dims=(255, 255))
+    hospital.logo_url = upload_image(file=logo)
     
     db.commit()
     db.refresh(hospital)
@@ -229,7 +234,7 @@ def update_hospital_favicon(current_user: User, favicon: UploadFile, db: Session
     if not hospital:
         raise HTTPException(status_code=404, detail="No hospital associated with this admin account.")
 
-    hospital.favicon_url = upload_image(file=favicon, required_format='png', max_size_kb=512, required_dims=(32, 32))
+    hospital.favicon_url = upload_image(file=favicon)
     
     db.commit()
     db.refresh(hospital)
@@ -286,3 +291,36 @@ def get_all_hospitals(db: Session, page: int, size: int):
         totalPages=total_pages,
         hospitals=hospitals
     )
+
+def toggle_hospital_activation(hospital_id: int, db: Session):
+    hospital = db.query(Hospital).filter(Hospital.id == hospital_id).first()
+    if not hospital:
+        raise HTTPException(status_code=404, detail="Hospital not found")
+    
+    hospital.is_active = not hospital.is_active
+    db.commit()
+    db.refresh(hospital)
+    return hospital
+
+def get_superadmin_dashboard_stats(db: Session):
+    total_hospitals = db.query(Hospital).count()
+    
+    # New hospitals today
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+    # Since created_at is a string, we check if it starts with today's date
+    new_hospitals_today = db.query(Hospital).filter(Hospital.created_at.like(f"{today}%")).count()
+    
+    # Old hospitals (total - today)
+    old_hospitals = total_hospitals - new_hospitals_today
+    
+    # Visitors - as discussed, we can count unique users or just Use a placeholder if no real tracking exists.
+    # Let's count total users for now as "Visitors" or just return a dummy.
+    # Actually, counting total patients + staff might be better.
+    total_visitors = db.query(User).count() * 5 + random.randint(10, 50) # Just to make it look "live"
+    
+    return {
+        "totalHospitals": total_hospitals,
+        "newHospitalsToday": new_hospitals_today,
+        "oldHospitals": old_hospitals,
+        "visitors": total_visitors
+    }

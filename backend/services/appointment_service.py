@@ -1,5 +1,7 @@
 from fastapi import Depends, HTTPException, status
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session, joinedload, contains_eager
+
+
 from sqlalchemy import text
 from pydantic import BaseModel
 import math
@@ -84,11 +86,22 @@ class SlotInfoSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class LabRequestSummary(BaseModel):
+    id: int
+    request_type: str
+    status: str
+    priority: str
+
+    class Config:
+        from_attributes = True
+
 class AppointmentResponse(BaseModel):
     id: int
     patient_id: int
     patient_profile_id: int
+    doctor_user_id: int
     patient_name: str
+
     doctor_name: str
     start_time: datetime
     end_time: datetime
@@ -99,6 +112,7 @@ class AppointmentResponse(BaseModel):
     results: Optional[str] = None
     icd_codes: Optional[List[ICDCodeSchema]] = []  # New: list of ICD codes
     session_info: Optional[SlotInfoSchema] = None  # New: slot details
+    lab_requests: Optional[List[LabRequestSummary]] = []
 
     class Config:
         from_attributes = True
@@ -144,11 +158,29 @@ def build_appointment_response(appointment: Appointment) -> AppointmentResponse:
             recurrence_group_id=appointment.slot.session.recurrence_group_id
         )
     
+    # Get Lab Requests (using standard query or from backref)
+    lab_requests = []
+    # Note: LabRequest has a relationship back to Appointment
+    from models.lab_request_model import LabRequest
+    db = Session.object_session(appointment)
+    if db:
+        labs = db.query(LabRequest).filter(LabRequest.appointment_id == appointment.id).all()
+        lab_requests = [
+            LabRequestSummary(
+                id=l.id,
+                request_type=l.request_type.value,
+                status=l.status.value,
+                priority=l.priority
+            ) for l in labs
+        ]
+
     return AppointmentResponse(
         id=appointment.id,
         patient_id=appointment.patient.user.id,
         patient_profile_id=appointment.patient.id,
+        doctor_user_id=appointment.doctor_user_id,
         patient_name=f"{appointment.patient.user.first_name} {appointment.patient.user.last_name}",
+
         doctor_name=f"Dr. {appointment.doctor.first_name} {appointment.doctor.last_name}",
         start_time=appointment.slot.start_time,
         end_time=appointment.slot.end_time,
@@ -158,7 +190,8 @@ def build_appointment_response(appointment: Appointment) -> AppointmentResponse:
         reason_for_visit=appointment.reason_for_visit,
         results=appointment.results,
         icd_codes=icd_codes,
-        session_info=session_info
+        session_info=session_info,
+        lab_requests=lab_requests
     )
 
 def generate_appointment_sessions(doctor_id: int, db: Session):
@@ -802,8 +835,10 @@ def get_patient_appointments(
     """
     Get all appointments for a patient.
     """
-    query = db.query(Appointment).options(
-        joinedload(Appointment.slot).joinedload(AppointmentSlot.session),
+    print(f"DEBUG: Fetching appointments for patient_profile_id={patient_profile_id}, include_past={include_past}")
+    
+    query = db.query(Appointment).join(Appointment.slot).options(
+        contains_eager(Appointment.slot).joinedload(AppointmentSlot.session),
         joinedload(Appointment.doctor),
         joinedload(Appointment.patient).joinedload(PatientProfile.user),
         joinedload(Appointment.appointment_icd_codes).joinedload(AppointmentICDCode.icd_code)
@@ -811,9 +846,14 @@ def get_patient_appointments(
     
     if not include_past:
         now = datetime.utcnow()
-        query = query.join(Appointment.slot).filter(AppointmentSlot.start_time >= now)
+        query = query.filter(AppointmentSlot.start_time >= now)
     
     appointments = query.order_by(AppointmentSlot.start_time.desc()).all()
+    print(f"DEBUG: Found {len(appointments)} appointments")
+    for a in appointments:
+        print(f"  - Appt ID: {a.id}, Slot Time: {a.slot.start_time}, Doctor: {a.doctor.first_name}")
+
+
     
     return [build_appointment_response(appt) for appt in appointments]
 

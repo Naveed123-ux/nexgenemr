@@ -17,7 +17,9 @@ export interface Hospital {
   sidebar_color: string;
   header_color: string;
   admin_user_id: number;
+  is_active: boolean;
 }
+
 export interface LoginSchema {
   email: string;
   password: string;
@@ -113,8 +115,9 @@ export interface DoctorProfile {
   last_name: string;
   profile_id: number;
   specialization: string;
-  department_name: number;
+  department_name: string;
   profile_picture_url: string;
+  is_active: boolean;
 }
 
 // State interface
@@ -126,27 +129,17 @@ export interface DataDoctors {
   totalPages: number;
   doctors: DoctorProfile[];
 }
-export interface DoctorProfile {
-  user_id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  profile_id: number;
-  specialization: string;
-  department_name: number;
-  profile_picture_url: string;
-}
 
 export interface StaffProfile {
   user_id: number;
   email: string;
   first_name: string;
   last_name: string;
-
   job_title: string;
-
   profile_picture_url: string;
+  is_active: boolean;
 }
+
 
 export interface StaffData {
   total: number;
@@ -375,6 +368,7 @@ export interface PatientDashboardData {
   first_name: string;
   last_name: string;
   email: string;
+  profile_picture_url?: string;
   upcoming_appointments: UpcomingAppointment[];
   recent_vitals: RecentVitals | null;
   active_medications: ActiveMedication[];

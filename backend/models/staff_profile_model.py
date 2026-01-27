@@ -16,19 +16,20 @@ class StaffProfile(Base):
 
     # Foreign key to the Hospital model
     hospital_id = Column(Integer, ForeignKey('hospitals.id'))
+    phone_number = Column(String)
     hospital = relationship("Hospital")
 
     def __init__(self, **kwargs):
         super().__init__()
         for key, value in kwargs.items():
-            if key in ["job_title", "profile_picture_url"] and value is not None:
+            if key in ["job_title", "profile_picture_url", "phone_number"] and value is not None:
                 setattr(self, key, encrypt_field(str(value)))
             else:
                 setattr(self, key, value)
 
     def __getattribute__(self, name):
         value = super().__getattribute__(name)
-        if name in ["job_title", "profile_picture_url"] and value is not None:
+        if name in ["job_title", "profile_picture_url", "phone_number"] and value is not None:
             try:
                 return decrypt_field(value)
             except Exception:

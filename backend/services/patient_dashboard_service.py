@@ -60,6 +60,7 @@ class PatientDashboardResponse(BaseModel):
     first_name: str
     last_name: str
     email: str
+    profile_picture_url: Optional[str] = None
     
     upcoming_appointments: List[DashboardAppointment]
     recent_vitals: Optional[DashboardVital] = None
@@ -146,20 +147,32 @@ def get_patient_dashboard(db: Session, current_user: User):
         ) for med in active_medications_query
     ]
 
-    # Fetch Recent Lab Results
-    recent_lab_results = db.query(LabResult).filter(
-        LabResult.patient_user_id == patient_profile.id
-    ).order_by(LabResult.result_date.desc()).limit(5).all()
+    # Fetch Recent Lab Results (using LabRequest model)
+    from models.lab_request_model import LabRequest
+    
+    recent_lab_requests = db.query(LabRequest).filter(
+        LabRequest.patient_id == current_user.id
+    ).order_by(LabRequest.created_at.desc()).limit(5).all()
+    
+    recent_lab_results_data = []
+    for req in recent_lab_requests:
+         recent_lab_results_data.append(DashboardLabResult(
+             id=req.id,
+             test_name=req.request_type, # Using request_type as test name
+             result=req.status,          # Using status as result for now until compelted
+             date_reported=req.updated_at
+         ))
 
     # Assemble and validate the dashboard response
     dashboard_data = {
         "first_name": current_user.first_name,
         "last_name": current_user.last_name,
         "email": current_user.email,
+        "profile_picture_url": patient_profile.profile_picture_url,
         "upcoming_appointments": upcoming_appointments,
         "recent_vitals": recent_vitals,
         "active_medications": active_medications,
-        "recent_lab_results": recent_lab_results
+        "recent_lab_results": recent_lab_results_data
     }
     return PatientDashboardResponse.model_validate(dashboard_data)
 

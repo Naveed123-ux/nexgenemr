@@ -51,6 +51,7 @@ from routes.patient_task_routes import router as patient_task_router # Import pa
 from routes.signature_routes import router as signature_router # Import signature router
 from routes.slot_management_routes import router as slot_management_router # Import slot management router
 from routes.waitlist_routes import router as waitlist_router # Import waitlist router
+from routes.lab_request_routes import router as lab_request_router # Import lab request router
 
 # DB + Utils
 from db.db import Base, engine, get_db
@@ -153,6 +154,8 @@ app.include_router(patient_task_router, prefix="/patient-tasks", tags=["Patient 
 app.include_router(signature_router, prefix="/signatures", tags=["E-Signatures"])
 app.include_router(slot_management_router, tags=["Slot Management"])
 app.include_router(waitlist_router, prefix="/api/waitlist", tags=["Waitlist"])
+app.include_router(lab_request_router, prefix="/lab-requests", tags=["Lab Requests"])
+
 
 # Mount static files
 static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')

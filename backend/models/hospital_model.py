@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Boolean, DateTime
 from sqlalchemy.orm import relationship
 from db.db import Base
 from utils.encryption import encrypt_field, decrypt_field
@@ -26,6 +26,10 @@ class Hospital(Base):
     
     admin_user_id = Column(Integer, ForeignKey('users.id'), unique=True)
     admin = relationship("User", back_populates="hospital")
+    
+    is_active = Column(Boolean, default=True)
+    created_at = Column(String)
+
 
     # --- FIX: Add the missing relationship to departments ---
     departments = relationship("Department", back_populates="hospital")

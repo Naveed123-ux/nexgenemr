@@ -29,7 +29,9 @@ import {
   Stethoscope,
   Users,
   UserPlus,
+  FlaskConical,
 } from "lucide-react";
+
 
 export default function HospitalAdminLayout({
   children,
@@ -93,6 +95,8 @@ export default function HospitalAdminLayout({
     { name: "Appointments", href: "/doctor/appointments", icon: Calendar },
     { name: "Notes Taker", href: "/doctor/soap-notes", icon: ClipboardList },
     { name: "Chats", href: "/doctor/chat", icon: MessageSquare },
+    { name: "Lab Reports", href: "/doctor/lab-reports", icon: FlaskConical },
+
 
   ];
 
@@ -128,7 +132,8 @@ export default function HospitalAdminLayout({
         </aside>
 
         {/* Main Content - Adjusts based on sidebar state */}
-        <main className="flex-1 overflow-y-auto p-6" style={{ backgroundColor: "#f9fafb" }}>
+        <main className="flex-1 overflow-y-auto" style={{ backgroundColor: "#f9fafb" }}>
+
           {children}
         </main>
       </div>

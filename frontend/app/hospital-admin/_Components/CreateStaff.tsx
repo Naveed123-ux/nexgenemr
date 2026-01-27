@@ -27,6 +27,7 @@ const doctorSchema = z.object({
   last_name: z.string().min(1, "Last name is required"),
   email: z.string().email("Please enter a valid email address"),
   job_title: z.string().min(1, "please select a job title"),
+  phone_number: z.string().min(10, "Phone number must be at least 10 digits").optional().or(z.literal("")),
 });
 
 type BasicInfoData = z.infer<typeof doctorSchema>;
@@ -44,6 +45,7 @@ export default function CreateDoctor() {
       last_name: "",
       email: "",
       job_title: "",
+      phone_number: "",
     },
   });
 
@@ -69,6 +71,7 @@ export default function CreateDoctor() {
         last_name: data.last_name,
         email: data.email,
         job_title: data.job_title,
+        phone_number: data.phone_number,
         role_name: roleMapping[data.job_title] || "Receptionist",
       })
     );
@@ -193,6 +196,23 @@ export default function CreateDoctor() {
                     )}
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="phone_number">Phone Number</Label>
+                    <Input
+                      id="phone_number"
+                      placeholder="e.g. +1234567890"
+                      className="h-12 bg-gray-50 border-0"
+                      {...basicForm.register("phone_number")}
+                    />
+                    {basicForm.formState.errors.phone_number && (
+                      <p className="text-sm text-red-500">
+                        {basicForm.formState.errors.phone_number.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
                     <Label htmlFor="job_title">JobTitle</Label>
                     <Select
                       onValueChange={(value) =>
@@ -228,8 +248,8 @@ export default function CreateDoctor() {
                     <Label htmlFor="logo">Logo</Label>
                     <div
                       className={`border-2 border-dashed rounded-lg bg-gray-50 overflow-hidden ${errors.some((error) => error.includes("logo"))
-                          ? "border-red-300"
-                          : "border-gray-300"
+                        ? "border-red-300"
+                        : "border-gray-300"
                         }`}
                     >
                       {logoImage ? (

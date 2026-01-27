@@ -22,14 +22,14 @@ const navigation = [
   { name: "Dashboard", href: "/superadmin", icon: BarChart3 },
   { name: "Create Hospital", href: "/superadmin/create-hospital", icon: Plus },
 
-  // { name: "Requests", href: "/superadmin/requests", icon: Plus },
+  { name: "Requests", href: "/superadmin/requests", icon: Plus },
   // {
   //   name: "Subscriptions",
   //   href: "/superadmin/subscriptions",
   //   icon: DollarSign,
   // },
   // { name: "Configure", href: "/superadmin/configure", icon: Settings },
-  // { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
+  { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
 ];
 
 interface SidebarProps {

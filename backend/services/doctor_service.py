@@ -50,6 +50,8 @@ class DoctorResponse(BaseModel):
     specialization: str
     department_name: str
     profile_picture_url: Optional[str]
+    is_active: bool
+
 
     class Config:
         from_attributes = True
@@ -105,7 +107,7 @@ def create_doctor(
         # Upload profile picture only if provided
         profile_picture_url = None
         if profile_picture:
-            profile_picture_url = upload_image(file=profile_picture, required_format='png', max_size_kb=2048, required_dims=(512, 512))
+            profile_picture_url = upload_image(file=profile_picture)
         temp_password = generate_temporary_password()
         new_user = User(
             email=doctor_data.email,
@@ -146,8 +148,10 @@ def create_doctor(
             profile_id=new_doctor_profile.id,
             specialization=new_doctor_profile.specialization,
             department_name=department.name,
-            profile_picture_url=new_doctor_profile.profile_picture_url
+            profile_picture_url=new_doctor_profile.profile_picture_url,
+            is_active=new_user.is_active
         )
+
 
     except Exception as e:
         db.rollback()
@@ -196,8 +200,10 @@ def get_doctors_in_hospital(current_user: User, db: Session, page: int, size: in
                 profile_id=p.id,
                 specialization=p.specialization,
                 department_name=p.department.name if p.department else "N/A",
-                profile_picture_url=p.profile_picture_url
+                profile_picture_url=p.profile_picture_url,
+                is_active=p.user.is_active
             ) for p in profiles
+
         ]
     )
 

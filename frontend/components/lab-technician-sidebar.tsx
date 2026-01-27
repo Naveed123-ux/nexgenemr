@@ -20,7 +20,7 @@ import { Logout } from "@/store/slices/authSlice";
 import { toast } from "react-hot-toast";
 
 const navigation = [
-    { name: "Dashboard", href: "/lab-technician/dashboard", icon: Home },
+    { name: "Dashboard", href: "/lab-technician", icon: Home },
     { name: "Requests", href: "/lab-technician/requests", icon: ClipboardList },
     { name: "Reports", href: "/lab-technician/reports", icon: FileText },
     { name: "Upload", href: "/lab-technician/upload", icon: Upload },
@@ -53,6 +53,20 @@ export function LabTechnicianSidebar({ isCollapsed, onToggle }: SidebarProps) {
                 isCollapsed ? "w-20" : "w-64"
             )}
         >
+            {/* Logo Section */}
+            <div className="flex items-center h-16 px-4 bg-[#0f172a]/50">
+                <div className={cn("flex items-center gap-3", isCollapsed ? "justify-center w-full" : "")}>
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                        N
+                    </div>
+                    {!isCollapsed && (
+                        <span className="text-white font-bold text-lg truncate tracking-tight">
+                            NexGen<span className="text-blue-400">EMR</span>
+                        </span>
+                    )}
+                </div>
+            </div>
+
             {/* Navigation */}
             <nav
                 className="flex-1 overflow-y-auto py-4 px-3 cursor-pointer"
@@ -66,7 +80,9 @@ export function LabTechnicianSidebar({ isCollapsed, onToggle }: SidebarProps) {
             >
                 <div className="space-y-1">
                     {navigation.map((item) => {
-                        const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+                        const isActive = item.href === "/lab-technician"
+                            ? pathname === "/lab-technician"
+                            : pathname === item.href || pathname.startsWith(item.href + "/");
                         return (
                             <Link
                                 key={item.name}

@@ -64,6 +64,28 @@ def delete_staff_member(
 ):
     return staff_service.delete_staff(staff_user_id, current_user, db)
 
+@router.post("/{staff_user_id}/toggle-status", response_model=staff_service.StaffResponse, dependencies=[Depends(require_permission("staff:update"))])
+def toggle_staff_status(
+    staff_user_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user = user_service.toggle_user_activation(staff_user_id, db)
+    # Refresh profile
+    profile = db.query(staff_service.StaffProfile).filter(staff_service.StaffProfile.user_id == staff_user_id).first()
+    return staff_service.StaffResponse(
+        user_id=user.id,
+        email=user.email,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        job_title=profile.job_title,
+        role_name=user.role.name,
+        phone_number=profile.phone_number,
+        profile_picture_url=profile.profile_picture_url,
+        is_active=user.is_active
+    )
+
+
 
 @router.get("/dashboard-stats", response_model=staff_service.StaffDashboardStats)
 def get_dashboard_stats(

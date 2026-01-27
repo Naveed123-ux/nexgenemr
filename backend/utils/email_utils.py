@@ -83,7 +83,7 @@ def create_html_template(subject, preheader, content_html):
 def _send_email(recipient_email, subject, html_body):
     email_user = os.getenv("EMAIL_USER")
     email_pass = os.getenv("EMAIL_PASS")
-
+    print("checking email credentials",email_user, email_pass)
     if not email_user or not email_pass:
         print("WARNING: Email credentials not found in .env. Cannot send email.")
         return False
@@ -95,8 +95,7 @@ def _send_email(recipient_email, subject, html_body):
     message.attach(MIMEText(html_body, "html"))
 
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10)
         server.login(email_user, email_pass)
         server.sendmail(email_user, recipient_email, message.as_string())
         server.quit()

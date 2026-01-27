@@ -19,6 +19,7 @@ class PatientProfile(Base):
     bay_or_room = Column(String, nullable=True)
     triage_level = Column(String, nullable=True)
     lab_status = Column(String, nullable=True)
+    profile_picture_url = Column(String, nullable=True)
     # --- END OF CHANGES ---
 
     # Insurance Details (nullable)

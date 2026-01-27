@@ -96,6 +96,19 @@ def upload_hospital_favicon(
     """
     return update_hospital_favicon(current_user=current_user, favicon=favicon, db=db)
 
+@router.get("/dashboard/stats", dependencies=[Depends(require_permission("hospitals:read:all"))])
+def get_dashboard_stats_route(db: Session = Depends(get_db)):
+    from services.hospital_service import get_superadmin_dashboard_stats
+    return get_superadmin_dashboard_stats(db)
+
+@router.post("/{hospital_id}/toggle-status", response_model=HospitalDetailsResponse, dependencies=[Depends(require_permission("hospitals:update"))])
+def toggle_hospital_status(
+    hospital_id: int,
+    db: Session = Depends(get_db)
+):
+    from services.hospital_service import toggle_hospital_activation
+    return toggle_hospital_activation(hospital_id, db)
+
 @router.get("/{hospital_id}", response_model=HospitalDetailsResponse, dependencies=[Depends(require_permission("hospitals:read:one"))])
 def get_single_hospital(
     hospital_id: int,

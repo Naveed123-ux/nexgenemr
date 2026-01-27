@@ -13,8 +13,11 @@ from db.db import get_db
 
 class PatientListResponse(BaseModel):
     patientID: int
+    patient_profile_id: int
     patient_name: str
+    email: Optional[str] = None
     assigned_md: str
+
     visit_status: str
     chief_complaint: Optional[str] = None
     length_of_stay: str
@@ -74,8 +77,11 @@ def get_patient_list(current_user: User, db: Session) -> List[PatientListRespons
 
         patient_list_data.append(PatientListResponse(
             patientID=profile.user.id,
+            patient_profile_id=profile.id,
             patient_name=patient_name,
+            email=profile.user.email if profile.user else None,
             assigned_md=doctor_name,
+
             visit_status="Active" if profile.status else "Inactive",
             chief_complaint=profile.chief_complaint,
             length_of_stay=los_str,
@@ -127,8 +133,11 @@ def get_all_patients_for_staff(current_user: User, db: Session) -> List[PatientL
 
         patient_list_data.append(PatientListResponse(
             patientID=profile.user.id,
+            patient_profile_id=profile.id,
             patient_name=patient_name,
+            email=profile.user.email if profile.user else None,
             assigned_md=doctor_name,
+
             visit_status="Active" if profile.status else "Inactive",
             chief_complaint=profile.chief_complaint,
             length_of_stay=los_str,
@@ -209,8 +218,11 @@ def get_patient_list_for_hospital(current_user: User, db: Session) -> List[Patie
 
         patient_list_data.append(PatientListResponse(
             patientID=profile.user.id,
+            patient_profile_id=profile.id,
             patient_name=patient_name,
+            email=profile.user.email if profile.user else None,
             assigned_md=doctor_name,
+
             visit_status="Active" if profile.status else "Inactive", 
             chief_complaint=profile.chief_complaint, 
             length_of_stay=los_str,

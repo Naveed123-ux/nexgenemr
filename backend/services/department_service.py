@@ -41,7 +41,7 @@ def create_department(
     if any(dept.name.lower() == department_data.name.lower() for dept in departments):
         raise HTTPException(status_code=400, detail=f"Department '{department_data.name}' already exists.")
 
-    logo_url = upload_image(file=logo, required_format='png', max_size_kb=1024, required_dims=(256, 256))
+    logo_url = upload_image(file=logo)
 
     new_department = Department(
         name=department_data.name,
@@ -85,7 +85,7 @@ def update_department(
     department.no_of_members = department_data.no_of_members
 
     if logo:
-        department.logo_url = upload_image(file=logo, required_format='png', max_size_kb=1024, required_dims=(256, 256))
+        department.logo_url = upload_image(file=logo)
 
     db.commit()
     db.refresh(department)

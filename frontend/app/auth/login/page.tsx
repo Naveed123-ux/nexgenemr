@@ -73,6 +73,7 @@ export default function LoginPage() {
         Receptionist: "/staff",
         Doctor: "/doctor",
         Patient: "/patient",
+        Lab_Technician: "/lab-technician",
       };
       // console.log("routes: ",roleRoutes[response.role])
       router.push(roleRoutes[response.role] || "/");

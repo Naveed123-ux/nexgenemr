@@ -152,6 +152,9 @@ export const authSlice = createSlice({
         state.profile_picture_url = action.payload;
       }
     },
+    setProfilePicture: (state, action: PayloadAction<string>) => {
+      state.profile_picture_url = action.payload;
+    },
   },
   extraReducers: (builder) => {
     let toastingId: string;
@@ -205,5 +208,5 @@ export const authSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { login, Logout,updateUserPictureUrl } = authSlice.actions;
+export const { login, Logout, updateUserPictureUrl } = authSlice.actions;
 export default authSlice.reducer;

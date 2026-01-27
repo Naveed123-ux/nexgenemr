@@ -151,7 +151,8 @@ function RescheduleAppointmentContent() {
 
   if (loadingAppointment) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="bg-gray-50 flex items-center justify-center py-12">
+
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-[#388fe5] mx-auto mb-4" />
           <p className="text-gray-600">Loading appointment details...</p>
@@ -165,7 +166,8 @@ function RescheduleAppointmentContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div className="bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -362,7 +364,8 @@ function RescheduleAppointmentContent() {
 export default function RescheduleAppointment() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="bg-gray-50 flex items-center justify-center py-12">
+
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-[#388fe5] mx-auto mb-4" />
           <p className="text-gray-600">Loading...</p>

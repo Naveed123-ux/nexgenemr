@@ -10,135 +10,165 @@ import {
 } from "@tanstack/react-table";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { fetchAllDoctors } from "@/store/slices/allDoctors";
+import { fetchAllDoctors, toggleDoctorStatus } from "@/store/slices/allDoctors";
 import { InfinitySpin } from "react-loader-spinner";
 import toast from "react-hot-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Trash2, ArrowUpDown, Mail, Phone, MapPin, Edit, Eye } from "lucide-react";
+import { Trash2, ArrowUpDown, Mail, Phone, MapPin, Edit, Eye, UserCheck, UserMinus } from "lucide-react";
 import { DoctorProfile } from "@/hooks/types/types";
-
-// Define the hospital type
-
-// Define columns
-const columns: ColumnDef<DoctorProfile>[] = [
-  {
-    accessorKey: "user_id",
-    header: () => (
-      <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
-        ID
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="py-4 px-6 text-gray-600 text-sm font-medium">
-        #{row.getValue("user_id")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "first_name",
-    header: () => (
-      <div className="flex items-center gap-2 text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
-        <span>Doctor</span>
-      </div>
-    ),
-    cell: ({ row }) => {
-      const { profile_picture_url, first_name, last_name } = row.original;
-      const initials = `${first_name?.charAt(0) || ''}${last_name?.charAt(0) || ''}`;
-
-      return (
-        <div className="flex items-center gap-3 py-4 px-6">
-          <Avatar className="h-10 w-10 border-2 border-gray-200">
-            <AvatarImage src={profile_picture_url} alt={`${first_name} ${last_name}`} />
-            <AvatarFallback className="bg-[#388fe5] text-white font-semibold">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="text-sm font-semibold text-gray-900">
-              Dr. {first_name} {last_name}
-            </p>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "email",
-    header: () => (
-      <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
-        Contact
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="py-4 px-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Mail className="w-4 h-4 text-gray-400" />
-          <span>{row.getValue("email") as string}</span>
-        </div>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "specialization",
-    header: () => (
-      <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
-        Specialization
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="py-4 px-6">
-        <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100">
-          {row.getValue("specialization") as string}
-        </Badge>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "department_name",
-    header: () => (
-      <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
-        Department
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="py-4 px-6">
-        <Badge variant="outline" className="border-gray-300">
-          {row.getValue("department_name") as string}
-        </Badge>
-      </div>
-    ),
-  },
-  {
-    id: "actions",
-    header: () => (
-      <div className="text-right py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
-        Actions
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="py-4 px-6 text-right">
-        <div className="flex items-center justify-end gap-2">
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <Eye className="h-4 w-4 text-gray-600" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <Edit className="h-4 w-4 text-gray-600" />
-          </Button>
-        </div>
-      </div>
-    ),
-  },
-];
 
 export default function AllDoctors() {
   const dispatch = useDispatch<AppDispatch>();
   const { AllDoctors, loading, error, total, page, pageSize, totalPages } =
-    useSelector((state: RootState) => state.allDoctors); // Updated to match slice name
+    useSelector((state: RootState) => state.allDoctors);
+
+  const handleToggleStatus = async (doctorUserId: number) => {
+    try {
+      await dispatch(toggleDoctorStatus(doctorUserId)).unwrap();
+    } catch (error) {
+      console.error("Toggle error:", error);
+    }
+  };
+
+  const columns: ColumnDef<DoctorProfile>[] = [
+    {
+      accessorKey: "user_id",
+      header: () => (
+        <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
+          ID
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="py-4 px-6 text-gray-600 text-sm font-medium">
+          #{row.getValue("user_id")}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "first_name",
+      header: () => (
+        <div className="flex items-center gap-2 text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
+          <span>Doctor</span>
+        </div>
+      ),
+      cell: ({ row }) => {
+        const { profile_picture_url, first_name, last_name } = row.original;
+        const initials = `${first_name?.charAt(0) || ''}${last_name?.charAt(0) || ''}`;
+
+        return (
+          <div className="flex items-center gap-3 py-4 px-6">
+            <Avatar className="h-10 w-10 border-2 border-gray-200">
+              <AvatarImage src={profile_picture_url} alt={`${first_name} ${last_name}`} />
+              <AvatarFallback className="bg-[#388fe5] text-white font-semibold">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-sm font-semibold text-gray-900">
+                Dr. {first_name} {last_name}
+              </p>
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "email",
+      header: () => (
+        <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
+          Contact
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="py-4 px-6">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Mail className="w-4 h-4 text-gray-400" />
+            <span>{row.getValue("email") as string}</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "specialization",
+      header: () => (
+        <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
+          Specialization
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="py-4 px-6">
+          <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100">
+            {row.getValue("specialization") as string}
+          </Badge>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "is_active",
+      header: () => (
+        <div className="text-left py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
+          Status
+        </div>
+      ),
+      cell: ({ row }) => {
+        const isActive = row.getValue("is_active") as boolean;
+        return (
+          <div className="py-4 px-6">
+            <Badge className={isActive ? "bg-green-100 text-green-700 hover:bg-green-100" : "bg-red-100 text-red-700 hover:bg-red-100"}>
+              {isActive ? "Active" : "Inactive"}
+            </Badge>
+          </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      header: () => (
+        <div className="text-right py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wider">
+          Actions
+        </div>
+      ),
+      cell: ({ row }) => {
+        const isActive = row.original.is_active;
+        return (
+          <div className="py-4 px-6 text-right">
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleToggleStatus(row.original.user_id)}
+                className={isActive
+                  ? "text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 flex items-center gap-1 px-3"
+                  : "text-green-600 border-green-200 hover:bg-green-50 hover:text-green-700 flex items-center gap-1 px-3"
+                }
+              >
+                {isActive ? (
+                  <>
+                    <UserMinus className="w-4 h-4" />
+                    Deactivate
+                  </>
+                ) : (
+                  <>
+                    <UserCheck className="w-4 h-4" />
+                    Activate
+                  </>
+                )}
+              </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Eye className="h-4 w-4 text-gray-600" />
+              </Button>
+            </div>
+          </div>
+        );
+      },
+    },
+  ];
 
   const hasFetched = useRef(false);
+
 
   useEffect(() => {
     if (!hasFetched.current) {

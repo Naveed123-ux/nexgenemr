@@ -75,3 +75,24 @@ def delete_single_doctor(
     db: Session = Depends(get_db)
 ):
     return doctor_service.delete_doctor(doctor_user_id, current_user, db)
+
+@router.post("/{doctor_user_id}/toggle-status", response_model=doctor_service.DoctorResponse, dependencies=[Depends(require_permission("doctors:update"))])
+def toggle_doctor_status(
+    doctor_user_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user = user_service.toggle_user_activation(doctor_user_id, db)
+    # Refresh doctor profile to return
+    profile = doctor_service.get_doctor_by_id(doctor_user_id, current_user, db)
+    return doctor_service.DoctorResponse(
+        user_id=user.id,
+        email=user.email,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        profile_id=profile.id,
+        specialization=profile.specialization,
+        department_name=profile.department.name if profile.department else "N/A",
+        profile_picture_url=profile.profile_picture_url,
+        is_active=user.is_active
+    )

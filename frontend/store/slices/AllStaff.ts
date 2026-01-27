@@ -46,6 +46,7 @@ export const fetchAllStaff = createAsyncThunk(
         job_title: staff.job_title,
 
         profile_picture_url: staff.profile_picture_url,
+        is_active: staff.is_active,
       }));
       return {
         data: staff,
@@ -61,6 +62,23 @@ export const fetchAllStaff = createAsyncThunk(
     }
   }
 );
+
+export const toggleStaffStatus = createAsyncThunk(
+  "allStaff/toggleStaffStatus",
+  async (staffUserId: number, ThunkApi) => {
+    try {
+      const res = await privateApi.post(`/staff/${staffUserId}/toggle-status`);
+      toast.success("Staff status updated successfully");
+      return res.data;
+    } catch (err: any) {
+      toast.error("Failed to update staff status");
+      return ThunkApi.rejectWithValue(
+        err.response?.data?.detail || "Failed to toggle status"
+      );
+    }
+  }
+);
+
 
 const AllStaff = createSlice({
   name: "allStaff",
@@ -91,7 +109,18 @@ const AllStaff = createSlice({
       .addCase(fetchAllStaff.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "Failed to fetch Staff";
+      })
+      .addCase(toggleStaffStatus.fulfilled, (state, action) => {
+        const updatedStaff = action.payload;
+        const index = state.AllStaff.findIndex(s => s.user_id === updatedStaff.user_id);
+        if (index !== -1) {
+          state.AllStaff[index] = {
+            ...state.AllStaff[index],
+            ...updatedStaff
+          };
+        }
       });
+
   },
 });
 export const { selectSingleAppointment } = AllStaff.actions;

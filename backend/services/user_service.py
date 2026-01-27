@@ -14,6 +14,8 @@ from utils.cloudinary_utils import upload_image
 # Setup for password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
+
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
@@ -75,7 +77,35 @@ def login_for_access_token(login_data: LoginRequest, db: Session):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Your account is currently deactivated. Please contact the administrator."
+        )
+    
+    # --- CHECK HOSPITAL STATUS ---
+
+    if user.role.name != "Super_Admin":
+        hospital = None
+        if user.hospital:
+            hospital = user.hospital
+        elif user.staff_profile:
+            hospital = user.staff_profile.hospital
+        elif user.doctor_profile and user.doctor_profile.department:
+            hospital = user.doctor_profile.department.hospital
+        elif user.patient_profile:
+            hospital = user.patient_profile.hospital
+            
+        if hospital and not hospital.is_active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Your hospital is currently inactive. Please contact the administrator."
+            )
+    # -----------------------------
+
+    
     token_data = {"sub": user.email, "role": user.role.name}
+
     access_token = create_access_token(data=token_data)
     refresh_token = create_refresh_token(data=token_data)
     
@@ -144,11 +174,15 @@ def update_profile_picture(current_user: User, file: UploadFile, db: Session):
         profile = current_user.staff_profile
         if not profile:
             raise HTTPException(status_code=404, detail="Staff profile not found.")
+    elif current_user.role.name == "Patient":
+        profile = current_user.patient_profile
+        if not profile:
+             raise HTTPException(status_code=404, detail="Patient profile not found.")
     else:
         raise HTTPException(status_code=400, detail="This user role does not have a profile picture.")
 
     # Upload the new image and get the secure URL
-    image_url = upload_image(file=file, required_format='png', max_size_kb=2048, required_dims=(512, 512))
+    image_url = upload_image(file=file)
     
     # Update the profile picture URL and commit to the database
     profile.profile_picture_url = image_url
@@ -157,3 +191,31 @@ def update_profile_picture(current_user: User, file: UploadFile, db: Session):
     
     return {"profile_picture_url": image_url}
 # --- END OF CHANGES ---
+
+def toggle_user_activation(user_id: int, db: Session):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    user.is_active = not user.is_active
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def update_user_profile(db: Session, user_id: int, user_data: UserCreate, current_user: User):
+    if user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Cannot update another user's profile")
+    
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.first_name = user_data.first_name
+    user.last_name = user_data.last_name
+    
+    # We don't update email or role here for security, only name
+    
+    db.commit()
+    db.refresh(user)
+    return user

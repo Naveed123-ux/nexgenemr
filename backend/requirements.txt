@@ -16,7 +16,7 @@ google-api-python-client
 google-generativeai
 python-socketio
 google-cloud-speech
-bcrypt==4.3.0
+bcrypt==4.0.1
 alembic
 user-agents
 apscheduler

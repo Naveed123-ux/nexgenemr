@@ -3,6 +3,13 @@ import { privateApi } from "@/lib/axios";
 
 // ---- Types ----
 
+export interface LabRequestSummary {
+    id: number;
+    request_type: "BRAIN_TUMOR" | "OTHER";
+    status: "PENDING" | "ACCEPTED" | "COMPLETED" | "APPROVED" | "REJECTED";
+    priority: string;
+}
+
 // This is now the single source of truth for an appointment object.
 export interface Appointment {
     id: number;
@@ -17,6 +24,7 @@ export interface Appointment {
     reason_for_visit: string;
     google_meet_link: string | null;
     results?: string | null; // Optional results field for past appointments
+    lab_requests: LabRequestSummary[];
 }
 
 // For semantic clarity in components, though it's the same shape as Appointment.
@@ -183,7 +191,7 @@ const appointmentSlice = createSlice({
             .addCase(updateAppointmentResults.fulfilled, (state, action: PayloadAction<Appointment>) => {
                 const updatedAppt = action.payload;
                 const updateInList = (appt: Appointment) => appt.id === updatedAppt.id ? updatedAppt : appt;
-                
+
                 state.upcoming = state.upcoming.map(updateInList);
                 state.all = state.all.map(updateInList);
                 state.weekly = state.weekly.map(updateInList);

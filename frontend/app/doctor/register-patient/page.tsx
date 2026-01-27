@@ -468,8 +468,9 @@ export default function DoctorRegisterPatient() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
+
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="p-2 bg-[#388fe5] rounded-lg">

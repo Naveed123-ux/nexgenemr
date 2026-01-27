@@ -43,6 +43,7 @@ export const fetchAllDoctors = createAsyncThunk(
         specialization: doctor.specialization,
         department_name: doctor.department_name,
         profile_picture_url: doctor.profile_picture_url,
+        is_active: doctor.is_active,
       }));
       return {
         data: doctors,
@@ -58,6 +59,23 @@ export const fetchAllDoctors = createAsyncThunk(
     }
   }
 );
+
+export const toggleDoctorStatus = createAsyncThunk(
+  "allDoctors/toggleDoctorStatus",
+  async (doctorUserId: number, ThunkApi) => {
+    try {
+      const res = await privateApi.post(`/doctors/${doctorUserId}/toggle-status`);
+      toast.success("Doctor status updated successfully");
+      return res.data;
+    } catch (err: any) {
+      toast.error("Failed to update doctor status");
+      return ThunkApi.rejectWithValue(
+        err.response?.data?.detail || "Failed to toggle status"
+      );
+    }
+  }
+);
+
 
 const AllDoctors = createSlice({
   name: "allDoctors",
@@ -83,7 +101,18 @@ const AllDoctors = createSlice({
       .addCase(fetchAllDoctors.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "Failed to fetch Doctors";
+      })
+      .addCase(toggleDoctorStatus.fulfilled, (state, action) => {
+        const updatedDoctor = action.payload;
+        const index = state.AllDoctors.findIndex(d => d.user_id === updatedDoctor.user_id);
+        if (index !== -1) {
+          state.AllDoctors[index] = {
+            ...state.AllDoctors[index],
+            ...updatedDoctor
+          };
+        }
       });
+
   },
 });
 

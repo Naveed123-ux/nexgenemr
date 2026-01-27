@@ -43,11 +43,15 @@ import {
   User,
   Calendar,
   MapPin,
+  Beaker,
+  FlaskConical,
+  AlertCircle,
+  CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { selectPaitentForSoap } from "@/store/slices/patientSlice";
-import { cancelAppointment } from "@/store/slices/appointmentSlice";
+import { cancelAppointment, fetchUpcomingAppointments } from "@/store/slices/appointmentSlice";
 import { UpcomingAppointment } from "./types";
 import { UpdateResultsDialog } from "./UpdateResultsDialog";
 import { RescheduleDialog } from "./RescheduleDialog";
@@ -55,6 +59,7 @@ import { AppDispatch } from "@/store/store";
 import { SoapNoteDialog } from "./SoapNoteDialog";
 import { IcdCodeManager } from "@/components/appointments/IcdCodeManager";
 import { useState } from "react";
+import { LabRequestDialog } from "./LabRequestDialog";
 
 export const AppointmentCard = ({
   appointment,
@@ -63,6 +68,7 @@ export const AppointmentCard = ({
 }) => {
   const [isSoapNoteOpen, setIsSoapNoteOpen] = useState(false);
   const [isIcdManagerOpen, setIsIcdManagerOpen] = useState(false);
+  const [isLabRequestOpen, setIsLabRequestOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
@@ -111,6 +117,19 @@ export const AppointmentCard = ({
                 <span className="text-xs font-medium text-green-700">In-Person</span>
               </div>
             )}
+
+            {/* Lab Status Badges */}
+            {appointment.lab_requests && appointment.lab_requests.map(lab => (
+              <div key={lab.id} className={cn(
+                "flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm",
+                lab.status === "COMPLETED" ? "bg-green-100 text-green-700 border border-green-200" :
+                  lab.status === "PENDING" || lab.status === "ACCEPTED" ? "bg-amber-100 text-amber-700 border border-amber-200" :
+                    "bg-gray-100 text-gray-700 border border-gray-200"
+              )}>
+                <FlaskConical className="w-3 h-3" />
+                {lab.status}
+              </div>
+            ))}
           </div>
         </div>
         <DropdownMenu>
@@ -120,19 +139,21 @@ export const AppointmentCard = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* FIX: Each item needing a modal gets its own Dialog wrapper */}
             <DropdownMenuItem onClick={() => setIsIcdManagerOpen(true)}>
               <Stethoscope className="w-4 h-4 mr-2" />
               Manage ICD Codes
             </DropdownMenuItem>
+
+            <DropdownMenuItem onClick={() => setIsLabRequestOpen(true)}>
+              <Beaker className="w-4 h-4 mr-2 text-blue-600" />
+              Request Lab Test
+            </DropdownMenuItem>
+
             <DropdownMenuItem onClick={() => router.push(`/doctor/reschedule-appointment?appointmentId=${appointment.id}`)}>
               <Edit className="w-4 h-4 mr-2" />
               Reschedule
             </DropdownMenuItem>
-            {/* <Dialog>
-                            <DialogTrigger asChild><DropdownMenuItem onSelect={(e) => e.preventDefault()}><FileText className="w-4 h-4 mr-2" />Update Results</DropdownMenuItem></DialogTrigger>
-                            <UpdateResultsDialog appointment={appointment} />
-                        </Dialog> */}
+
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem
@@ -165,6 +186,7 @@ export const AppointmentCard = ({
         </DropdownMenu>
       </CardHeader>
       <CardContent className="space-y-4 pt-4">
+        {/* ... existing card contents (date, reason) ... */}
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
           <div className="p-2 bg-blue-100 rounded-lg">
             <Clock className="w-4 h-4 text-blue-600" />
@@ -201,9 +223,30 @@ export const AppointmentCard = ({
           >
             <Video className="w-4 h-4 mr-2" />
             Join Meet
-            <ExternalLink className="w-3 h-3 ml-2" />
           </a>
         )}
+
+        {/* Lab Action Button */}
+        {appointment.lab_requests && appointment.lab_requests.some(l => l.status === "COMPLETED") ? (
+          <Button
+            variant="outline"
+            className="flex-1 sm:flex-none border-green-300 text-green-700 bg-green-50 hover:bg-green-100 font-bold"
+            onClick={() => router.push(`/doctor/lab-reports/${appointment.lab_requests.find(l => l.status === "COMPLETED")?.id}`)}
+          >
+            <FlaskConical className="w-4 h-4 mr-2" />
+            Review AI Result
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            className="flex-1 sm:flex-none border-blue-200 text-blue-600 hover:bg-blue-50"
+            onClick={() => setIsLabRequestOpen(true)}
+          >
+            <Beaker className="w-4 h-4 mr-2" />
+            Lab Request
+          </Button>
+        )}
+
         <Dialog open={isSoapNoteOpen} onOpenChange={setIsSoapNoteOpen}>
           <DialogTrigger asChild>
             <Button className="flex-1 sm:flex-none bg-[#388fe5] hover:bg-[#6fb043] text-white">
@@ -215,6 +258,21 @@ export const AppointmentCard = ({
           {isSoapNoteOpen && <SoapNoteDialog appointment={appointment} />}
         </Dialog>
       </CardFooter>
+
+      {/* Lab Request Dialog */}
+      <Dialog open={isLabRequestOpen} onOpenChange={setIsLabRequestOpen}>
+        {isLabRequestOpen && (
+          <LabRequestDialog
+            appointmentId={appointment.id}
+            patientId={appointment.patient_id}
+            onSuccess={() => {
+              setIsLabRequestOpen(false);
+              // Refresh upcoming appointments to show the new status
+              dispatch(fetchUpcomingAppointments());
+            }}
+          />
+        )}
+      </Dialog>
 
       {/* ICD Code Manager Dialog */}
       <IcdCodeManager

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile
 from services.user_service import (
     UserCreate, 
     UserResponse, 
@@ -38,3 +38,21 @@ def read_all_users(db: Session = Depends(get_db)):
 @router.get("/{user_id}", response_model=UserResponse)
 def read_user_by_id(user_id: int, db: Session = Depends(get_db)):
     return get_user(user_id, db)
+
+@router.put("/me", response_model=UserResponse)
+def update_current_user_profile(
+    user_data: UserCreate, # Reusing UserCreate for simplicity, though a partial update schema is better
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    from services.user_service import update_user_profile
+    return update_user_profile(db, current_user.id, user_data, current_user)
+
+@router.post("/me/picture")
+def upload_user_picture(
+    file: UploadFile,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    from services.user_service import update_profile_picture
+    return update_profile_picture(current_user, file, db)

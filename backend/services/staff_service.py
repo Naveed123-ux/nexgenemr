@@ -30,6 +30,7 @@ class StaffCreate(BaseModel):
     email: EmailStr
     job_title: str
     role_name: Optional[str] = "Receptionist"
+    phone_number: Optional[str] = None
 
 class StaffMemberForDoctorResponse(BaseModel):
     user_id: int
@@ -46,7 +47,11 @@ class StaffResponse(BaseModel):
     first_name: str
     last_name: str
     job_title: str
-    profile_picture_url: Optional[str]
+    role_name: str
+    phone_number: Optional[str] = None
+    profile_picture_url: Optional[str] = None
+    is_active: bool
+
 
     class Config:
         from_attributes = True
@@ -66,7 +71,9 @@ class StaffProfileResponse(BaseModel):
     role: str
     job_title: str
     hospital_id: int
-    profile_picture_url: Optional[str]
+    phone_number: Optional[str] = None
+    profile_picture_url: Optional[str] = None
+
 
 def create_staff(
     db: Session,
@@ -87,7 +94,7 @@ def create_staff(
         if db.query(User).filter(User.email == staff_data.email).first():
             raise HTTPException(status_code=400, detail="A user with this email already exists.")
 
-        profile_picture_url = upload_image(file=profile_picture, required_format='png', max_size_kb=2048, required_dims=(512, 512))
+        profile_picture_url = upload_image(file=profile_picture)
 
         temp_password = generate_temporary_password()
         new_user = User(
@@ -106,6 +113,7 @@ def create_staff(
             user_id=new_user.id,
             hospital_id=hospital_id,
             job_title=staff_data.job_title,
+            phone_number=staff_data.phone_number,
             profile_picture_url=profile_picture_url
         )
         db.add(new_staff_profile)
@@ -120,8 +128,12 @@ def create_staff(
             first_name=new_user.first_name,
             last_name=new_user.last_name,
             job_title=new_staff_profile.job_title,
-            profile_picture_url=new_staff_profile.profile_picture_url
+            role_name=staff_role.name,
+            phone_number=new_staff_profile.phone_number,
+            profile_picture_url=new_staff_profile.profile_picture_url,
+            is_active=new_user.is_active
         )
+
 
     except Exception as e:
         db.rollback()
@@ -168,7 +180,9 @@ def get_all_staff(current_user: User, db: Session, page: int, size: int):
     query = db.query(StaffProfile).filter(StaffProfile.hospital_id == hospital_id)
     
     total = query.count()
-    profiles = query.options(joinedload(StaffProfile.user)).offset(offset).limit(size).all()
+    profiles = query.options(
+        joinedload(StaffProfile.user).joinedload(User.role)
+    ).offset(offset).limit(size).all()
     
     total_pages = math.ceil(total / size) if total > 0 else 0
 
@@ -179,9 +193,14 @@ def get_all_staff(current_user: User, db: Session, page: int, size: int):
             first_name=p.user.first_name,
             last_name=p.user.last_name,
             job_title=p.job_title,
-            profile_picture_url=p.profile_picture_url
+            role_name=p.user.role.name if p.user.role else "Receptionist",
+            phone_number=p.phone_number,
+            profile_picture_url=p.profile_picture_url,
+            is_active=p.user.is_active
         ) for p in profiles
+
     ]
+
 
     return PaginatedStaffResponse(
         total=total,
@@ -222,8 +241,10 @@ def get_my_profile(current_user: User):
         role=current_user.role.name,
         job_title=current_user.staff_profile.job_title,
         hospital_id=current_user.staff_profile.hospital_id,
+        phone_number=current_user.staff_profile.phone_number,
         profile_picture_url=current_user.staff_profile.profile_picture_url
     )
+
 
 
 def get_staff_for_doctor(current_user: User, db: Session) -> List[StaffMemberForDoctorResponse]:

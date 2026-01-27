@@ -11,12 +11,13 @@ async function verifyRole(token: string) {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    const data = await response.json();
+    // console.log("Response from API:", response.status, data);
     if (!response.ok) {
       return null;
     }
 
-    return await response.json();
+    return data;
   } catch (error) {
     console.error('Error verifying role:', error);
     return null;

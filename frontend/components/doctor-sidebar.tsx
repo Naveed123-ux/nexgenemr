@@ -91,16 +91,18 @@ export function Sidebar({ navigation, isCollapsed, onToggle }: SidebarProps) {
       {/* Bottom Section - Profile and Logout */}
       <div className="border-t border-gray-700 p-3 space-y-2">
         {/* User Profile */}
-        <div
+        {/* User Profile */}
+        <Link
+          href="/patient/profile"
           className={cn(
-            "flex items-center gap-3",
-            isCollapsed ? "justify-center" : "px-3"
+            "flex items-center gap-3 hover:bg-[#2a3f54] rounded-lg transition-colors cursor-pointer",
+            isCollapsed ? "justify-center p-2" : "px-3 py-2"
           )}
         >
           <Avatar className="w-10 h-10 bg-white flex-shrink-0">
             <AvatarImage
               src={auth?.profile_picture_url || "/doctor-profile.png"}
-              alt={auth?.name || "Doctor"}
+              alt={auth?.name || "User"}
             />
             <AvatarFallback className="text-gray-800 font-semibold text-sm">
               {auth?.name
@@ -110,15 +112,20 @@ export function Sidebar({ navigation, isCollapsed, onToggle }: SidebarProps) {
                   .join("")
                   .toUpperCase()
                   .slice(0, 2)
-                : "DR"}
+                : "U"}
             </AvatarFallback>
           </Avatar>
           {!isCollapsed && (
-            <span className="text-white font-semibold text-sm truncate">
-              {auth?.name || "Doctor"}
-            </span>
+            <div className="flex flex-col overflow-hidden">
+              <span className="text-white font-semibold text-sm truncate">
+                {auth?.name || "User"}
+              </span>
+              <span className="text-gray-400 text-xs truncate">
+                View Profile
+              </span>
+            </div>
           )}
-        </div>
+        </Link>
 
         {/* Logout Button */}
         <button
