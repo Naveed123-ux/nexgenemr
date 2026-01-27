@@ -1,0 +1,9 @@
+# --- Dev Frontend ---
+dev.app.curealog.com {
+    reverse_proxy frontend:3000
+}
+
+# --- Dev Backend ---
+dev.backend.curealog.com {
+    reverse_proxy backend:8000
+}

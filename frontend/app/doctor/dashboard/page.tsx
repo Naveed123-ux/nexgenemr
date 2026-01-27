@@ -329,6 +329,30 @@ export default function DoctorDashboard() {
               </div>
             </CardContent>
           </Card>
+          <Card className="bg-white shadow-sm sm:col-span-2 border-l-4 border-blue-500">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-medium text-black-600 flex items-center gap-2">
+                <span className="text-blue-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-flask-conical"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" /><path d="M8.5 2h7" /><path d="M7 16h10" /></svg>
+                </span>
+                Pending Lab Reviews
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold text-gray-800">3</div>
+                  <p className="text-sm text-gray-500">Reports waiting for your approval</p>
+                </div>
+                <Button
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => router.push('/doctor/lab-reviews')} // Assuming this route would exist
+                >
+                  Review Now
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
           {userId && (
             <div className="sm:col-span-2">
               <WaitlistSummary doctorId={userId} />

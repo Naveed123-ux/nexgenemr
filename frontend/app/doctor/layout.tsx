@@ -72,30 +72,29 @@ export default function HospitalAdminLayout({
     dispatch(fetchHospitalInfo());
     dispatch(fetchDoctorInfo());
   }, [dispatch]);
-const navigation = [
-  { name: "Practice Management", href: "/practice-management" },
-  { name: "Dashboard", href: "/dashboard" },
-  { name: "Manage Dashboard", href: "/manage-dashboard" },
-];
-const sideBarnavigation = [
-  { name: "Home", href: "/doctor", icon: Home },
-  { name: "Patient Billing", href: "/doctor/patient-billing", icon: Users },
-  { name: "Scheduling", href: "/doctor/scheduling", icon: Calendar },
-  { name: "Claims", href: "/doctor/claims", icon: FileText },
-  { name: "Chats", href: "/doctor/chats", icon: MessageSquare },
-  { name: "Settings", href: "/doctor/settings", icon: Settings },
-]
-const sideBarMainNavigation = [
-  { name: "Home", href: "/doctor", icon: Pyramid },
-  { name: "Register Patient", href: "/doctor/register-patient", icon: UserPlus },
-  { name: "Book Appointment", href: "/doctor/book-appointment", icon: CalendarPlus },
-  { name: "Prescriptions", href: "/doctor/prescriptions", icon: PillBottle },
-  { name: "Appointments", href: "/doctor/appointments", icon: Calendar },
-  { name: "Notes Taker", href: "/doctor/soap-notes", icon: ClipboardList },
-  { name: "Patient Summaries", href: "/doctor/patient-summaries", icon: FileText },
-  { name: "Chats", href: "/doctor/chat", icon: MessageSquare },
-  { name: "Clinical Records", href: "/doctor/clinical-records", icon: Stethoscope },
-];
+  const navigation = [
+    { name: "Practice Management", href: "/practice-management" },
+    { name: "Dashboard", href: "/dashboard" },
+    { name: "Manage Dashboard", href: "/manage-dashboard" },
+  ];
+  const sideBarnavigation = [
+    { name: "Home", href: "/doctor", icon: Home },
+    { name: "Patient Billing", href: "/doctor/patient-billing", icon: Users },
+    { name: "Scheduling", href: "/doctor/scheduling", icon: Calendar },
+    { name: "Claims", href: "/doctor/claims", icon: FileText },
+    { name: "Chats", href: "/doctor/chats", icon: MessageSquare },
+    { name: "Settings", href: "/doctor/settings", icon: Settings },
+  ]
+  const sideBarMainNavigation = [
+    { name: "Home", href: "/doctor", icon: Pyramid },
+    { name: "Register Patient", href: "/doctor/register-patient", icon: UserPlus },
+    { name: "Book Appointment", href: "/doctor/book-appointment", icon: CalendarPlus },
+    { name: "Prescriptions", href: "/doctor/prescriptions", icon: PillBottle },
+    { name: "Appointments", href: "/doctor/appointments", icon: Calendar },
+    { name: "Notes Taker", href: "/doctor/soap-notes", icon: ClipboardList },
+    { name: "Chats", href: "/doctor/chat", icon: MessageSquare },
+
+  ];
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
@@ -117,8 +116,8 @@ const sideBarMainNavigation = [
       {/* Content area with sidebar */}
       <div className="flex overflow-hidden" style={{ backgroundColor: "#f9fafb" }}>
         {/* Desktop Sidebar - Below header */}
-        <aside 
-          className="hidden lg:block" 
+        <aside
+          className="hidden lg:block"
           style={{ backgroundColor: "#233141" }}
         >
           <Sidebar

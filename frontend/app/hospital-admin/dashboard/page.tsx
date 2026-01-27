@@ -91,13 +91,13 @@ export default function HospitalAdminDashboard() {
           <h1 className="text-3xl font-bold text-gray-900">{overview.hospital_name}</h1>
           <p className="text-gray-600 mt-1">Hospital Analytics Dashboard</p>
         </div>
-        <Button
+        {/* <Button
           onClick={() => router.push('/rcm/claims')}
           className="bg-[#388fe5] hover:bg-[#6fb043] text-white"
         >
           Go to RCM
           <ArrowRight className="ml-2 w-4 h-4" />
-        </Button>
+        </Button> */}
       </div>
 
       {/* Overview Stats */}

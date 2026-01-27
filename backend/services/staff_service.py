@@ -29,6 +29,7 @@ class StaffCreate(BaseModel):
     last_name: str
     email: EmailStr
     job_title: str
+    role_name: Optional[str] = "Receptionist"
 
 class StaffMemberForDoctorResponse(BaseModel):
     user_id: int
@@ -78,9 +79,10 @@ def create_staff(
         hospital_id = current_user.hospital.id
 
         all_roles = db.query(Role).all()
-        staff_role = next((role for role in all_roles if role.name == "Receptionist"), None)
+        selected_role_name = staff_data.role_name or "Receptionist"
+        staff_role = next((role for role in all_roles if role.name == selected_role_name), None)
         if not staff_role:
-            raise HTTPException(status_code=500, detail="The 'Receptionist' role has not been configured.")
+            raise HTTPException(status_code=500, detail=f"The '{selected_role_name}' role has not been configured.")
 
         if db.query(User).filter(User.email == staff_data.email).first():
             raise HTTPException(status_code=400, detail="A user with this email already exists.")

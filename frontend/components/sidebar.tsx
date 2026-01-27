@@ -21,6 +21,8 @@ import { toast } from "react-hot-toast";
 const navigation = [
   { name: "Dashboard", href: "/superadmin", icon: BarChart3 },
   { name: "Create Hospital", href: "/superadmin/create-hospital", icon: Plus },
+
+  // { name: "Requests", href: "/superadmin/requests", icon: Plus },
   // {
   //   name: "Subscriptions",
   //   href: "/superadmin/subscriptions",

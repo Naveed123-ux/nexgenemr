@@ -11,8 +11,8 @@ import { Home, CreditCard, FileText, Heart } from "lucide-react";
 const navigation = [
   { name: "Dashboard", href: "/patient", icon: Home },
   { name: "Billing", href: "/patient/billing", icon: CreditCard },
-  { name: "Discharge Summaries", href: "/patient/discharge-summaries", icon: FileText },
-  { name: "My Health Summaries", href: "/patient/patient-summaries", icon: Heart },
+  // { name: "Discharge Summaries", href: "/patient/discharge-summaries", icon: FileText },
+  // { name: "My Health Summaries", href: "/patient/patient-summaries", icon: Heart },
 ];
 
 export default function PatientLayout({
@@ -40,7 +40,7 @@ export default function PatientLayout({
         </div>
         <div className="flex-1 overflow-y-auto p-6 mt-20">{children}</div>
       </div>
-      
+
       {/* Chatbot Widget */}
       <ChatbotWidget />
     </div>

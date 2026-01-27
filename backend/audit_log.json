@@ -684,3 +684,8 @@
 {"timestamp": "2025-12-13T13:01:28.989327", "user_id": 11, "user_email": "zainasghar190@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/messaging/conversations/7/messages", "status_code": 200}
 {"timestamp": "2025-12-13T13:12:35.705353", "user_id": 11, "user_email": "zainasghar190@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/sessions/", "status_code": 201}
 {"timestamp": "2025-12-13T13:16:47.839408", "user_id": 31, "user_email": "shshavhssvv@gmail.com", "user_role": "Receptionist", "hospital_id": 4, "http_method": "POST", "path": "/messaging/conversations/7/messages", "status_code": 200}
+{"timestamp": "2025-12-20T15:38:15.247704", "user_id": 11, "user_email": "zainasghar190@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/messaging/conversations/7/messages", "status_code": 200}
+{"timestamp": "2025-12-20T15:38:25.125551", "user_id": 11, "user_email": "zainasghar190@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/messaging/conversations/7/messages", "status_code": 200}
+{"timestamp": "2025-12-20T15:41:02.829997", "user_id": 11, "user_email": "zainasghar190@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/signatures/upload", "status_code": 201}
+{"timestamp": "2025-12-20T15:45:27.581894", "user_id": 31, "user_email": "shshavhssvv@gmail.com", "user_role": "Receptionist", "hospital_id": 4, "http_method": "POST", "path": "/patients/", "status_code": 200}
+{"timestamp": "2025-12-20T15:47:12.196440", "user_id": 31, "user_email": "shshavhssvv@gmail.com", "user_role": "Receptionist", "hospital_id": 4, "http_method": "POST", "path": "/patients/", "status_code": 200}

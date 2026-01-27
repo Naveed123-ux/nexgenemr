@@ -438,7 +438,7 @@ class DischargeSummaryService:
         )
         
         # Add logo if exists
-        logo_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'images', 'logos', 'logocure.png')
+        logo_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'images', 'logos', 'nexgen.png')
         if os.path.exists(logo_path):
             # Maintain aspect ratio by calculating proportional height
             pil_img = PILImage.open(logo_path)
@@ -669,7 +669,7 @@ class DischargeSummaryService:
             section.right_margin = Inches(0.75)
         
         # Add logo if exists
-        logo_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'images', 'logos', 'logocure.png')
+        logo_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'images', 'logos', 'nexgen.png')
         if os.path.exists(logo_path):
             doc.add_picture(logo_path, width=Inches(2.5))
             last_paragraph = doc.paragraphs[-1]

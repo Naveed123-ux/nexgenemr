@@ -268,22 +268,20 @@ export default function CreateHospitalPage() {
               <div className="flex bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setActiveTab("basic")}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor pointer${
-                    activeTab === "basic"
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor pointer${activeTab === "basic"
                       ? "bg-white text-green-primary shadow-sm"
                       : "text-gray-600 hover:text-gray-800"
-                  }`}
+                    }`}
                   disabled={loading}
                 >
                   Basic Info
                 </button>
                 <button
                   onClick={() => setActiveTab("branding")}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors  cursor-pointer ${
-                    activeTab === "branding"
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors  cursor-pointer ${activeTab === "branding"
                       ? "bg-white text-green-primary shadow-sm"
                       : "text-gray-600 hover:text-gray-800"
-                  }`}
+                    }`}
                   disabled={loading}
                 >
                   Branding Section
@@ -574,11 +572,10 @@ export default function CreateHospitalPage() {
                         <span className="text-red-500">*</span>
                       </Label>
                       <div
-                        className={`border-2 border-dashed rounded-lg bg-gray-50 overflow-hidden ${
-                          errors.some((error) => error.includes("logo"))
+                        className={`border-2 border-dashed rounded-lg bg-gray-50 overflow-hidden ${errors.some((error) => error.includes("logo"))
                             ? "border-red-300"
                             : "border-gray-300"
-                        }`}
+                          }`}
                       >
                         {logoImage ? (
                           <div className="relative">
@@ -629,11 +626,10 @@ export default function CreateHospitalPage() {
                         <span className="text-red-500">*</span>
                       </Label>
                       <div
-                        className={`border-2 border-dashed rounded-lg bg-gray-50 overflow-hidden ${
-                          errors.some((error) => error.includes("favicon"))
+                        className={`border-2 border-dashed rounded-lg bg-gray-50 overflow-hidden ${errors.some((error) => error.includes("favicon"))
                             ? "border-red-300"
                             : "border-gray-300"
-                        }`}
+                          }`}
                       >
                         {faviconImage ? (
                           <div className="relative">
@@ -692,17 +688,15 @@ export default function CreateHospitalPage() {
                           onClick={() =>
                             handleColorSelection(color.value, "sidebar")
                           }
-                          className={`w-8 h-8 rounded-lg ${
-                            color.class
-                          } border-2 transition-all hover:scale-105 ${
-                            selectedSidebarColor === color.value
+                          className={`w-8 h-8 rounded-lg ${color.class
+                            } border-2 transition-all hover:scale-105 ${selectedSidebarColor === color.value
                               ? "border-green-primary ring-2 ring-blue-200"
                               : errors.some((error) =>
-                                  error.includes("Sidebar color")
-                                )
-                              ? "border-red-300"
-                              : "border-gray-300"
-                          }`}
+                                error.includes("Sidebar color")
+                              )
+                                ? "border-red-300"
+                                : "border-gray-300"
+                            }`}
                           title={color.name}
                         />
                       ))}
@@ -720,17 +714,15 @@ export default function CreateHospitalPage() {
                           onClick={() =>
                             handleColorSelection(color.value, "header")
                           }
-                          className={`w-8 h-8 rounded-lg ${
-                            color.class
-                          } border-2 transition-all hover:scale-105 ${
-                            selectedHeaderColor === color.value
+                          className={`w-8 h-8 rounded-lg ${color.class
+                            } border-2 transition-all hover:scale-105 ${selectedHeaderColor === color.value
                               ? "border-green-primary ring-2 ring-blue-200"
                               : errors.some((error) =>
-                                  error.includes("Header color")
-                                )
-                              ? "border-red-300"
-                              : "border-gray-300"
-                          }`}
+                                error.includes("Header color")
+                              )
+                                ? "border-red-300"
+                                : "border-gray-300"
+                            }`}
                           title={color.name}
                         />
                       ))}
@@ -744,7 +736,7 @@ export default function CreateHospitalPage() {
                       const data = brandingForm.getValues();
                       onBrandingSubmit(data);
                     }}
-                    className="bg-green-700 hover:bg-blue-500 text-white px-8 py-1 text-sm font-medium"
+                    className="bg-blue-500 text-white px-8 py-1 text-sm font-medium"
                     disabled={loading}
                   >
                     CREATE HOSPITAL

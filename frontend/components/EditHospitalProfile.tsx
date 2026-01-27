@@ -135,7 +135,7 @@ export default function EditHospitalProfile() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" disabled={status === 'loading'}>
+          <Button type="submit" className="bg-blue-500" disabled={status === 'loading'}>
             Save Changes
           </Button>
         </CardFooter>

@@ -11,11 +11,11 @@ async function verifyRole(token: string) {
         Authorization: `Bearer ${token}`,
       },
     });
-    
+
     if (!response.ok) {
       return null;
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Error verifying role:', error);
@@ -26,28 +26,29 @@ async function verifyRole(token: string) {
 export async function middleware(request: NextRequest) {
   console.log("Middleware triggered");
   const url = request.nextUrl.pathname;
-  
+
   // Public routes that don't require authentication
   const publicRoutes = [
-    "/patient/book-waitlist", // Waitlist booking page (token-based)
+    "/patient/book-waitlist",
+    // Waitlist booking page (token-based)
   ];
-  
+
   // Check if the current path is a public route
   const isPublicRoute = publicRoutes.some(route => url.startsWith(route));
-  
+
   if (isPublicRoute) {
     // Allow access to public routes without authentication
     return NextResponse.next();
   }
-  
+
   const token = request.cookies.get("token")?.value;
   // console.log("Token from cookies:", token);
   if (!token) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
   const verifiedToken = token && (await verifyRole(token));
-  
-  console.log("verifiedToken:",verifiedToken)
+
+  console.log("verifiedToken:", verifiedToken)
   if (!verifiedToken) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
@@ -83,6 +84,12 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
   }
+  // Lab Technician
+  else if (url.startsWith("/lab-technician")) {
+    if (userRole !== "Lab_Technician") {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  }
 
   return NextResponse.next();
 }
@@ -94,5 +101,6 @@ export const config = {
     "/hospital-admin/:path*",
     "/doctor/:path*",
     "/patient/:path*",
+    "/lab-technician/:path*",
   ],
 };

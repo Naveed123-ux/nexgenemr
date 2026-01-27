@@ -59,7 +59,7 @@ def create_html_template(subject, preheader, content_html):
                     <table class="container" width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="header">
-                                <img src="{LOGO_BASE64}" alt="Curealog Logo">
+                                <img src="{LOGO_BASE64}" alt="Nexgen Logo">
                             </td>
                         </tr>
                         <tr>
@@ -69,7 +69,7 @@ def create_html_template(subject, preheader, content_html):
                         </tr>
                         <tr>
                             <td class="footer">
-                                &copy; {datetime.now().year} Curealog. All rights reserved.
+                                &copy; {datetime.now().year} Nexgen. All rights reserved.
                             </td>
                         </tr>
                     </table>
@@ -107,11 +107,11 @@ def _send_email(recipient_email, subject, html_body):
         return False
 
 def send_welcome_email(recipient_email: str, temporary_password: str):
-    subject = "Welcome to Curealog - Your Account Details"
+    subject = "Welcome to Nexgen - Your Account Details"
     preheader = "Your new account is ready."
     content_html = f"""
         <h1>Welcome Aboard!</h1>
-        <p>An account has been created for you on the Curealog platform. We're thrilled to have you with us.</p>
+        <p>An account has been created for you on the Nexgen platform. We're thrilled to have you with us.</p>
         <p>You can log in using the following credentials:</p>
         <div class="info-box">
             <p><strong>Email:</strong> {recipient_email}</p>
@@ -269,7 +269,7 @@ def send_billing_reminder_email(
         </p>
         
         <p style="margin-top: 15px; font-size: 14px; color: #666;">
-            Thank you for choosing Curealog for your healthcare needs.
+            Thank you for choosing Nexgen for your healthcare needs.
         </p>
     """
     
@@ -490,7 +490,7 @@ def send_doctor_reassignment_email_to_patient(
     <p style="margin-top: 20px;">Your appointment time and location remain the same. Only the attending doctor has changed.</p>
     <p>If you have any questions or concerns about this change, please contact our office.</p>
     
-    <p style="margin-top: 30px;">Best regards,<br><strong>Curealog Healthcare Team</strong></p>
+    <p style="margin-top: 30px;">Best regards,<br><strong>Nexgen Healthcare Team</strong></p>
     """
     
     html_body = create_html_template(subject, preheader, content_html)
@@ -747,7 +747,7 @@ def send_waitlist_expiry_notification_email(
     
     <p style="margin-top: 20px;">We're here to help you get the care you need. Please don't hesitate to reach out to our office.</p>
     
-    <p style="margin-top: 30px;">Best regards,<br><strong>Curealog Healthcare Team</strong></p>
+    <p style="margin-top: 30px;">Best regards,<br><strong>Nexgen Healthcare Team</strong></p>
     """
     
     html_body = create_html_template(subject, preheader, content_html)

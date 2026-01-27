@@ -140,7 +140,7 @@ def update_profile_picture(current_user: User, file: UploadFile, db: Session):
         profile = current_user.doctor_profile
         if not profile:
             raise HTTPException(status_code=404, detail="Doctor profile not found.")
-    elif current_user.role.name in ["Receptionist", "Hospital_Admin"]:
+    elif current_user.role.name in ["Receptionist", "Hospital_Admin", "Lab_Technician"]:
         profile = current_user.staff_profile
         if not profile:
             raise HTTPException(status_code=404, detail="Staff profile not found.")

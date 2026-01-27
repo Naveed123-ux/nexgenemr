@@ -90,7 +90,9 @@ export function SuperAdminHeader() {
             <PopoverContent side="bottom" align="end" className="w-48">
               <div className="flex flex-col space-y-2">
                 <Button variant="ghost" className="justify-start">
-                  Profile
+                  <Link href="/superadmin/profile">
+                    Profile
+                  </Link>
                 </Button>
                 <Button variant="ghost" className="justify-start">
                   Settings

@@ -310,7 +310,7 @@ class HandoffNoteService:
         )
         
         # Add logo if exists
-        logo_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'images', 'logos', 'logocure.png')
+        logo_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'images', 'logos', 'nexgen.png')
         if os.path.exists(logo_path):
             # Maintain aspect ratio - let height auto-adjust
             logo = Image(logo_path, width=2.5*inch)

@@ -73,35 +73,35 @@ export default function HospitalAdminLayout({
     dispatch(fetchHospitalInfo());
     dispatch(fetchDepartments());
   }, [dispatch]);
-const navigation = [
-  { name: "Practice Management", href: "/practice-management" },
-  { name: "Dashboard", href: "/dashboard" },
-  { name: "Manage Dashboard", href: "/manage-dashboard" },
-];
-const sideBarnavigation  = [
-  { name: "Dashboard", href: "/hospital-admin", icon: BarChart3 },
-  { name: "Hospital Staff", href: "/hospital-admin/staff", icon: Users },
-  { name: "Add Staff", href: "/hospital-admin/addStaff", icon: Plus },
-  { name: "Departments", href: "/hospital-admin/departments", icon: Building2 },
-  { name: "Scheduling", href: "/hospital-admin/scheduling", icon: Calendar },
-  {
-    name: "Permissions & Data",
-    href: "/hospital-admin/permissions",
-    icon: Shield,
-  },
-  { name: "Audit Logs", href: "/hospital-admin/audit-log", icon: BookAudio },
-];
-const sideBarMainnavigation = [
-  { name: "Dashboard", href: "/hospital-admin/dashboard", icon: Home },
-  { name: "Tracker", href: "/hospital-admin", icon: AudioLines },
-  // { name: "Patients", href: "/hospital-admin/patients", icon: UserCheck },
-  { name: "Add Staff", href: "/hospital-admin/addStaff", icon: Plus },
-  { name: "Hospital Staff", href: "/hospital-admin/staff", icon: Users },
-  { name: "Departments", href: "/hospital-admin/departments", icon: Building2 },
-  { name: "Discharge Summaries", href: "/hospital-admin/discharge-summaries", icon: FileText },
-  { name: "Profile", href: "/hospital-admin/profile", icon: User },
-  { name: "Audit Logs", href: "/hospital-admin/audit-log", icon: BookAudio },
-];
+  const navigation = [
+    { name: "Practice Management", href: "/practice-management" },
+    { name: "Dashboard", href: "/dashboard" },
+    { name: "Manage Dashboard", href: "/manage-dashboard" },
+  ];
+  const sideBarnavigation = [
+    { name: "Dashboard", href: "/hospital-admin", icon: BarChart3 },
+    { name: "Hospital Staff", href: "/hospital-admin/staff", icon: Users },
+    { name: "Add Staff", href: "/hospital-admin/addStaff", icon: Plus },
+    { name: "Departments", href: "/hospital-admin/departments", icon: Building2 },
+    { name: "Scheduling", href: "/hospital-admin/scheduling", icon: Calendar },
+    {
+      name: "Permissions & Data",
+      href: "/hospital-admin/permissions",
+      icon: Shield,
+    },
+    { name: "Audit Logs", href: "/hospital-admin/audit-log", icon: BookAudio },
+  ];
+  const sideBarMainnavigation = [
+    { name: "Dashboard", href: "/hospital-admin/dashboard", icon: Home },
+    { name: "Tracker", href: "/hospital-admin", icon: AudioLines },
+    { name: "Patients", href: "/hospital-admin/patients", icon: UserCheck },
+    { name: "Add Staff", href: "/hospital-admin/addStaff", icon: Plus },
+    { name: "Hospital Staff", href: "/hospital-admin/staff", icon: Users },
+    { name: "Departments", href: "/hospital-admin/departments", icon: Building2 },
+    { name: "Discharge Summaries", href: "/hospital-admin/discharge-summaries", icon: FileText },
+    { name: "Profile", href: "/hospital-admin/profile", icon: User },
+    { name: "Audit Logs", href: "/hospital-admin/audit-log", icon: BookAudio },
+  ];
   return (
     <div className="h-screen bg-gray-50 grid grid-rows-[auto_1fr]">
       {/* Header - Full width at top */}

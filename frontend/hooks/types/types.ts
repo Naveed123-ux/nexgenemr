@@ -1,4 +1,4 @@
-export type RoleType = "Doctor"|"Receptionist"|"Hospital_Admin"|"Super_Admin"|"Patient"
+export type RoleType = "Doctor" | "Receptionist" | "Hospital_Admin" | "Super_Admin" | "Patient" | "Lab_Technician"
 export interface Hospital {
   id: number;
   name: string;
@@ -184,14 +184,14 @@ export interface Appointment {
 
 // For Insurance
 interface InsurancePatient extends BasePatient {
-  billing_type: "Insurance"|"Self-Pay";
+  billing_type: "Insurance" | "Self-Pay";
   insurer_name: string;
   member_id: string;
-  triage_level:string;
-  bay_or_room:string;
-  lab_status:string;
+  triage_level: string;
+  bay_or_room: string;
+  lab_status: string;
   group_id: string;
-  chief_complaint:string;
+  chief_complaint: string;
   subscriber_first_name: string;
   subscriber_last_name: string;
   subscriber_dob: string;
@@ -222,7 +222,7 @@ export interface CreateAppointmentRequest {
   appointment_slot_id: number; // The ID of the slot being booked
   is_telehealth: boolean; // Whether it is a telehealth appointment or not
   reason_for_visit: string; // Reason for visit text
-    icd_code_id: number; // Add this new field
+  icd_code_id: number; // Add this new field
 }
 export interface Slot {
   day_of_week: string;

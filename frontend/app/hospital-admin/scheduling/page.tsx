@@ -160,7 +160,7 @@ export default function SchedulingPage() {
 
               <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-green-primary hover:bg-green-700">
+                  <Button className="bg-blue-500 hover:bg`-green-700">
                     <Plus className="w-4 h-4 mr-2" />
                     Add new
                   </Button>
@@ -169,7 +169,7 @@ export default function SchedulingPage() {
                   <DialogHeader>
                     <div className="flex items-center justify-between">
                       <div className="text-2xl font-bold text-green-primary">
-                        EMRAKON
+                        NEXGEN
                       </div>
                       <DialogTitle className="text-lg font-semibold">
                         Add New
@@ -247,11 +247,10 @@ export default function SchedulingPage() {
                               <div
                                 key={slot}
                                 onClick={() => toggleTimeSlot(slot)}
-                                className={`w-full p-3 text-center border rounded cursor-pointer transition-colors ${
-                                  selectedTimeSlots.includes(slot)
-                                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                                    : "border-gray-200 bg-white hover:bg-gray-50"
-                                }`}
+                                className={`w-full p-3 text-center border rounded cursor-pointer transition-colors ${selectedTimeSlots.includes(slot)
+                                  ? "border-blue-500 bg-blue-50 text-blue-700"
+                                  : "border-gray-200 bg-white hover:bg-gray-50"
+                                  }`}
                               >
                                 {slot}
                               </div>
@@ -282,7 +281,7 @@ export default function SchedulingPage() {
 
                         <Button
                           type="submit"
-                          className="bg-green-primary hover:bg-green-700 px-6 mt-6"
+                          className="bg-blue-500 hover:bg-blue-700 px-6 mt-6"
                         >
                           <Plus className="w-4 h-4 mr-2" />
                           Add new

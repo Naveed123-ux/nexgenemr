@@ -56,6 +56,12 @@ export default function CreateDoctor() {
     setErrors([]);
 
     const formData = new FormData();
+    const roleMapping: Record<string, string> = {
+      receptionist: "Receptionist",
+      staff: "Receptionist",
+      lab_technician: "Lab_Technician",
+    };
+
     formData.append(
       "details",
       JSON.stringify({
@@ -63,6 +69,7 @@ export default function CreateDoctor() {
         last_name: data.last_name,
         email: data.email,
         job_title: data.job_title,
+        role_name: roleMapping[data.job_title] || "Receptionist",
       })
     );
     if (logoFile) {
@@ -204,6 +211,9 @@ export default function CreateDoctor() {
                           receptionist
                         </SelectItem>
                         <SelectItem value="staff">staff</SelectItem>
+                        <SelectItem value="lab_technician">
+                          lab technician
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     {basicForm.formState.errors.job_title && (
@@ -217,11 +227,10 @@ export default function CreateDoctor() {
                   <div className="space-y-2">
                     <Label htmlFor="logo">Logo</Label>
                     <div
-                      className={`border-2 border-dashed rounded-lg bg-gray-50 overflow-hidden ${
-                        errors.some((error) => error.includes("logo"))
+                      className={`border-2 border-dashed rounded-lg bg-gray-50 overflow-hidden ${errors.some((error) => error.includes("logo"))
                           ? "border-red-300"
                           : "border-gray-300"
-                      }`}
+                        }`}
                     >
                       {logoImage ? (
                         <div className="relative">
