@@ -9,6 +9,7 @@ import {
   BarChart,
   ChevronLeft,
   ChevronRight,
+  MessageSquare,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -30,6 +31,7 @@ const navigation = [
   // },
   // { name: "Configure", href: "/superadmin/configure", icon: Settings },
   { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
+  { name: "Secure Messaging", href: "/superadmin/chat", icon: MessageSquare },
 ];
 
 interface SidebarProps {

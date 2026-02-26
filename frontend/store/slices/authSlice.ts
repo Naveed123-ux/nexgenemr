@@ -24,6 +24,7 @@ interface AuthState {
   available_for_telehealth: boolean | null;
   biography: string | null;
   languages_spoken: string[] | null;
+  is_google_connected: boolean | null;
 }
 
 interface StaffProfile {
@@ -53,6 +54,7 @@ interface DoctorProfile {
   biography: string;
   languages_spoken: string[];
   profile_picture_url: string;
+  is_google_connected: boolean;
 }
 
 export const fetchHospitalInfo = createAsyncThunk(
@@ -111,6 +113,7 @@ const initialState: AuthState = {
   available_for_telehealth: null,
   biography: null,
   languages_spoken: null,
+  is_google_connected: null,
 };
 
 export const authSlice = createSlice({
@@ -146,6 +149,7 @@ export const authSlice = createSlice({
       state.available_for_telehealth = null;
       state.biography = null;
       state.languages_spoken = null;
+      state.is_google_connected = null;
     },
     updateUserPictureUrl: (state, action: PayloadAction<string>) => {
       if (state) {
@@ -202,6 +206,7 @@ export const authSlice = createSlice({
         state.available_for_telehealth = action.payload.available_for_telehealth;
         state.biography = action.payload.biography;
         state.languages_spoken = action.payload.languages_spoken;
+        state.is_google_connected = action.payload.is_google_connected;
       }
     );
   },

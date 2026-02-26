@@ -1,0 +1,42 @@
+--- Duplicates Report (Email, Role ID) ---
+Email: marcus.client@example.com, Role: 6, IDs: [12, 14]
+  ID 12: Profile=0, Appts=0
+  ID 14: Profile=0, Appts=0
+Email: jane.insured@example.com, Role: 6, IDs: [13, 15]
+  ID 13: Profile=0, Appts=0
+  ID 15: Profile=0, Appts=0
+Email: naveedzafar123abx@gmail.com, Role: 6, IDs: [27, 28, 90]
+  ID 27: Profile=0, Appts=0
+  ID 28: Profile=0, Appts=0
+  ID 90: Profile=0, Appts=0
+Email: naveedzafar123abx@gmail.com, Role: 10, IDs: [32, 86]
+  ID 32: Profile=0, Appts=0
+  ID 86: Profile=0, Appts=0
+Email: huzaifaargentina@gmail.com, Role: 9, IDs: [40, 41]
+  ID 40: Profile=1, Appts=0
+  ID 41: Profile=1, Appts=0
+Email: hassansohail7515@gmail.com, Role: 9, IDs: [50, 51, 52, 53, 54, 55, 59, 62, 56, 57, 58, 60, 61, 63]
+  ID 50: Profile=1, Appts=0
+  ID 51: Profile=1, Appts=0
+  ID 52: Profile=1, Appts=0
+  ID 53: Profile=1, Appts=0
+  ID 54: Profile=1, Appts=0
+  ID 55: Profile=1, Appts=0
+  ID 59: Profile=1, Appts=0
+  ID 62: Profile=1, Appts=0
+  ID 56: Profile=1, Appts=0
+  ID 57: Profile=1, Appts=0
+  ID 58: Profile=1, Appts=0
+  ID 60: Profile=1, Appts=0
+  ID 61: Profile=1, Appts=0
+  ID 63: Profile=1, Appts=0
+Email: hassansohail7515@gmail.com, Role: 6, IDs: [67, 68, 69, 70, 74, 71]
+  ID 67: Profile=0, Appts=0
+  ID 68: Profile=0, Appts=0
+  ID 69: Profile=0, Appts=0
+  ID 70: Profile=0, Appts=0
+  ID 74: Profile=0, Appts=0
+  ID 71: Profile=0, Appts=0
+Email: Nadir123@gmail.com, Role: 6, IDs: [79, 80]
+  ID 79: Profile=0, Appts=0
+  ID 80: Profile=0, Appts=0

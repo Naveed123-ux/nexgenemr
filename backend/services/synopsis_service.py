@@ -5,7 +5,7 @@ import os
 from typing import List
 
 # Import Gemini API
-import google.generativeai as genai
+from google import genai
 
 # Import necessary models
 from models.user_model import User
@@ -15,6 +15,8 @@ from models.clinical_data_model import Vitals, MedicalHistory
 from models.soap_note_model import SoapNote
 from models.appointment_slot_model import AppointmentSlot
 
+gemini_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
 # Pydantic model for the response
 class SynopsisResponse(BaseModel):
     synopsis_text: str
@@ -23,17 +25,18 @@ def _generate_synopsis_from_ai(prompt: str) -> str:
     """
     Calls the Gemini 1.5 Flash model to generate the synopsis.
     """
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
-    if not gemini_api_key:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="GEMINI_API_KEY is not set in the environment."
-        )
+    # gemini_api_key = os.getenv("GEMINI_API_KEY")
+    # if not gemini_api_key:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    #         detail="GEMINI_API_KEY is not set in the environment."
+    #     )
 
     try:
-        genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        response = model.generate_content(prompt)
+        response = gemini_client.models.generate_content(
+            model="gemini-2.0-flash",  # or gemini-2.0-flash if available
+            contents=[prompt]
+        )
         return response.text
     except Exception as e:
         print(f"  ❌ AI Synopsis Generation Error: {e}")

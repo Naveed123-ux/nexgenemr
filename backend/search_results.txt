@@ -1,0 +1,7 @@
+--- SEARCHING FOR ALL ENTRIES MATCHING naveed23xyz@gmail.com ---
+USER ID: 100 | Role: Doctor
+  - Doctor Profile found (ID: 33) | Hospital: Gental City Hospital (ID: 4)
+--------------------------------------------------
+USER ID: 101 | Role: Doctor
+  - Doctor Profile found (ID: 34) | Hospital: Gental City Hospital (ID: 4)
+--------------------------------------------------

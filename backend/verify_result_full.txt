@@ -1,0 +1,8 @@
+STDOUT:
+WARNING: nexgen.png not found in the project root. Logo will be missing from emails.
+Starting Lab Billing Verification...
+No Self-Pay patient found. Creating a dummy one...
+Created Dummy Patient: Test (ID: 106)
+No Doctor found.
+
+STDERR:

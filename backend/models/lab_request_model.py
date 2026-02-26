@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum as SQLEnum, Float
 from sqlalchemy.orm import relationship
 from db.db import Base
 from datetime import datetime
@@ -35,6 +35,7 @@ class LabRequest(Base):
     # Review fields
     doctor_comment = Column(String, nullable=True)
     doctor_rating = Column(Integer, nullable=True) # 1-5 stars
+    price = Column(Float, nullable=True) # Cost of the lab test
     
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

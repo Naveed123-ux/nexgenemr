@@ -1,0 +1,17 @@
+--- ASSOCIATED DATA CHECK (FINAL ATTEMPT) ---
+USER ID: 100
+  - Doctor Profile ID: 33
+  - appointments (by user_id): 0
+  - appointment_sessions (by user_id): 0
+  - session_recurrence_patterns (by user_id): 0
+  - appointment_requests: 0
+  - lab_requests: 0
+------------------------------
+USER ID: 101
+  - Doctor Profile ID: 34
+  - appointments (by user_id): 0
+  - appointment_sessions (by user_id): 0
+  - session_recurrence_patterns (by user_id): 0
+  - appointment_requests: 0
+  - lab_requests: 0
+------------------------------

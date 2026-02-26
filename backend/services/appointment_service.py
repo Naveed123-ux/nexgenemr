@@ -437,7 +437,7 @@ def get_appointments(
         page=page,
         size=size,
         totalPages=total_pages,
-        appointments=paginated_list
+        appointments=[build_appointment_response(appt) for appt in paginated_list]
     )
 
 def get_doctor_weekly_appointments(
@@ -472,21 +472,7 @@ def get_doctor_weekly_appointments(
     for appt in appointments:
         appt_date = appt.slot.start_time.date()
         if appt_date in week_schedule:
-            week_schedule[appt_date].append(
-                AppointmentResponse(
-                    id=appt.id,
-                    patient_id=appt.patient.user.id,
-                    patient_profile_id=appt.patient.id,
-                    patient_name=f"{appt.patient.user.first_name} {appt.patient.user.last_name}",
-                    doctor_name=f"Dr. {current_user.first_name} {current_user.last_name}",
-                    start_time=appt.slot.start_time,
-                    end_time=appt.slot.end_time,
-                    is_telehealth=appt.is_telehealth,
-                    status=appt.status,
-                    google_meet_link=appt.google_meet_link,
-                    reason_for_visit=appt.reason_for_visit
-                )
-            )
+            week_schedule[appt_date].append(build_appointment_response(appt))
 
     appointments_by_day = {
         str(day): week_schedule[day] for day in sorted(week_schedule.keys())
@@ -516,21 +502,7 @@ def get_upcoming_appointments_for_doctor(db: Session, current_user: User) -> Lis
         AppointmentSlot.start_time >= now
     ).order_by(AppointmentSlot.start_time.asc()).all()
 
-    return [
-        AppointmentResponse(
-            id=appt.id,
-            patient_id=appt.patient.user.id,
-            patient_profile_id=appt.patient.id,
-            patient_name=f"{appt.patient.user.first_name} {appt.patient.user.last_name}",
-            doctor_name=f"Dr. {current_user.first_name} {current_user.last_name}",
-            start_time=appt.slot.start_time,
-            end_time=appt.slot.end_time,
-            is_telehealth=appt.is_telehealth,
-            status=appt.status,
-            google_meet_link=appt.google_meet_link,
-            reason_for_visit=appt.reason_for_visit
-        ) for appt in appointments
-    ]
+    return [build_appointment_response(appt) for appt in appointments]
 
 
 def cancel_appointment(appointment_id: int, current_user: User, db: Session):

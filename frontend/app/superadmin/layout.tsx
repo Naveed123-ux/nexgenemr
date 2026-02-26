@@ -3,7 +3,7 @@
 import type React from "react";
 import { useState } from "react";
 import { Sidebar } from "@/components/sidebar";
-import { BarChart3, Plus, DollarSign, Settings, BarChart, InboxIcon } from "lucide-react";
+import { BarChart3, Plus, DollarSign, Settings, BarChart, InboxIcon, MessageSquare } from "lucide-react";
 import { DoctorMobileNav } from "@/components/doctor-mobile-nav";
 import { DoctorHeader } from "@/components/doctor-header";
 
@@ -21,6 +21,7 @@ export default function SuperAdminLayout({
     { name: "Configure", href: "/superadmin/configure", icon: Settings },
     { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
     { name: "Requests", href: "/superadmin/requests", icon: InboxIcon },
+    { name: "Secure Messaging", href: "/superadmin/chat", icon: MessageSquare },
   ];
 
   const HeaderNavigation = [

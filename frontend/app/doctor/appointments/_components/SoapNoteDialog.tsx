@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { selectPaitentForSoap } from "@/store/slices/patientSlice";
 import { fetchSoapNoteByAppointmentId, resetSoapNoteState, fetchContextualHighlights, Highlight } from "@/store/slices/soapNoteSlice";
 import { UpcomingAppointment } from "./types";
-import { Sparkles } from "lucide-react";
+import { Sparkles, AlertCircle, FileText, User, Stethoscope, ClipboardList } from "lucide-react";
 
 // Helper function to apply highlights to a block of text
 const applyHighlights = (originalText: string, highlights: Highlight[] | null) => {
@@ -70,7 +70,15 @@ export const SoapNoteDialog = ({ appointment }: { appointment: UpcomingAppointme
         }
     }, [status, highlightStatus, error]);
 
-    const handleAddSoapNote = () => { /* ... existing code ... */ };
+    const handleAddSoapNote = () => {
+        dispatch(selectPaitentForSoap({
+            apppointment_id: appointment.id,
+            patient_name: appointment.patient_name,
+            doctor_name: appointment.doctor_name,
+            status: appointment.status
+        }));
+        router.push("/doctor/soap-notes");
+    };
 
     const handleGenerateHighlights = () => {
         if (note?.soap_note_id) {
@@ -83,31 +91,74 @@ export const SoapNoteDialog = ({ appointment }: { appointment: UpcomingAppointme
             return <SoapNoteSkeleton />;
         }
         if (status === 'failed' || !note) {
-            return <div className="py-8 text-center"><p className="text-destructive">Error loading SOAP note.</p></div>;
+            return (
+                <div className="py-12 text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-red-50 rounded-full mb-4">
+                        <AlertCircle className="h-8 w-8 text-red-500" />
+                    </div>
+                    <p className="text-gray-900 font-bold">Error loading SOAP note</p>
+                    <p className="text-gray-500 text-sm mt-1">{error || "Please try again later."}</p>
+                </div>
+            );
         }
         if (note.soap_note_id === null) {
-            return <div className="py-8 text-center"><p className="text-muted-foreground">No SOAP note found for this appointment.</p></div>;
+            return (
+                <div className="py-12 text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-50 rounded-full mb-4">
+                        <FileText className="h-8 w-8 text-blue-500" />
+                    </div>
+                    <p className="text-gray-900 font-bold">No SOAP note available</p>
+                    <p className="text-gray-500 text-sm mt-1">Add a SOAP note to document this appointment</p>
+                </div>
+            );
         }
 
         const { subjective, objective, assessment, plan } = note.soap_note;
 
         return (
-            <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto pr-4">
-                <div>
-                    <h4 className="font-semibold text-gray-800">Subjective</h4>
-                    <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(subjective, highlights)} />
+            <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                {/* Subjective */}
+                <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="p-1.5 bg-blue-500 rounded">
+                            <User className="h-3.5 w-3.5 text-white" />
+                        </div>
+                        <h4 className="font-bold text-gray-900 uppercase tracking-wide text-xs">Subjective</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(subjective, highlights)} />
                 </div>
-                <div>
-                    <h4 className="font-semibold text-gray-800">Objective</h4>
-                    <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(objective, highlights)} />
+
+                {/* Objective */}
+                <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="p-1.5 bg-green-500 rounded">
+                            <Stethoscope className="h-3.5 w-3.5 text-white" />
+                        </div>
+                        <h4 className="font-bold text-gray-900 uppercase tracking-wide text-xs">Objective</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(objective, highlights)} />
                 </div>
-                <div>
-                    <h4 className="font-semibold text-gray-800">Assessment</h4>
-                    <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(assessment, highlights)} />
+
+                {/* Assessment */}
+                <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="p-1.5 bg-orange-500 rounded">
+                            <FileText className="h-3.5 w-3.5 text-white" />
+                        </div>
+                        <h4 className="font-bold text-gray-900 uppercase tracking-wide text-xs">Assessment</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(assessment, highlights)} />
                 </div>
-                <div>
-                    <h4 className="font-semibold text-gray-800">Plan</h4>
-                    <p className="text-sm text-gray-600 mt-1 whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(plan, highlights)} />
+
+                {/* Plan */}
+                <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="p-1.5 bg-purple-500 rounded">
+                            <ClipboardList className="h-3.5 w-3.5 text-white" />
+                        </div>
+                        <h4 className="font-bold text-gray-900 uppercase tracking-wide text-xs">Plan</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={applyHighlights(plan, highlights)} />
                 </div>
             </div>
         );
@@ -123,13 +174,16 @@ export const SoapNoteDialog = ({ appointment }: { appointment: UpcomingAppointme
                 <DialogClose asChild>
                     <Button variant="outline">Close</Button>
                 </DialogClose>
-                
+
                 {/* Conditionally render the correct button */}
                 {status === 'succeeded' && note && (
                     <>
                         {note.soap_note_id === null ? (
                             <DialogClose asChild>
-                                <Button onClick={handleAddSoapNote}>Add SOAP Note</Button>
+                                <Button onClick={handleAddSoapNote} className="bg-[#388fe5] hover:bg-[#6fb043] text-white">
+                                    <FileText className="h-4 w-4 mr-2" />
+                                    Add SOAP Note
+                                </Button>
                             </DialogClose>
                         ) : (
                             <Button onClick={handleGenerateHighlights} disabled={highlightStatus === 'loading'}>

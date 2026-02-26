@@ -1,0 +1,9 @@
+
+--- Appointments for User ID: 100 ---
+Count: 3
+Appt ID: 54, Status: Confirmed, Start: 2026-02-11 09:00:00
+Appt ID: 55, Status: Confirmed, Start: 2026-02-10 09:00:00
+Appt ID: 56, Status: Confirmed, Start: 2026-02-10 09:31:00
+
+--- Appointments for User ID: 101 ---
+Count: 0

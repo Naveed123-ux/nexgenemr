@@ -1,0 +1,5 @@
+--- Final Check for ID: 101 ---
+lab_requests (doctor_id): 0
+google_auth_tokens (doctor_user_id): 0
+doctor_profiles (user_id): 1
+appointments: 0

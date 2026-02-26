@@ -27,6 +27,11 @@ const navigation = [
     icon: NotepadTextDashed,
   },
   {
+    name: "Patient Billing",
+    href: "/staff/billing",
+    icon: Calendar, // Using Calendar as placeholder or use another icon if available
+  },
+  {
     name: "Chat",
     href: "/staff/chat",
     icon: MessageSquareText,

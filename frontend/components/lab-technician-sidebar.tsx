@@ -8,7 +8,8 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
-    ClipboardList
+    ClipboardList,
+    MessageSquare,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -24,6 +25,7 @@ const navigation = [
     { name: "Requests", href: "/lab-technician/requests", icon: ClipboardList },
     { name: "Reports", href: "/lab-technician/reports", icon: FileText },
     { name: "Upload", href: "/lab-technician/upload", icon: Upload },
+    { name: "Secure Messaging", href: "/lab-technician/chat", icon: MessageSquare },
 ];
 
 interface SidebarProps {

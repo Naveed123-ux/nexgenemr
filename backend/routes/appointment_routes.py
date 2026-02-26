@@ -163,7 +163,13 @@ def get_all_my_appointments(
     Get a complete list of all past, present, and future appointments for the
     currently logged-in doctor.
     """
-    return appointment_service.get_upcoming_appointments_for_doctor(db, current_user)
+    appointments = appointment_service.get_doctor_appointments_by_date_range(
+        doctor_id=current_user.id,
+        start_date=date(2000, 1, 1),
+        end_date=date(2100, 1, 1),
+        db=db
+    )
+    return [appointment_service.build_appointment_response(appt) for appt in appointments]
 
 
 @router.get("/me/available-slots", response_model=List[SlotResponse])

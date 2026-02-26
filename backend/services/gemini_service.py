@@ -1,5 +1,5 @@
 import os
-import google.generativeai as genai
+from google import genai
 from typing import Dict, Any
 import json
 
@@ -12,8 +12,8 @@ class GeminiService:
         if not api_key:
             raise ValueError("GEMINI_API_KEY environment variable not set")
         
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
+        self.client = genai.Client(api_key=api_key)
+        self.model_id = 'gemini-2.0-flash'
     
     def generate_handoff_note(self, patient_context: Dict[str, Any]) -> Dict[str, str]:
         """
@@ -31,7 +31,10 @@ class GeminiService:
         
         try:
             # Generate content using Gemini
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+             model=self.model_id,
+             contents=prompt
+            )
             
             # Parse the response into structured sections
             handoff_content = self._parse_handoff_response(response.text)
@@ -240,8 +243,10 @@ Be specific, factual, and clinically relevant. Prioritize patient safety.
         
         try:
             # Generate content using Gemini
-            response = self.model.generate_content(prompt)
-            
+            response = self.client.models.generate_content(
+             model=self.model_id,
+             contents=prompt
+            )            
             # Parse the response into structured sections
             summary_content = self._parse_patient_summary_response(response.text)
             

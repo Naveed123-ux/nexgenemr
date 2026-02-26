@@ -30,7 +30,8 @@ import {
     ChevronLeft,
     ChevronRight,
     MessageSquare,
-    ClipboardList
+    ClipboardList,
+    Beaker
 } from "lucide-react";
 
 
@@ -68,7 +69,10 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
+    DialogClose,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
     Select,
     SelectContent,
@@ -851,6 +855,79 @@ export default function LabReportsPage() {
                             </Button>
                         </DialogFooter>
                     )}
+                </DialogContent>
+            </Dialog>
+
+            {/* Request Lab Modal */}
+            <Dialog open={isRequestModalOpen} onOpenChange={setIsRequestModalOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <Beaker className="w-5 h-5 text-[#388fe5]" />
+                            New Lab Request
+                        </DialogTitle>
+                        <DialogDescription>
+                            Create a new investigation request for {selectedPatient?.patient_name}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-6 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="test-type">Test Category</Label>
+                            <Select value={reportType} onValueChange={setReportType}>
+                                <SelectTrigger id="test-type">
+                                    <SelectValue placeholder="Select test type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="BRAIN_TUMOR">Brain Tumor Detection (AI-Powered)</SelectItem>
+                                    <SelectItem value="OTHER">Other Clinical Test</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label>Priority Level</Label>
+                            <RadioGroup value={priority} onValueChange={setPriority} className="flex gap-4">
+                                <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="NORMAL" id="p1" />
+                                    <Label htmlFor="p1">Normal</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="URGENT" id="p2" className="text-red-600 border-red-600" />
+                                    <Label htmlFor="p2" className="text-red-700 font-medium">Urgent</Label>
+                                </div>
+                            </RadioGroup>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="notes">Clinical Notes / Instructions</Label>
+                            <Textarea
+                                id="notes"
+                                placeholder="Add specific instructions for the lab technician..."
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                                className="min-h-[100px]"
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter className="gap-2 sm:gap-0">
+                        <DialogClose asChild>
+                            <Button variant="outline">Cancel</Button>
+                        </DialogClose>
+                        <Button
+                            onClick={handleSubmitRequest}
+                            disabled={submitting}
+                            className="bg-[#388fe5] hover:bg-[#2d7ad1] text-white"
+                        >
+                            {submitting ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                    Creating...
+                                </>
+                            ) : (
+                                "Create Request"
+                            )}
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
 

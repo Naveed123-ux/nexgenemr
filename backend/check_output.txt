@@ -1,0 +1,17 @@
+--- ROLES IN DATABASE ---
+Role ID 1: Super_Admin
+Role ID 5: Hospital_Admin
+Role ID 6: Patient
+Role ID 7: Staff
+Role ID 9: Doctor
+Role ID 10: Receptionist
+Role ID 11: Lab_Technician
+------------------------------
+--- USER CHECKS ---
+USER: za441568@gmail.com | Role: Hospital_Admin (ID: 5) | ID: 6
+  Doctor Profile: MISSING
+  Staff Profile: MISSING
+USER: naveed23xyz@gmail.com | Role: Doctor (ID: 9) | ID: 100
+  Doctor Profile: Found
+  Staff Profile: MISSING
+------------------------------

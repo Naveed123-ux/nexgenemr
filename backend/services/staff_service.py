@@ -17,6 +17,7 @@ from models.department_model import Department # <-- ADD THIS IMPORT
 from services.user_service import get_password_hash
 from services.hospital_service import generate_temporary_password, get_my_hospital
 from utils.email_utils import send_welcome_email
+from utils.encryption import encrypt_field
 from utils.cloudinary_utils import upload_image
 
 class StaffDashboardStats(BaseModel):
@@ -91,7 +92,7 @@ def create_staff(
         if not staff_role:
             raise HTTPException(status_code=500, detail=f"The '{selected_role_name}' role has not been configured.")
 
-        if db.query(User).filter(User.email == staff_data.email).first():
+        if db.query(User).filter(User.email == encrypt_field(staff_data.email)).first():
             raise HTTPException(status_code=400, detail="A user with this email already exists.")
 
         profile_picture_url = upload_image(file=profile_picture)

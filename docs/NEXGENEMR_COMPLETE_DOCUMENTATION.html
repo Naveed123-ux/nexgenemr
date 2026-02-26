@@ -1,0 +1,3852 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NexGenEMR Complete Documentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            sequence: {
+                useMaxWidth: true,
+                wrap: true
+            }
+        });
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #333;
+            font-size: 14px;
+        }
+        h1 {
+            color: #1a365d;
+            border-bottom: 3px solid #3182ce;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h2 {
+            color: #2c5282;
+            border-bottom: 2px solid #63b3ed;
+            padding-bottom: 8px;
+            margin-top: 35px;
+        }
+        h3 {
+            color: #2b6cb0;
+            margin-top: 30px;
+        }
+        h4 {
+            color: #3182ce;
+            margin-top: 25px;
+        }
+        h5 {
+            color: #4299e1;
+        }
+        code {
+            background-color: #f7fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            border: 1px solid #e2e8f0;
+        }
+        pre {
+            background-color: #1a202c;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        pre code {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            color: #e2e8f0;
+        }
+        /* Mermaid diagram styling */
+        pre.mermaid {
+            background-color: #ffffff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        .mermaid {
+            background-color: #ffffff !important;
+        }
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3182ce;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+        tr:hover {
+            background-color: #edf2f7;
+        }
+        blockquote {
+            border-left: 4px solid #3182ce;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #ebf8ff;
+            color: #2c5282;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin: 6px 0;
+        }
+        strong {
+            color: #2d3748;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e2e8f0;
+            margin: 30px 0;
+        }
+        a {
+            color: #3182ce;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 20px;
+            }
+            pre.mermaid {
+                page-break-inside: avoid;
+            }
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1 id="nexgenemr-complete-project-documentation">NexGenEMR - Complete Project Documentation</h1>
+
+<blockquote>
+  <p><strong>A Comprehensive Electronic Medical Records (EMR) System</strong><br />
+  Built with FastAPI (Backend) + Next.js (Frontend)</p>
+</blockquote>
+
+<hr />
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+<li><a href="#system-overview">System Overview</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#user-roles--access-control">User Roles &amp; Access Control</a></li>
+<li><a href="#core-features--flows">Core Features &amp; Flows</a>
+<ul>
+<li><a href="#1-authentication--authorization">Authentication &amp; Authorization</a></li>
+<li><a href="#2-hospital-management">Hospital Management</a></li>
+<li><a href="#3-patient-management">Patient Management</a></li>
+<li><a href="#4-doctor-management">Doctor Management</a></li>
+<li><a href="#5-staff-management">Staff Management</a></li>
+<li><a href="#6-appointment-system">Appointment System</a></li>
+<li><a href="#7-session--slot-management">Session &amp; Slot Management</a></li>
+<li><a href="#8-waitlist-system">Waitlist System</a></li>
+<li><a href="#9-billing--revenue-cycle-management-rcm">Billing &amp; Revenue Cycle Management (RCM)</a></li>
+<li><a href="#10-lab-requests--ai-integration">Lab Requests &amp; AI Integration</a></li>
+<li><a href="#11-clinical-documentation">Clinical Documentation</a></li>
+<li><a href="#12-messaging-system">Messaging System</a></li>
+<li><a href="#13-analytics--dashboard">Analytics &amp; Dashboard</a></li>
+<li><a href="#14-signature-management">Signature Management</a></li>
+<li><a href="#15-patient-tracker-board">Patient Tracker Board</a></li>
+</ul></li>
+<li><a href="#database-models">Database Models</a></li>
+<li><a href="#api-structure">API Structure</a></li>
+<li><a href="#integration-points">Integration Points</a></li>
+<li><a href="#deployment">Deployment</a></li>
+</ol>
+
+<hr />
+
+<h2 id="system-overview">System Overview</h2>
+
+<p><strong>NexGenEMR</strong> is a modern, full-featured Electronic Medical Records system designed for multi-hospital environments. It provides comprehensive patient care management, appointment scheduling, billing, clinical documentation, and AI-powered features.</p>
+
+<h3 id="key-highlights">Key Highlights</h3>
+
+<ul>
+<li>🏥 <strong>Multi-Hospital Support</strong> - Single platform managing multiple hospitals</li>
+<li>👥 <strong>Role-Based Access Control</strong> - 7+ distinct user roles with granular permissions</li>
+<li>📅 <strong>Advanced Scheduling</strong> - Recurring sessions, slot management, waitlist integration</li>
+<li>💰 <strong>Revenue Cycle Management</strong> - Billing, claims, invoices, and Stripe integration</li>
+<li>🤖 <strong>AI-Powered Features</strong> - SOAP notes from audio, handoff notes, patient summaries</li>
+<li>🧪 <strong>Lab Integration</strong> - Lab requests with AI-driven image analysis (brain tumor detection)</li>
+<li>📱 <strong>Responsive Design</strong> - Mobile-optimized interfaces for all user types</li>
+<li>🔐 <strong>HIPAA-Ready Security</strong> - Encryption, audit logging, secure authentication</li>
+</ul>
+
+<hr />
+
+<h2 id="architecture">Architecture</h2>
+
+<pre class="mermaid">
+graph TB
+    subgraph Frontend["Frontend (Next.js)"]
+        UI[React Components]
+        Redux[Redux State Management]
+        API[API Layer]
+    end
+
+    subgraph Backend["Backend (FastAPI)"]
+        Routes[API Routes]
+        Services[Business Logic Services]
+        Models[SQLAlchemy Models]
+        Middleware[Audit Middleware]
+    end
+
+    subgraph External["External Services"]
+        Gemini[Google Gemini AI]
+        Cloudinary[Cloudinary CDN]
+        Stripe[Stripe Payments]
+        Email[Email Service]
+    end
+
+    subgraph Database["Database"]
+        SQLite[(SQLite/PostgreSQL)]
+    end
+
+    UI --> Redux
+    Redux --> API
+    API --> Routes
+    Routes --> Services
+    Services --> Models
+    Models --> SQLite
+    Services --> Gemini
+    Services --> Cloudinary
+    Services --> Stripe
+    Services --> Email
+    Middleware --> Routes
+</pre>
+
+<h3 id="technology-stack">Technology Stack</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Layer</th>
+  <th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Frontend</td>
+  <td>Next.js 14+, React, TypeScript, TailwindCSS, Redux Toolkit</td>
+</tr>
+<tr>
+  <td>Backend</td>
+  <td>FastAPI, Python 3.10+, SQLAlchemy, Pydantic</td>
+</tr>
+<tr>
+  <td>Database</td>
+  <td>SQLite (development), PostgreSQL (production)</td>
+</tr>
+<tr>
+  <td>AI</td>
+  <td>Google Gemini 2.5 Flash</td>
+</tr>
+<tr>
+  <td>File Storage</td>
+  <td>Cloudinary</td>
+</tr>
+<tr>
+  <td>Payments</td>
+  <td>Stripe</td>
+</tr>
+<tr>
+  <td>Real-time</td>
+  <td>Socket.IO</td>
+</tr>
+<tr>
+  <td>Deployment</td>
+  <td>Docker, Docker Compose, Nginx</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2 id="user-roles-access-control">User Roles &amp; Access Control</h2>
+
+<p>The system implements a comprehensive role-based access control (RBAC) system with the following roles:</p>
+
+<pre class="mermaid">
+graph LR
+    subgraph Roles["User Roles"]
+        SA[Super Admin]
+        HA[Hospital Admin]
+        DR[Doctor]
+        ST[Staff/Receptionist]
+        LT[Lab Technician]
+        RCM[RCM Staff]
+        PT[Patient]
+    end
+
+    SA --> HA
+    HA --> DR
+    HA --> ST
+    HA --> LT
+    HA --> RCM
+    DR --> PT
+    ST --> PT
+</pre>
+
+<h3 id="role-descriptions">Role Descriptions</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Role</th>
+  <th>Description</th>
+  <th>Key Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Super Admin</strong></td>
+  <td>Platform administrator</td>
+  <td>Create hospitals, manage subscriptions, view all analytics</td>
+</tr>
+<tr>
+  <td><strong>Hospital Admin</strong></td>
+  <td>Hospital-level administrator</td>
+  <td>Manage staff, doctors, departments, hospital settings</td>
+</tr>
+<tr>
+  <td><strong>Doctor</strong></td>
+  <td>Medical practitioner</td>
+  <td>View patients, manage appointments, create clinical notes</td>
+</tr>
+<tr>
+  <td><strong>Staff/Receptionist</strong></td>
+  <td>Front desk staff</td>
+  <td>Register patients, manage appointments, handle waitlist</td>
+</tr>
+<tr>
+  <td><strong>Lab Technician</strong></td>
+  <td>Laboratory staff</td>
+  <td>Process lab requests, upload results, run AI analysis</td>
+</tr>
+<tr>
+  <td><strong>RCM Staff</strong></td>
+  <td>Revenue cycle management</td>
+  <td>Handle billing, claims, invoices, payments</td>
+</tr>
+<tr>
+  <td><strong>Patient</strong></td>
+  <td>End user/patient</td>
+  <td>View appointments, billing, lab results, summaries</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2 id="core-features-flows">Core Features &amp; Flows</h2>
+
+<h3 id="1-authentication-authorization">1. Authentication &amp; Authorization</h3>
+
+<p>The system uses JWT-based authentication with role-specific access control.</p>
+
+<h4 id="11-login-flow">1.1 Login Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+
+    User->>Frontend: Enter email + password
+    Frontend->>Frontend: Validate input format
+    Frontend->>Backend: POST /auth/login
+    Backend->>Database: Query user by email
+
+    alt User Not Found
+        Backend-->>Frontend: 401 Unauthorized
+        Frontend-->>User: "Invalid credentials"
+    else User Found
+        Backend->>Backend: Verify password hash (bcrypt)
+        alt Password Invalid
+            Backend-->>Frontend: 401 Unauthorized
+            Frontend-->>User: "Invalid credentials"
+        else Password Valid
+            Backend->>Backend: Check if user is active
+            Backend->>Backend: Generate JWT token (24hr expiry)
+            Backend->>Database: Log login audit event
+            Backend-->>Frontend: { token, user_info, role }
+            Frontend->>Frontend: Store token in localStorage
+            Frontend->>Frontend: Determine redirect based on role
+            Frontend-->>User: Redirect to role-specific dashboard
+        end
+    end
+</pre>
+
+<h4 id="12-role-based-redirects">1.2 Role-Based Redirects</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Role</th>
+  <th>Dashboard Redirect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Super Admin</td>
+  <td><code>/super-admin/dashboard</code></td>
+</tr>
+<tr>
+  <td>Hospital Admin</td>
+  <td><code>/hospital-admin/dashboard</code></td>
+</tr>
+<tr>
+  <td>Doctor</td>
+  <td><code>/doctor/dashboard</code></td>
+</tr>
+<tr>
+  <td>Receptionist</td>
+  <td><code>/receptionist/dashboard</code></td>
+</tr>
+<tr>
+  <td>Lab Technician</td>
+  <td><code>/lab-technician/dashboard</code></td>
+</tr>
+<tr>
+  <td>RCM Staff</td>
+  <td><code>/rcm/dashboard</code></td>
+</tr>
+<tr>
+  <td>Patient</td>
+  <td><code>/patient/dashboard</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="13-user-registration-flow-staffdoctor-creation">1.3 User Registration Flow (Staff/Doctor Creation)</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Admin
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Email
+
+    Admin->>Frontend: Fill registration form
+    Note right of Frontend: Name, email, role, department
+    Frontend->>Backend: POST /users/register
+
+    Backend->>Database: Check if email exists
+    alt Email Exists
+        Backend-->>Frontend: 409 Conflict
+        Frontend-->>Admin: "Email already registered"
+    else New Email
+        Backend->>Backend: Generate temp password
+        Backend->>Backend: Hash password (bcrypt)
+        Backend->>Database: Create User record
+        Backend->>Database: Create role-specific profile
+        Note right of Database: DoctorProfile, StaffProfile, etc.
+        Backend->>Email: Send welcome email
+        Note right of Email: Contains temp password
+        Backend->>Database: Log audit event
+        Backend-->>Frontend: User created successfully
+        Frontend-->>Admin: Success notification
+    end
+</pre>
+
+<h4 id="14-password-change-flow">1.4 Password Change Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+
+    User->>Frontend: Enter current + new password
+    Frontend->>Frontend: Validate password strength
+    Frontend->>Backend: POST /users/change-password
+    Note right of Frontend: Authorization: Bearer {token}
+
+    Backend->>Backend: Verify JWT token
+    Backend->>Database: Get user by token ID
+    Backend->>Backend: Verify current password hash
+
+    alt Current Password Wrong
+        Backend-->>Frontend: 401 Unauthorized
+        Frontend-->>User: "Current password incorrect"
+    else Password Correct
+        Backend->>Backend: Hash new password
+        Backend->>Database: Update password_hash
+        Backend->>Database: Log password change audit
+        Backend-->>Frontend: Password updated
+        Frontend-->>User: Success message
+    end
+</pre>
+
+<h4 id="15-google-oauth-flow">1.5 Google OAuth Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Google
+    participant Database
+
+    User->>Frontend: Click "Sign in with Google"
+    Frontend->>Backend: GET /auth/google/login
+    Backend->>Backend: Generate state token
+    Backend-->>Frontend: Google OAuth URL
+    Frontend->>Google: Redirect to consent screen
+    User->>Google: Approve access
+    Google->>Backend: Callback with auth code
+    Backend->>Google: Exchange code for tokens
+    Google-->>Backend: Access token + user info
+
+    Backend->>Database: Find/create user by email
+    alt New User
+        Backend->>Database: Create user with Google info
+        Backend->>Database: Set google_id
+    end
+
+    Backend->>Backend: Generate JWT token
+    Backend-->>Frontend: Redirect with token
+    Frontend->>Frontend: Store token
+    Frontend-->>User: Redirect to dashboard
+</pre>
+
+<h4 id="key-features">Key Features:</h4>
+
+<ul>
+<li><strong>Email/Password Login</strong> - Traditional authentication</li>
+<li><strong>Google OAuth</strong> - Social login integration</li>
+<li><strong>JWT Tokens</strong> - Secure token-based sessions (24hr expiry)</li>
+<li><strong>Password Hashing</strong> - Bcrypt encryption</li>
+<li><strong>Role-based Redirects</strong> - Different dashboards per role</li>
+<li><strong>Audit Logging</strong> - Track login attempts</li>
+</ul>
+
+<h4 id="key-files">Key Files:</h4>
+
+<ul>
+<li>Backend: <code>routes/user_routes.py</code>, <code>services/user_service.py</code></li>
+<li>Frontend: <code>store/slices/authSlice.ts</code>, <code>app/auth/</code></li>
+</ul>
+
+<hr />
+
+<h3 id="2-hospital-management">2. Hospital Management</h3>
+
+<p>Super admins can create and manage multiple hospitals, each operating as an independent entity.</p>
+
+<h4 id="21-hospital-creation-flow">2.1 Hospital Creation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant SuperAdmin
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Email
+
+    SuperAdmin->>Frontend: Fill hospital form
+    Note right of Frontend: Name, code, email, phone, address
+    Frontend->>Backend: POST /hospitals/
+
+    Backend->>Database: Check hospital code unique
+    alt Code Exists
+        Backend-->>Frontend: 409 Conflict
+        Frontend-->>SuperAdmin: "Hospital code already exists"
+    else Code Available
+        Backend->>Database: Create Hospital record
+        Backend->>Backend: Generate admin email
+        Backend->>Backend: Generate temp password
+        Backend->>Database: Create Hospital Admin user
+        Backend->>Database: Link admin to hospital
+        Backend->>Email: Send welcome email to admin
+        Note right of Email: Contains login credentials
+        Backend-->>Frontend: Hospital + Admin created
+        Frontend-->>SuperAdmin: Success with admin details
+    end
+</pre>
+
+<h4 id="22-hospital-branding-flow">2.2 Hospital Branding Flow</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Hospital Admin Actions
+        LOGIN[Hospital Admin Login] --> DASH[Dashboard]
+        DASH --> SETTINGS[Hospital Settings]
+    end
+
+    subgraph Branding Options
+        SETTINGS --> LOGO[Upload Logo]
+        SETTINGS --> FAVICON[Upload Favicon]
+        SETTINGS --> COLORS[Set Brand Colors]
+        SETTINGS --> TEXT[Header Text & Tagline]
+    end
+
+    subgraph Processing
+        LOGO --> CLOUD[Upload to Cloudinary]
+        FAVICON --> CLOUD
+        CLOUD --> URL[Get CDN URL]
+        URL --> DB[(Save to Database)]
+        COLORS --> DB
+        TEXT --> DB
+    end
+
+    DB --> APPLY[Apply to Hospital UI]
+</pre>
+
+<h4 id="23-logofavicon-upload-flow">2.3 Logo/Favicon Upload Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Admin
+    participant Frontend
+    participant Backend
+    participant Cloudinary
+    participant Database
+
+    Admin->>Frontend: Select image file
+    Frontend->>Frontend: Validate file type (PNG, JPG, SVG)
+    Frontend->>Frontend: Validate file size (< 5MB)
+    Frontend->>Backend: POST /hospitals/me/logo
+    Note right of Frontend: multipart/form-data
+
+    Backend->>Backend: Validate user is Hospital Admin
+    Backend->>Cloudinary: Upload image
+    Cloudinary-->>Backend: CDN URL
+    Backend->>Database: Update hospital.logo_url
+    Backend-->>Frontend: Updated hospital data
+    Frontend-->>Admin: Preview new logo
+</pre>
+
+<h4 id="24-hospital-activation-toggle">2.4 Hospital Activation Toggle</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant SuperAdmin
+    participant Frontend
+    participant Backend
+    participant Database
+
+    SuperAdmin->>Frontend: Toggle hospital status
+    Frontend->>Backend: PATCH /hospitals/{id}/toggle-status
+
+    Backend->>Database: Get hospital
+    Backend->>Database: Set is_active = !is_active
+
+    alt Deactivated
+        Note right of Backend: All hospital users blocked
+        Backend-->>Frontend: Hospital deactivated
+    else Activated
+        Note right of Backend: Hospital users can login
+        Backend-->>Frontend: Hospital activated
+    end
+</pre>
+
+<h4 id="hospital-features">Hospital Features:</h4>
+
+<ul>
+<li><strong>Hospital Creation</strong> - Name, code, email, phone, address, timezone</li>
+<li><strong>Admin Auto-Creation</strong> - Automatic hospital admin account with temp password</li>
+<li><strong>Branding</strong> - Custom logo, favicon, header text, tagline, colors</li>
+<li><strong>Activation Toggle</strong> - Enable/disable hospitals</li>
+<li><strong>Multi-tenant Isolation</strong> - Complete data separation between hospitals</li>
+</ul>
+
+<h4 id="key-endpoints">Key Endpoints:</h4>
+
+<pre><code>POST   /hospitals/                    # Create hospital (Super Admin)
+GET    /hospitals/all                 # List all hospitals
+GET    /hospitals/me                  # Get current user's hospital
+PATCH  /hospitals/me                  # Update hospital settings
+POST   /hospitals/me/logo             # Upload hospital logo
+POST   /hospitals/me/favicon          # Upload hospital favicon
+PATCH  /hospitals/{id}/toggle-status  # Activate/deactivate hospital
+</code></pre>
+
+<hr />
+
+<h3 id="3-patient-management">3. Patient Management</h3>
+
+<p>Comprehensive patient lifecycle management from registration to discharge.</p>
+
+<h4 id="31-patient-registration-flow">3.1 Patient Registration Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Staff
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Email
+
+    Staff->>Frontend: Open patient registration
+    Staff->>Frontend: Fill patient details
+    Note right of Frontend: Name, DOB, email, phone,<br/>address, insurance info
+
+    Frontend->>Backend: POST /patients/
+    Backend->>Database: Check if email exists
+
+    alt Patient Exists
+        Backend-->>Frontend: 409 Conflict
+        Frontend-->>Staff: "Patient already registered"
+    else New Patient
+        Backend->>Backend: Generate temp password
+        Backend->>Database: Create User (role=Patient)
+        Backend->>Database: Create PatientProfile
+        Backend->>Database: Link to hospital
+        Backend->>Email: Send welcome email
+        Note right of Email: Login credentials
+        Backend-->>Frontend: Patient created
+        Frontend-->>Staff: Show patient details
+    end
+</pre>
+
+<h4 id="32-complete-patient-lifecycle">3.2 Complete Patient Lifecycle</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Registration
+        REG[Staff/Doctor Registration] --> PROF[Patient Profile Created]
+        PROF --> CREDS[Login Credentials Generated]
+        PROF --> ASSIGN[Assign Primary Doctor]
+    end
+
+    subgraph Pre-Visit
+        ASSIGN --> APPT[Schedule Appointment]
+        APPT --> REMIND[Email Reminders Sent]
+    end
+
+    subgraph Visit Day
+        REMIND --> CHECKIN[Patient Checks In]
+        CHECKIN --> VITALS[Vitals Recorded]
+        VITALS --> EXAM[Doctor Examination]
+    end
+
+    subgraph Clinical
+        EXAM --> SOAP[SOAP Notes]
+        EXAM --> LAB[Lab Requests]
+        EXAM --> RX[Prescriptions]
+        EXAM --> BILL[Bill Generated]
+    end
+
+    subgraph Post-Visit
+        SOAP --> SUMMARY[Patient Summary]
+        SUMMARY --> DISCHARGE[Discharge Summary]
+        DISCHARGE --> PDF[Export PDF/Word]
+    end
+</pre>
+
+<h4 id="33-vitals-recording-flow">3.3 Vitals Recording Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Staff
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Staff->>Frontend: Select patient
+    Frontend->>Backend: GET /patients/{id}
+    Backend-->>Frontend: Patient data
+
+    Staff->>Frontend: Enter vitals
+    Note right of Frontend: BP, Heart Rate, Temp,<br/>O2 Sat, Weight, Height
+
+    Frontend->>Backend: POST /patients/{id}/vitals
+    Backend->>Database: Create Vitals record
+    Backend->>Database: Link to appointment (if active)
+    Backend-->>Frontend: Vitals saved
+    Frontend-->>Staff: Display vitals history chart
+</pre>
+
+<h4 id="34-patient-search-filter-flow">3.4 Patient Search &amp; Filter Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+
+    User->>Frontend: Enter search query
+    Note right of Frontend: Name, email, phone, MRN
+    Frontend->>Backend: GET /patients/search?q={query}
+
+    Backend->>Database: Search across fields
+    Note right of Database: ILIKE pattern matching
+    Backend->>Backend: Filter by user's hospital
+    Backend-->>Frontend: Matching patients (paginated)
+    Frontend-->>User: Display results table
+
+    User->>Frontend: Apply filters
+    Note right of Frontend: Client type, doctor, status
+    Frontend->>Backend: GET /patients/?filters...
+    Backend-->>Frontend: Filtered results
+</pre>
+
+<h4 id="35-insurance-assignment-flow">3.5 Insurance Assignment Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Staff
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Staff->>Frontend: Set billing type = Insurance
+    Frontend->>Frontend: Show insurance fields
+
+    Staff->>Frontend: Enter insurance details
+    Note right of Frontend: Insurer, Member ID, Group ID,<br/>Subscriber info, Relationship
+
+    Frontend->>Backend: PATCH /patients/{id}
+    Backend->>Database: Update patient profile
+    Note right of Database: billing_type, insurer_name,<br/>member_id, subscriber_*
+    Backend-->>Frontend: Updated patient
+    Frontend-->>Staff: Insurance saved
+</pre>
+
+<h4 id="patient-features">Patient Features:</h4>
+
+<ul>
+<li><strong>Registration</strong> - Full demographic capture, insurance info, chief complaint</li>
+<li><strong>Billing Type</strong> - Self-pay or insurance with subscriber details</li>
+<li><strong>Client Type</strong> - ER, Walk-in, Scheduled, Inpatient</li>
+<li><strong>Triage Level</strong> - Priority classification</li>
+<li><strong>Medical History</strong> - Allergies, medications, past history</li>
+<li><strong>Vitals Tracking</strong> - BP, heart rate, temperature, O2 saturation</li>
+<li><strong>Doctor Assignment</strong> - Primary care physician assignment</li>
+</ul>
+
+<h4 id="key-endpoints-2">Key Endpoints:</h4>
+
+<pre><code>POST   /patients/                    # Register patient
+GET    /patients/                    # List patients (paginated)
+GET    /patients/{id}                # Get patient details
+PATCH  /patients/{id}                # Update patient profile
+GET    /patients/search              # Search patients
+POST   /patients/{id}/vitals         # Record vitals
+GET    /patients/{id}/vitals         # Get vitals history
+POST   /patients/{id}/assign-doctor  # Assign primary doctor
+</code></pre>
+
+<hr />
+
+<h3 id="4-doctor-management">4. Doctor Management</h3>
+
+<p>Complete doctor lifecycle from onboarding to profile management.</p>
+
+<h4 id="41-doctor-creation-flow">4.1 Doctor Creation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Admin
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Email
+
+    Admin->>Frontend: Fill doctor registration form
+    Note right of Frontend: Name, email, specialization,<br/>department, NPI, license
+
+    Frontend->>Backend: POST /doctors/
+    Backend->>Database: Check email unique
+
+    alt Email Exists
+        Backend-->>Frontend: 409 Conflict
+        Frontend-->>Admin: "Email already in use"
+    else New Doctor
+        Backend->>Backend: Generate temp password
+        Backend->>Database: Create User (role=Doctor)
+        Backend->>Database: Create DoctorProfile
+        Backend->>Database: Assign to department
+        Backend->>Email: Send welcome email
+        Note right of Email: Credentials + login link
+        Backend-->>Frontend: Doctor created
+        Frontend-->>Admin: Success notification
+    end
+</pre>
+
+<h4 id="42-doctor-profile-update-flow">4.2 Doctor Profile Update Flow</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Doctor Actions
+        LOGIN[Doctor Login] --> DASH[Dashboard]
+        DASH --> PROFILE[My Profile]
+    end
+
+    subgraph Profile Sections
+        PROFILE --> PERSONAL[Personal Info]
+        PROFILE --> PROF[Professional Details]
+        PROFILE --> AVAIL[Availability Settings]
+        PROFILE --> TELE[Telehealth Setup]
+    end
+
+    subgraph Personal Info
+        PERSONAL --> NAME[Update Name]
+        PERSONAL --> BIO[Biography]
+        PERSONAL --> LANG[Languages]
+        PERSONAL --> PIC[Profile Picture]
+    end
+
+    subgraph Professional
+        PROF --> LICENSE[License Number]
+        PROF --> NPI[NPI Number]
+        PROF --> DEA[DEA Number]
+        PROF --> SPEC[Specialization]
+    end
+
+    subgraph Telehealth
+        TELE --> GOOGLE[Connect Google Account]
+        GOOGLE --> OAUTH[OAuth Flow]
+        OAUTH --> TOKEN[Store Refresh Token]
+        TOKEN --> ENABLED[Telehealth Enabled]
+    end
+</pre>
+
+<h4 id="43-doctor-telehealth-setup-flow">4.3 Doctor Telehealth Setup Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Google
+    participant Database
+
+    Doctor->>Frontend: Click "Enable Telehealth"
+    Frontend->>Backend: GET /auth/google/initiate
+    Backend->>Backend: Generate state with doctor_id
+    Backend-->>Frontend: Google OAuth URL
+
+    Frontend->>Google: Redirect to consent
+    Doctor->>Google: Grant calendar access
+    Google->>Backend: Callback with code
+    Backend->>Google: Exchange code for tokens
+    Google-->>Backend: Access + Refresh tokens
+
+    Backend->>Database: Store GoogleAuthToken
+    Note right of Database: Links to doctor user
+    Backend-->>Frontend: Redirect success
+    Frontend-->>Doctor: "Telehealth enabled!"
+</pre>
+
+<h4 id="44-doctor-schedule-setup-flow">4.4 Doctor Schedule Setup Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Doctor->>Frontend: Open Schedule Management
+    Frontend->>Backend: GET /sessions/recurrence-patterns
+    Backend-->>Frontend: Existing patterns
+
+    Doctor->>Frontend: Create new pattern
+    Note right of Frontend: Name, days, time range
+    Frontend->>Backend: POST /sessions/recurrence-patterns
+
+    Backend->>Backend: Validate time format
+    Backend->>Backend: Generate recurrence_group_id
+    Backend->>Backend: Generate sessions from pattern
+    Backend->>Database: Save pattern + sessions
+    Backend-->>Frontend: Pattern created
+    Frontend-->>Doctor: "Schedule created!"
+</pre>
+
+<h4 id="doctor-profile-includes">Doctor Profile Includes:</h4>
+
+<ul>
+<li><strong>Personal Info</strong> - Name, email, profile picture</li>
+<li><strong>Professional</strong> - Medical license, NPI number, DEA number</li>
+<li><strong>Qualifications</strong> - Specialization, years of experience</li>
+<li><strong>Department</strong> - Linked to hospital department</li>
+<li><strong>Telehealth</strong> - Available for virtual visits (requires Google OAuth)</li>
+<li><strong>Biography</strong> - Doctor's professional summary</li>
+<li><strong>Languages</strong> - Languages spoken (JSON array)</li>
+</ul>
+
+<h4 id="key-endpoints-3">Key Endpoints:</h4>
+
+<pre><code>POST   /doctors/                     # Create doctor
+GET    /doctors/                     # List hospital doctors
+GET    /doctors/{id}                 # Get doctor details
+PATCH  /doctors/{id}                 # Update doctor profile
+GET    /doctors/me                   # Get current doctor profile
+POST   /doctors/me/profile-picture   # Upload profile picture
+GET    /auth/google/initiate         # Start telehealth OAuth
+</code></pre>
+
+<hr />
+
+<h3 id="5-staff-management">5. Staff Management</h3>
+
+<p>Hospital staff management for non-clinical roles.</p>
+
+<h4 id="51-staff-creation-flow">5.1 Staff Creation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Admin
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Email
+
+    Admin->>Frontend: Open staff creation form
+    Admin->>Frontend: Select role
+    Note right of Frontend: Receptionist, Lab Tech,<br/>RCM Staff, Front Desk
+
+    Admin->>Frontend: Fill staff details
+    Frontend->>Backend: POST /staff/
+
+    Backend->>Database: Check email unique
+    alt Email Exists
+        Backend-->>Frontend: 409 Conflict
+    else New Staff
+        Backend->>Backend: Generate temp password
+        Backend->>Database: Create User
+        Backend->>Database: Create StaffProfile
+        Backend->>Database: Assign role + department
+        Backend->>Email: Send credentials
+        Backend-->>Frontend: Staff created
+    end
+</pre>
+
+<h4 id="52-lab-technician-workflow">5.2 Lab Technician Workflow</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Lab Tech Dashboard
+        LOGIN[Lab Tech Login] --> DASH[Dashboard]
+        DASH --> PENDING[Pending Requests]
+        DASH --> ACCEPTED[My Accepted Requests]
+    end
+
+    subgraph Request Processing
+        PENDING --> ACCEPT[Accept Request]
+        ACCEPT --> UPLOAD[Upload Image/Report]
+        UPLOAD --> |Brain Tumor| AI[AI Analysis]
+        UPLOAD --> |Blood Work| MANUAL[Manual Entry]
+        AI --> RESULT[Save AI Result]
+        MANUAL --> RESULT
+        RESULT --> REVIEW[Submit for Review]
+    end
+
+    subgraph Doctor Review
+        REVIEW --> DR[Doctor Reviews]
+        DR --> APPROVE[Approve]
+        DR --> REJECT[Request Reprocess]
+    end
+</pre>
+
+<h4 id="53-rcm-staff-workflow">5.3 RCM Staff Workflow</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph RCM Dashboard
+        LOGIN[RCM Login] --> DASH[Dashboard]
+        DASH --> BILLS[Bills Management]
+        DASH --> CLAIMS[Claims Management]
+        DASH --> INVOICES[Invoices]
+    end
+
+    subgraph Bills
+        BILLS --> PENDING_B[Pending Bills]
+        BILLS --> PAID_B[Paid Bills]
+        BILLS --> OVERDUE[Overdue Bills]
+        PENDING_B --> REMIND[Send Reminders]
+    end
+
+    subgraph Claims
+        CLAIMS --> GEN[Generate Claim]
+        GEN --> ELIG[Check Eligibility]
+        ELIG --> SUBMIT[Submit to Payer]
+        SUBMIT --> TRACK[Track Status]
+    end
+</pre>
+
+<h4 id="staff-roles">Staff Roles:</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Role</th>
+  <th>Description</th>
+  <th>Key Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Receptionist</strong></td>
+  <td>Front desk</td>
+  <td>Patient registration, appointments, waitlist</td>
+</tr>
+<tr>
+  <td><strong>Lab Technician</strong></td>
+  <td>Laboratory</td>
+  <td>Lab requests, AI analysis, upload results</td>
+</tr>
+<tr>
+  <td><strong>RCM Staff</strong></td>
+  <td>Revenue cycle</td>
+  <td>Billing, claims, invoices, payments</td>
+</tr>
+<tr>
+  <td><strong>Front Desk</strong></td>
+  <td>Admin support</td>
+  <td>Patient check-in, scheduling</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="key-endpoints-4">Key Endpoints:</h4>
+
+<pre><code>POST   /staff/                       # Create staff member
+GET    /staff/                       # List hospital staff
+GET    /staff/{id}                   # Get staff details
+PATCH  /staff/{id}                   # Update staff profile
+DELETE /staff/{id}                   # Deactivate staff
+</code></pre>
+
+<hr />
+
+<h3 id="6-appointment-system">6. Appointment System</h3>
+
+<p>Sophisticated appointment scheduling with multiple booking methods and integrated telehealth via Google Meet.</p>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Booking Methods
+        DIRECT[Direct Booking]
+        WAITLIST[From Waitlist]
+        PATIENT[Patient Self-Book]
+    end
+
+    DIRECT --> SLOT[Select Available Slot]
+    WAITLIST --> TRIAGE[Triage Interface]
+    PATIENT --> TOKEN[Booking Token Link]
+
+    SLOT --> APPT[Create Appointment]
+    TRIAGE --> APPT
+    TOKEN --> APPT
+
+    APPT --> |Status| SCHEDULED[Scheduled]
+    SCHEDULED --> |Visit| CHECKIN[Checked In]
+    CHECKIN --> COMPLETED[Completed]
+    SCHEDULED --> CANCELLED[Cancelled]
+    SCHEDULED --> NOSHOW[No Show]
+</pre>
+
+<h4 id="appointment-features">Appointment Features:</h4>
+
+<h5 id="booking-flow">Booking Flow:</h5>
+
+<ol>
+<li><strong>Select Doctor</strong> - Choose from available doctors</li>
+<li><strong>Select Date</strong> - Pick appointment date</li>
+<li><strong>View Sessions</strong> - See doctor's available sessions</li>
+<li><strong>Select Slot</strong> - Choose specific time slot</li>
+<li><strong>Provide Details</strong> - Reason for visit, telehealth preference</li>
+<li><strong>Add ICD Codes</strong> - Optional diagnosis codes</li>
+<li><strong>Confirmation</strong> - Email sent to patient</li>
+</ol>
+
+<h5 id="appointment-statuses">Appointment Statuses:</h5>
+
+<table>
+<thead>
+<tr>
+  <th>Status</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>scheduled</code></td>
+  <td>Initial booking</td>
+</tr>
+<tr>
+  <td><code>checked_in</code></td>
+  <td>Patient arrived</td>
+</tr>
+<tr>
+  <td><code>in_progress</code></td>
+  <td>Currently being seen</td>
+</tr>
+<tr>
+  <td><code>completed</code></td>
+  <td>Visit finished</td>
+</tr>
+<tr>
+  <td><code>cancelled</code></td>
+  <td>Appointment cancelled</td>
+</tr>
+<tr>
+  <td><code>no_show</code></td>
+  <td>Patient didn't appear</td>
+</tr>
+</tbody>
+</table>
+
+<h5 id="advanced-features">Advanced Features:</h5>
+
+<ul>
+<li><strong>Telehealth</strong> - Google Meet integration for virtual visits</li>
+<li><strong>Rescheduling</strong> - Move to different slot</li>
+<li><strong>Swapping</strong> - Exchange slots between patients</li>
+<li><strong>Doctor Reassignment</strong> - Transfer to different doctor</li>
+<li><strong>ICD Codes</strong> - Multiple diagnosis codes per appointment</li>
+<li><strong>Email Notifications</strong> - Confirmation, cancellation, reminder emails</li>
+</ul>
+
+<hr />
+
+<h4 id="61-google-meet-integration-telehealth">6.1 Google Meet Integration (Telehealth)</h4>
+
+<p>The system provides seamless telehealth functionality through Google Calendar and Google Meet integration.</p>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant GoogleOAuth
+    participant GoogleCalendar
+
+    Note over Doctor,GoogleOAuth: One-time Setup (Doctor connects Google Account)
+    Doctor->>Frontend: Click "Enable Telehealth"
+    Frontend->>Backend: GET /auth/google/initiate
+    Backend->>GoogleOAuth: Generate authorization URL
+    GoogleOAuth-->>Backend: Auth URL with state
+    Backend-->>Frontend: Redirect URL
+    Frontend->>GoogleOAuth: Redirect to Google consent
+    Doctor->>GoogleOAuth: Approve calendar access
+    GoogleOAuth->>Backend: Callback with auth code
+    Backend->>GoogleOAuth: Exchange code for tokens
+    GoogleOAuth-->>Backend: Access + Refresh tokens
+    Backend->>Backend: Store refresh_token in GoogleAuthToken table
+    Backend-->>Doctor: Telehealth enabled!
+
+    Note over Doctor,GoogleCalendar: Appointment Booking with Meet Link
+    Doctor->>Frontend: Book telehealth appointment
+    Frontend->>Backend: POST /appointments (is_telehealth=true)
+    Backend->>Backend: Check doctor has google_auth_token
+    Backend->>GoogleCalendar: Create calendar event
+    Note right of Backend: Uses stored refresh_token
+    GoogleCalendar->>GoogleCalendar: Create event + Generate Meet link
+    GoogleCalendar-->>Backend: Event with hangoutLink
+    Backend->>Backend: Store meet_link in Appointment
+    Backend-->>Frontend: Appointment with Google Meet link
+    Frontend->>Frontend: Send confirmation email with Meet link
+</pre>
+
+<h5 id="how-google-meet-links-are-generated">How Google Meet Links are Generated:</h5>
+
+<ol>
+<li><p><strong>Doctor OAuth Setup</strong> (One-time):</p>
+
+<pre><code># Doctor must first connect their Google account
+# This stores their refresh_token for later use
+
+# Required Google OAuth Scopes:
+SCOPES = ['https://www.googleapis.com/auth/calendar.events']
+</code></pre></li>
+<li><p><strong>During Appointment Booking</strong>:</p>
+
+<pre><code># When is_telehealth=True, the system:
+
+# 1. Validates doctor has connected Google account
+if not doctor.google_auth_token or not doctor.google_auth_token.refresh_token:
+    raise HTTPException(
+        status_code=400, 
+        detail="This doctor has not enabled telehealth by connecting their Google account."
+    )
+
+# 2. Creates Google Calendar event with Meet conference
+meet_link = create_calendar_event(
+    refresh_token=doctor.google_auth_token.refresh_token,
+    summary=f"Appointment with {patient_name}",
+    start_time=slot.start_time,
+    end_time=slot.end_time,
+    attendees=[patient.email, doctor.email]
+)
+
+# 3. Stores the Meet link in the appointment
+new_appointment = Appointment(
+    google_meet_link=meet_link,
+    is_telehealth=True,
+    ...
+)
+</code></pre></li>
+<li><p><strong>Google Calendar Event Creation</strong>:</p>
+
+<pre><code># Creates event with automatic Meet link generation
+event = {
+    'summary': summary,
+    'start': {'dateTime': start_time.isoformat() + 'Z', 'timeZone': 'UTC'},
+    'end': {'dateTime': end_time.isoformat() + 'Z', 'timeZone': 'UTC'},
+    'attendees': [{'email': email} for email in attendees],
+    'conferenceData': {
+        'createRequest': {
+            'requestId': f"{start_time.isoformat()}-{summary}",
+            'conferenceSolutionKey': {'type': 'hangoutsMeet'}  # This generates the Meet link!
+        }
+    },
+    'reminders': {'useDefault': True},
+}
+
+# Insert event with conferenceDataVersion=1 to enable Meet
+created_event = service.events().insert(
+    calendarId='primary', 
+    body=event, 
+    conferenceDataVersion=1
+).execute()
+
+# Return the Meet link
+return created_event.get('hangoutLink')  # e.g., "https://meet.google.com/abc-defg-hij"
+</code></pre></li>
+</ol>
+
+<h5 id="meet-link-lifecycle">Meet Link Lifecycle:</h5>
+
+<table>
+<thead>
+<tr>
+  <th>Event</th>
+  <th>Meet Link Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Appointment Created</strong></td>
+  <td>New Meet link generated</td>
+</tr>
+<tr>
+  <td><strong>Appointment Rescheduled</strong></td>
+  <td>New Meet link generated for new time</td>
+</tr>
+<tr>
+  <td><strong>Appointment Swapped</strong></td>
+  <td>New Meet links generated for both appointments</td>
+</tr>
+<tr>
+  <td><strong>Telehealth Disabled</strong></td>
+  <td>Meet link set to <code>null</code></td>
+</tr>
+<tr>
+  <td><strong>Appointment Cancelled</strong></td>
+  <td>Meet link removed (appointment deleted)</td>
+</tr>
+</tbody>
+</table>
+
+<h5 id="email-integration">Email Integration:</h5>
+
+<p>The Meet link is automatically included in:
+- Appointment confirmation emails (to patient and doctor)
+- Reminder emails
+- Swap notification emails</p>
+
+<pre><code>&lt;!-- Email template includes Join button --&gt;
+&lt;a href="{meet_link}" class="button" target="_blank"&gt;Join Google Meet&lt;/a&gt;
+</code></pre>
+
+<h5 id="required-environment-variables">Required Environment Variables:</h5>
+
+<pre><code>GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+</code></pre>
+
+<h4 id="key-endpoints-5">Key Endpoints:</h4>
+
+<pre><code>POST   /appointments/                 # Create appointment
+GET    /appointments/                 # List appointments (paginated)
+GET    /appointments/weekly           # Doctor's weekly view
+GET    /appointments/{id}             # Get specific appointment
+PATCH  /appointments/{id}/cancel      # Cancel appointment
+PATCH  /appointments/{id}/reschedule  # Reschedule appointment
+POST   /appointments/swap             # Swap two appointments
+PATCH  /appointments/{id}/reassign-doctor  # Reassign to different doctor
+
+# Google OAuth endpoints
+GET    /auth/google/initiate          # Start OAuth flow
+GET    /auth/google/callback          # OAuth callback
+</code></pre>
+
+<hr />
+
+<h3 id="7-session-slot-management">7. Session &amp; Slot Management</h3>
+
+<p>Hierarchical scheduling system enabling complex availability patterns with support for daily, weekly, and monthly recurrence.</p>
+
+<pre class="mermaid">
+graph TB
+    subgraph "Session System"
+        TEMPLATE[Availability Template]
+        PATTERN[Recurrence Pattern]
+        SESSION[Appointment Session]
+        SLOT[Appointment Slot]
+        APPT[Appointment]
+    end
+
+    TEMPLATE -->|defines| PATTERN
+    PATTERN -->|generates| SESSION
+    SESSION -->|contains| SLOT
+    SLOT -->|booked by| APPT
+
+    subgraph "Session Types"
+        ONSITE[On-Site]
+        OFFSITE[Off-Site/Telehealth]
+    end
+
+    subgraph "Slot Types"
+        STANDARD[Standard]
+        FOLLOWUP[Follow Up]
+        EMERGENCY[Emergency]
+        TELE_SLOT[Telehealth]
+    end
+</pre>
+
+<h4 id="71-hierarchy-overview">7.1 Hierarchy Overview</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Level1["Level 1: Recurrence Pattern"]
+        PATTERN1["Pattern: Morning Clinic<br/>Weekly on Mon, Wed, Fri<br/>09:00 - 12:00"]
+        PATTERN2["Pattern: Afternoon Sessions<br/>Monthly on 1st & 15th<br/>14:00 - 17:00"]
+    end
+
+    subgraph Level2["Level 2: Sessions Generated"]
+        SES1[Session: Mon Jan 29]
+        SES2[Session: Wed Jan 31]
+        SES3[Session: Fri Feb 2]
+    end
+
+    subgraph Level3["Level 3: Slots Within Sessions"]
+        SLOT1[09:00-09:30]
+        SLOT2[09:30-10:00]
+        SLOT3[10:00-10:30]
+        SLOT4[10:30-11:00]
+    end
+
+    PATTERN1 --> SES1
+    PATTERN1 --> SES2
+    PATTERN1 --> SES3
+    SES1 --> SLOT1
+    SES1 --> SLOT2
+    SES1 --> SLOT3
+    SES1 --> SLOT4
+</pre>
+
+<h5 id="1-recurrence-pattern-template">1. Recurrence Pattern (Template)</h5>
+
+<ul>
+<li>Defines the recurring schedule rule</li>
+<li>Stored as <code>SessionRecurrencePattern</code> in database</li>
+<li>Has unique <code>recurrence_group_id</code> for tracking</li>
+<li>Generates sessions automatically</li>
+</ul>
+
+<h5 id="2-appointment-session">2. Appointment Session</h5>
+
+<ul>
+<li>Actual time block on a specific date</li>
+<li>Created from recurrence patterns</li>
+<li>Status: Available, Booked, Cancelled</li>
+<li>Contains multiple slots</li>
+</ul>
+
+<h5 id="3-appointment-slot">3. Appointment Slot</h5>
+
+<ul>
+<li>Individual bookable time unit</li>
+<li>Customizable duration (15, 30, 45, 60 minutes)</li>
+<li>Can be independently blocked</li>
+<li>Links to appointment when booked</li>
+</ul>
+
+<hr />
+
+<h4 id="72-recurrence-pattern-types">7.2 Recurrence Pattern Types</h4>
+
+<p>The system supports three types of recurrence patterns:</p>
+
+<h5 id="daily-recurrence">Daily Recurrence</h5>
+
+<p>Sessions repeat every day within a date range.</p>
+
+<pre><code>{
+    "name": "Daily Morning Clinic",
+    "session_type": "on_site",
+    "start_time_of_day": "09:00",
+    "end_time_of_day": "12:00",
+    "recurrence_config": {
+        "duration": "daily",
+        "start_date": "2025-02-01",
+        "end_date": "2025-02-28",        # OR
+        "repeat_count": 30,                # Number of occurrences
+        "selected_option": "on_day"
+    }
+}
+</code></pre>
+
+<h5 id="weekly-recurrence">Weekly Recurrence</h5>
+
+<p>Sessions repeat on specific days of the week.</p>
+
+<pre><code>{
+    "name": "Weekly Consultations",
+    "session_type": "on_site",
+    "start_time_of_day": "09:00",
+    "end_time_of_day": "13:00",
+    "recurrence_config": {
+        "duration": "weekly",
+        "start_date": "2025-02-01",
+        "end_date": "2025-12-31",
+        "selected_option": "on_day",
+        "selected_days": ["Mon", "Wed", "Fri"]  # Days of week
+    }
+}
+</code></pre>
+
+<p><strong>Day Mapping:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Short</th>
+  <th>Full</th>
+  <th>Weekday</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Mon</td>
+  <td>Monday</td>
+  <td>0</td>
+</tr>
+<tr>
+  <td>Tue</td>
+  <td>Tuesday</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td>Wed</td>
+  <td>Wednesday</td>
+  <td>2</td>
+</tr>
+<tr>
+  <td>Thu</td>
+  <td>Thursday</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>Fri</td>
+  <td>Friday</td>
+  <td>4</td>
+</tr>
+<tr>
+  <td>Sat</td>
+  <td>Saturday</td>
+  <td>5</td>
+</tr>
+<tr>
+  <td>Sun</td>
+  <td>Sunday</td>
+  <td>6</td>
+</tr>
+</tbody>
+</table>
+
+<h5 id="monthly-recurrence-on-specific-dates">Monthly Recurrence - On Specific Dates</h5>
+
+<p>Sessions repeat on specific dates of each month (e.g., 1st, 15th, 28th).</p>
+
+<pre><code>{
+    "name": "Monthly Check-ups",
+    "session_type": "on_site",
+    "start_time_of_day": "14:00",
+    "end_time_of_day": "17:00",
+    "recurrence_config": {
+        "duration": "monthly",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "selected_option": "on_date",       # Key difference!
+        "month_days": [1, 15]               # 1st and 15th of each month
+    }
+}
+</code></pre>
+
+<h5 id="monthly-recurrence-on-specific-day">Monthly Recurrence - On Specific Day</h5>
+
+<p>Sessions repeat on a specific week and day of each month (e.g., "First Monday", "Last Friday").</p>
+
+<pre><code>{
+    "name": "First Monday Clinic",
+    "session_type": "on_site",
+    "start_time_of_day": "10:00",
+    "end_time_of_day": "14:00",
+    "recurrence_config": {
+        "duration": "monthly",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "selected_option": "on_day",        # Key difference!
+        "week": "first",                    # first, second, third, fourth, last
+        "week_day": "Monday"                # Day of week
+    }
+}
+</code></pre>
+
+<p><strong>Week Mapping:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Value</th>
+  <th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>first</td>
+  <td>1st occurrence</td>
+</tr>
+<tr>
+  <td>second</td>
+  <td>2nd occurrence</td>
+</tr>
+<tr>
+  <td>third</td>
+  <td>3rd occurrence</td>
+</tr>
+<tr>
+  <td>fourth</td>
+  <td>4th occurrence</td>
+</tr>
+<tr>
+  <td>last</td>
+  <td>Last occurrence</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h4 id="73-session-generation-logic">7.3 Session Generation Logic</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Admin
+    participant API
+    participant RecurrenceService
+    participant Database
+
+    Admin->>API: POST /sessions/recurrence-patterns
+    API->>RecurrenceService: create_recurrence_pattern()
+    RecurrenceService->>RecurrenceService: Generate unique recurrence_group_id
+    RecurrenceService->>RecurrenceService: Parse recurrence_config
+
+    alt Daily Pattern
+        RecurrenceService->>RecurrenceService: _generate_daily_slots()
+        Note right of RecurrenceService: Loop from start_date to end_date<br/>Create session for each day
+    else Weekly Pattern
+        RecurrenceService->>RecurrenceService: _generate_weekly_slots()
+        Note right of RecurrenceService: Loop through date range<br/>Check if day is in selected_days<br/>Create session if match
+    else Monthly on_date
+        RecurrenceService->>RecurrenceService: _generate_monthly_on_date()
+        Note right of RecurrenceService: For each month in range<br/>Create sessions on specified dates
+    else Monthly on_day
+        RecurrenceService->>RecurrenceService: _generate_monthly_on_day()
+        Note right of RecurrenceService: Find Nth weekday in month<br/>Create session on that date
+    end
+
+    RecurrenceService->>Database: Save Pattern + All Sessions
+    Database-->>API: Pattern with session count
+    API-->>Admin: Success response
+</pre>
+
+<h5 id="code-logic-for-weekly-generation">Code Logic for Weekly Generation:</h5>
+
+<pre><code>def _generate_weekly_slots(pattern, start_date, end_date, start_time, end_time, config):
+    slots = []
+    selected_days = config.get('selected_days', [])  # e.g., ["Mon", "Wed", "Fri"]
+
+    # Convert day names to weekday numbers
+    target_weekdays = [DAY_MAPPING[day] for day in selected_days]  # [0, 2, 4]
+
+    current_date = start_date
+
+    while current_date &lt;= end_date:
+        # Check if current day is in selected days
+        if current_date.weekday() in target_weekdays:
+            slot_start = datetime.combine(current_date, start_time)
+            slot_end = datetime.combine(current_date, end_time)
+
+            slot = AppointmentSession(
+                doctor_user_id=pattern.doctor_user_id,
+                name=pattern.name,
+                session_type=pattern.session_type,
+                start_time=slot_start,
+                end_time=slot_end,
+                status=SessionStatus.AVAILABLE,
+                is_recurring=True,
+                recurrence_group_id=pattern.recurrence_group_id
+            )
+            slots.append(slot)
+
+        current_date += timedelta(days=1)
+
+    return slots
+</code></pre>
+
+<h5 id="code-logic-for-monthly-on_day-eg-first-monday">Code Logic for Monthly "on_day" (e.g., "First Monday"):</h5>
+
+<pre><code>def _find_weekday_in_month(year, month, weekday, week_index):
+    """
+    Find the Nth occurrence of a weekday in a month.
+    week_index: 0=first, 1=second, 2=third, 3=fourth, -1=last
+    """
+    # Find all occurrences of the target weekday in the month
+    occurrences = []
+    for day in range(1, days_in_month + 1):
+        date = datetime(year, month, day).date()
+        if date.weekday() == weekday:
+            occurrences.append(date)
+
+    # Return the requested occurrence
+    if week_index == -1:
+        return occurrences[-1]  # Last occurrence
+    elif 0 &lt;= week_index &lt; len(occurrences):
+        return occurrences[week_index]
+
+    return None
+</code></pre>
+
+<hr />
+
+<h4 id="74-slot-management-features">7.4 Slot Management Features</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Feature</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Auto-Generation</strong></td>
+  <td>Slots created from session template based on default duration</td>
+</tr>
+<tr>
+  <td><strong>Manual Creation</strong></td>
+  <td>Add custom slots within a session</td>
+</tr>
+<tr>
+  <td><strong>Blocking</strong></td>
+  <td>Temporarily block slots (lunch breaks, personal time)</td>
+</tr>
+<tr>
+  <td><strong>Unblocking</strong></td>
+  <td>Re-enable blocked slots</td>
+</tr>
+<tr>
+  <td><strong>Duration</strong></td>
+  <td>Configurable: 15, 30, 45, 60 minutes</td>
+</tr>
+<tr>
+  <td><strong>Overlap Prevention</strong></td>
+  <td>System prevents overlapping slot times</td>
+</tr>
+<tr>
+  <td><strong>Waitlist Integration</strong></td>
+  <td>Slots show badge with matching waitlist count</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="75-key-endpoints">7.5 Key Endpoints</h4>
+
+<pre><code># Recurrence Patterns
+POST   /sessions/recurrence-patterns                    # Create pattern + generate sessions
+GET    /sessions/recurrence-patterns                    # List doctor's patterns
+DELETE /sessions/recurrence-patterns/{group_id}        # Delete pattern + sessions
+
+# Sessions
+GET    /sessions/doctor/{doctor_id}                     # Get doctor's sessions
+GET    /sessions/{session_id}                           # Get specific session
+DELETE /sessions/{session_id}                           # Delete single session
+
+# Slots
+GET    /slots/doctor/{doctor_id}                        # Get doctor's available slots
+GET    /slots/{slot_id}                                 # Get slot details
+POST   /slots                                           # Create custom slot
+PATCH  /slots/{slot_id}/block                           # Block slot
+PATCH  /slots/{slot_id}/unblock                         # Unblock slot
+</code></pre>
+
+<hr />
+
+<h3 id="8-waitlist-system">8. Waitlist System</h3>
+
+<p>Comprehensive waitlist management for handling appointment demand with intelligent matching and automated notifications.</p>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Patient Added to Waitlist
+        STAFF[Staff adds patient] --> ENTRY[Waitlist Entry Created]
+        MODAL[From booking modal] --> ENTRY
+    end
+
+    ENTRY --> |Status| PENDING[Pending]
+
+    subgraph Slot Becomes Available
+        CANCEL[Appointment Cancelled] --> MATCH[Match Waitlist Entries]
+        MATCH --> BADGE[Show Badge on Calendar]
+    end
+
+    BADGE --> TRIAGE[Open Triage Interface]
+    TRIAGE --> |Option 1| INVITE[Send Invitation Email]
+    TRIAGE --> |Option 2| CALLBOOK[Call & Book Manually]
+
+    INVITE --> |Email with token| PATIENT[Patient Receives Link]
+    PATIENT --> CLAIM[Patient Claims Slot]
+
+    CALLBOOK --> BOOKED[Appointment Created]
+    CLAIM --> BOOKED
+
+    PENDING --> INVITED[Invited]
+    INVITED --> BOOKED[Booked]
+    PENDING --> EXPIRED[Expired]
+    PENDING --> CANCELLED[Cancelled]
+</pre>
+
+<hr />
+
+<h4 id="81-waitlist-entry-model">8.1 Waitlist Entry Model</h4>
+
+<p>Each waitlist entry contains:</p>
+
+<pre><code>class WaitlistEntry:
+    id: int
+    patient_profile_id: int          # Patient being waitlisted
+    doctor_user_id: int              # Doctor they want to see
+    priority: WaitlistPriority       # NORMAL or HIGH
+    preferred_days: List[str]        # ["Mon", "Wed", "Fri"] or ["Anytime"]
+    notes: Optional[str]             # Staff notes
+    status: WaitlistStatus           # pending, invited, booked, expired, cancelled
+    expiry_date: date                # Auto-expire date (default: +30 days)
+    created_by_user_id: int          # Staff who created entry
+    updated_by_user_id: Optional[int]
+    created_at: datetime
+    updated_at: datetime
+</code></pre>
+
+<h5 id="priority-levels">Priority Levels:</h5>
+
+<table>
+<thead>
+<tr>
+  <th>Priority</th>
+  <th>Description</th>
+  <th>Display</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>NORMAL</code></td>
+  <td>Standard priority</td>
+  <td>Regular badge</td>
+</tr>
+<tr>
+  <td><code>HIGH</code></td>
+  <td>Urgent need</td>
+  <td>Red/highlighted badge</td>
+</tr>
+</tbody>
+</table>
+
+<h5 id="preferred-days-options">Preferred Days Options:</h5>
+
+<pre><code># Specific days
+preferred_days = ["Mon", "Wed", "Fri"]
+
+# Any day
+preferred_days = ["Anytime"]
+
+# Weekdays only
+preferred_days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+</code></pre>
+
+<hr />
+
+<h4 id="82-waitlist-statuses-transitions">8.2 Waitlist Statuses &amp; Transitions</h4>
+
+<pre class="mermaid">
+stateDiagram-v2
+    [*] --> PENDING : Entry created
+
+    PENDING --> INVITED : Staff sends invitation
+    PENDING --> BOOKED : Staff books directly
+    PENDING --> CANCELLED : Staff removes
+    PENDING --> EXPIRED : Expiry date passed
+
+    INVITED --> BOOKED : Patient claims slot
+    INVITED --> CANCELLED : Staff removes
+    INVITED --> EXPIRED : Expiry date passed
+
+    BOOKED --> [*]
+    CANCELLED --> [*]
+    EXPIRED --> CANCELLED : Staff cancels expired entry
+</pre>
+
+<h5 id="status-descriptions">Status Descriptions:</h5>
+
+<table>
+<thead>
+<tr>
+  <th>Status</th>
+  <th>Description</th>
+  <th>Terminal?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>pending</code></td>
+  <td>Waiting for slot match</td>
+  <td>No</td>
+</tr>
+<tr>
+  <td><code>invited</code></td>
+  <td>Invitation email sent</td>
+  <td>No</td>
+</tr>
+<tr>
+  <td><code>booked</code></td>
+  <td>Appointment confirmed</td>
+  <td>Yes</td>
+</tr>
+<tr>
+  <td><code>expired</code></td>
+  <td>Entry expired (past expiry_date)</td>
+  <td>Yes*</td>
+</tr>
+<tr>
+  <td><code>cancelled</code></td>
+  <td>Manually removed</td>
+  <td>Yes</td>
+</tr>
+</tbody>
+</table>
+
+<p>*Expired entries can be transitioned to cancelled.</p>
+
+<h5 id="valid-status-transitions">Valid Status Transitions:</h5>
+
+<pre><code>valid_transitions = {
+    WaitlistStatus.PENDING: [INVITED, BOOKED, CANCELLED, EXPIRED],
+    WaitlistStatus.INVITED: [BOOKED, CANCELLED, EXPIRED],
+    WaitlistStatus.BOOKED: [],           # Terminal state
+    WaitlistStatus.CANCELLED: [],         # Terminal state
+    WaitlistStatus.EXPIRED: [CANCELLED]   # Can cancel an expired entry
+}
+</code></pre>
+
+<hr />
+
+<h4 id="83-matching-algorithm">8.3 Matching Algorithm</h4>
+
+<p>The system automatically matches waitlist entries to available slots based on these criteria:</p>
+
+<pre class="mermaid">
+flowchart TD
+    SLOT[Available Slot] --> CHECK1{Same Doctor?}
+    CHECK1 --> |No| NOMATCH[No Match]
+    CHECK1 --> |Yes| CHECK2{Status = PENDING?}
+    CHECK2 --> |No| NOMATCH
+    CHECK2 --> |Yes| CHECK3{Not Expired?}
+    CHECK3 --> |No| NOMATCH
+    CHECK3 --> |Yes| CHECK4{Day Matches?}
+    CHECK4 --> |No| NOMATCH
+    CHECK4 --> |Yes| MATCH[Match Found!]
+
+    MATCH --> SORT[Sort by Priority DESC, Created ASC]
+    SORT --> RESULTS[Return Ordered Matches]
+</pre>
+
+<h5 id="matching-criteria">Matching Criteria:</h5>
+
+<ol>
+<li><strong>Same Doctor</strong> - Entry's <code>doctor_user_id</code> matches slot's session doctor</li>
+<li><strong>Pending Status</strong> - Entry status is <code>PENDING</code></li>
+<li><strong>Not Expired</strong> - Entry's <code>expiry_date &gt;= today</code></li>
+<li><strong>Day Preference Match</strong> - One of:
+<ul>
+<li>Entry's <code>preferred_days</code> contains slot's day-of-week (e.g., "Mon")</li>
+<li>Entry's <code>preferred_days</code> contains <code>"Anytime"</code></li>
+</ul></li>
+</ol>
+
+<h5 id="matching-code">Matching Code:</h5>
+
+<pre><code>def find_matches_for_slot(slot: AppointmentSlot, db: Session) -&gt; List[WaitlistEntry]:
+    # Extract day-of-week from slot start_time
+    slot_day = slot.start_time.strftime("%a")  # "Mon", "Tue", etc.
+
+    # Get the doctor_user_id from the slot's session
+    doctor_user_id = slot.session.doctor_user_id
+
+    today = date.today()
+
+    # Query entries matching criteria
+    query = db.query(WaitlistEntry).filter(
+        and_(
+            WaitlistEntry.doctor_user_id == doctor_user_id,
+            WaitlistEntry.status == WaitlistStatus.PENDING,
+            WaitlistEntry.expiry_date &gt;= today,
+            or_(
+                # Check if preferred_days JSON contains the slot's day
+                cast(WaitlistEntry.preferred_days, Text).contains(f'"{slot_day}"'),
+                # Or if it contains "Anytime"
+                cast(WaitlistEntry.preferred_days, Text).contains('"Anytime"')
+            )
+        )
+    )
+
+    # Order by priority DESC (HIGH first), then created_at ASC (oldest first - FIFO)
+    query = query.order_by(
+        WaitlistEntry.priority.desc(),
+        WaitlistEntry.created_at.asc()
+    )
+
+    return query.all()
+</code></pre>
+
+<h5 id="prioritization">Prioritization:</h5>
+
+<p>Matches are sorted by:
+1. <strong>Priority</strong> (descending) - HIGH priority entries first
+2. <strong>Created At</strong> (ascending) - Oldest entries first (FIFO within same priority)</p>
+
+<hr />
+
+<h4 id="84-workflow-staff-adding-patient-to-waitlist">8.4 Workflow: Staff Adding Patient to Waitlist</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Staff
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Staff->>Frontend: Click "Add to Waitlist"
+    Frontend->>Frontend: Open waitlist modal
+    Staff->>Frontend: Select patient, doctor, priority
+    Staff->>Frontend: Select preferred days
+    Staff->>Frontend: Add notes (optional)
+    Frontend->>Backend: POST /waitlist/entries
+
+    Backend->>Backend: Validate patient exists
+    Backend->>Backend: Validate doctor exists
+    Backend->>Backend: Check for duplicate entry
+
+    alt Duplicate Found
+        Backend-->>Frontend: 409 Conflict
+        Frontend-->>Staff: "Patient already on waitlist for this doctor"
+    else New Entry
+        Backend->>Database: Create WaitlistEntry (status=PENDING)
+        Backend->>Backend: Log audit event
+        Database-->>Backend: Entry created
+        Backend-->>Frontend: Entry with relationships
+        Frontend-->>Staff: Success notification
+    end
+</pre>
+
+<h5 id="create-entry-request">Create Entry Request:</h5>
+
+<pre><code>{
+    "patient_profile_id": 123,
+    "doctor_user_id": 456,
+    "priority": "HIGH",           # or "NORMAL"
+    "preferred_days": ["Mon", "Wed", "Fri"],
+    "notes": "Needs urgent follow-up",
+    "expiry_date": "2025-02-28"   # Optional, defaults to +30 days
+}
+</code></pre>
+
+<hr />
+
+<h4 id="85-workflow-staff-triage-interface">8.5 Workflow: Staff Triage Interface</h4>
+
+<p>When a slot becomes available (e.g., appointment cancelled), staff can manage waitlist matches:</p>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Staff
+    participant Calendar
+    participant TriageUI
+    participant Backend
+    participant Email
+    participant Patient
+
+    Note over Calendar: Slot shows badge with match count
+    Staff->>Calendar: Click slot with waitlist badge
+    Calendar->>TriageUI: Open triage interface
+    TriageUI->>Backend: GET /waitlist/matches/{slot_id}
+    Backend-->>TriageUI: List of matching entries
+
+    Note over TriageUI: Staff sees prioritized list of patients
+
+    alt Option 1: Send Invitation
+        Staff->>TriageUI: Click "Send Invite"
+        TriageUI->>Backend: POST /waitlist/entries/{id}/invite
+        Backend->>Backend: Generate booking token (24hr expiry)
+        Backend->>Email: Send invitation email
+        Backend->>Backend: Update status to INVITED
+        Email-->>Patient: Email with booking link
+        Backend-->>TriageUI: Success
+    else Option 2: Book Manually
+        Staff->>TriageUI: Click "Book Now"
+        TriageUI->>Backend: POST /appointments (with waitlist_entry_id)
+        Backend->>Backend: Create appointment
+        Backend->>Backend: Update entry status to BOOKED
+        Backend-->>TriageUI: Appointment created
+    end
+</pre>
+
+<h5 id="triage-response-data">Triage Response Data:</h5>
+
+<pre><code>{
+    "slot_id": 789,
+    "slot_start_time": "2025-02-15T09:00:00",
+    "slot_end_time": "2025-02-15T09:30:00",
+    "doctor_name": "Dr. John Smith",
+    "doctor_user_id": 456,
+    "match_count": 3,
+    "matches": [
+        {
+            "entry_id": 101,
+            "patient_name": "Jane Doe",
+            "patient_phone": null,
+            "priority": "HIGH",
+            "notes": "Urgent follow-up needed",
+            "created_at": "2025-02-01T10:30:00",
+            "days_waiting": 14,
+            "preferred_days": ["Mon", "Wed", "Fri"]
+        },
+        {
+            "entry_id": 102,
+            "patient_name": "Bob Wilson",
+            "priority": "NORMAL",
+            "days_waiting": 7,
+            "preferred_days": ["Anytime"]
+        }
+    ]
+}
+</code></pre>
+
+<hr />
+
+<h4 id="86-workflow-patient-self-service-booking">8.6 Workflow: Patient Self-Service Booking</h4>
+
+<p>When a patient receives an invitation email:</p>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Patient
+    participant Email
+    participant BookingPage
+    participant Backend
+
+    Email-->>Patient: "You have a slot available!"
+    Note over Email: Contains booking link with token
+
+    Patient->>BookingPage: Click booking link
+    BookingPage->>Backend: GET /waitlist/booking/{token}
+
+    alt Token Valid
+        Backend-->>BookingPage: Slot + Patient details
+        BookingPage-->>Patient: Show slot details
+        Patient->>BookingPage: Click "Confirm Booking"
+        BookingPage->>Backend: POST /waitlist/booking/{token}/confirm
+        Backend->>Backend: Create appointment
+        Backend->>Backend: Update entry status to BOOKED
+        Backend-->>BookingPage: Success
+        BookingPage-->>Patient: Confirmation screen
+    else Token Expired
+        Backend-->>BookingPage: 410 Gone
+        BookingPage-->>Patient: "This link has expired"
+    else Token Invalid
+        Backend-->>BookingPage: 404 Not Found
+        BookingPage-->>Patient: "Invalid booking link"
+    end
+</pre>
+
+<h5 id="booking-token">Booking Token:</h5>
+
+<ul>
+<li>Generated when staff sends invitation</li>
+<li>Valid for 24 hours</li>
+<li>Single-use (consumed on booking)</li>
+<li>Contains: <code>waitlist_entry_id</code>, <code>slot_id</code>, <code>expiry_timestamp</code></li>
+</ul>
+
+<hr />
+
+<h4 id="87-automatic-expiry">8.7 Automatic Expiry</h4>
+
+<p>A background job runs to expire old waitlist entries:</p>
+
+<pre><code>def expire_old_entries(db: Session) -&gt; int:
+    """
+    Queries entries where expiry_date &lt; today AND status = PENDING,
+    then updates their status to EXPIRED.
+    """
+    today = date.today()
+
+    expired_entries = db.query(WaitlistEntry).filter(
+        and_(
+            WaitlistEntry.expiry_date &lt; today,
+            WaitlistEntry.status == WaitlistStatus.PENDING
+        )
+    ).all()
+
+    for entry in expired_entries:
+        entry.status = WaitlistStatus.EXPIRED
+        entry.updated_at = datetime.utcnow()
+
+        # Log audit event (system action)
+        log_waitlist_audit_event(
+            action="expire_entry",
+            user_id=None,  # System action
+            entry_id=entry.id,
+            ...
+        )
+
+    db.commit()
+    return len(expired_entries)
+</code></pre>
+
+<hr />
+
+<h4 id="88-calendar-badge-display">8.8 Calendar Badge Display</h4>
+
+<p>Available slots show waitlist match information:</p>
+
+<pre><code>def get_slot_waitlist_info(slot: AppointmentSlot, db: Session) -&gt; Dict:
+    """Returns waitlist information for calendar display."""
+
+    slot_day = slot.start_time.strftime("%a")
+    doctor_user_id = slot.session.doctor_user_id
+    today = date.today()
+
+    # Count total matches
+    total_count = db.query(func.count(WaitlistEntry.id)).filter(
+        # ... matching criteria ...
+    ).scalar() or 0
+
+    # Count high priority matches
+    high_priority_count = db.query(func.count(WaitlistEntry.id)).filter(
+        # ... matching criteria + priority = HIGH ...
+    ).scalar() or 0
+
+    return {
+        "waitlist_match_count": total_count,
+        "has_high_priority_matches": high_priority_count &gt; 0
+    }
+</code></pre>
+
+<h5 id="badge-appearance">Badge Appearance:</h5>
+
+<table>
+<thead>
+<tr>
+  <th>Condition</th>
+  <th>Badge Display</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>No matches</td>
+  <td>No badge</td>
+</tr>
+<tr>
+  <td>Normal matches only</td>
+  <td>Blue badge with count</td>
+</tr>
+<tr>
+  <td>Has HIGH priority</td>
+  <td>Red/highlighted badge</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h4 id="89-key-endpoints">8.9 Key Endpoints</h4>
+
+<pre><code># Waitlist Entries CRUD
+POST   /waitlist/entries                    # Create entry
+GET    /waitlist/entries                    # List entries (filter by doctor/status)
+GET    /waitlist/entries/{id}               # Get specific entry
+PATCH  /waitlist/entries/{id}               # Update entry (priority, days, notes)
+DELETE /waitlist/entries/{id}               # Cancel entry
+
+# Waitlist Operations
+POST   /waitlist/entries/{id}/invite        # Send invitation email
+POST   /waitlist/entries/{id}/book          # Book directly for patient
+
+# Slot Matching
+GET    /waitlist/matches/{slot_id}          # Get matches for a slot
+GET    /waitlist/slots/{doctor_id}/summary  # Doctor's waitlist summary
+
+# Patient Self-Service
+GET    /waitlist/booking/{token}            # Validate booking token
+POST   /waitlist/booking/{token}/confirm    # Confirm booking
+
+# Admin
+POST   /waitlist/expire-old                 # Trigger expiry job
+</code></pre>
+
+<hr />
+
+<h4 id="810-audit-trail">8.10 Audit Trail</h4>
+
+<p>All waitlist actions are logged for compliance:</p>
+
+<pre><code>log_waitlist_audit_event(
+    action="create_entry",      # or update_entry, delete_entry, update_status, expire_entry
+    user_id=current_user.id,    # Who performed the action
+    entry_id=entry.id,
+    patient_profile_id=patient_id,
+    doctor_user_id=doctor_id,
+    old_values={...},           # Previous state
+    new_values={...},           # New state
+    additional_data={...}       # Extra context
+)
+</code></pre>
+
+<hr />
+
+<h3 id="9-billing-revenue-cycle-management-rcm">9. Billing &amp; Revenue Cycle Management (RCM)</h3>
+
+<p>Complete billing workflow from service to payment.</p>
+
+<h4 id="91-complete-billing-lifecycle">9.1 Complete Billing Lifecycle</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Service Delivery
+        APPT[Completed Appointment] --> ICD[Doctor Adds ICD Codes]
+    end
+
+    subgraph Bill Generation
+        ICD --> GENBILL[Generate Bill]
+        GENBILL --> BILL[Bill Created]
+        BILL --> ITEMS[Line Items Added]
+        ITEMS --> STATUS[Status: Pending]
+    end
+
+    subgraph Self-Pay Flow
+        STATUS --> |billing_type=self_pay| STRIPE[Create Payment Intent]
+        STRIPE --> PAY[Patient Pays via Stripe]
+        PAY --> PAID[Bill Marked Paid]
+    end
+
+    subgraph Insurance Flow
+        STATUS --> |billing_type=insurance| CLAIM[Generate Claim]
+        CLAIM --> ELIG[Check Eligibility]
+        ELIG --> SUBMIT[Submit to Payer]
+        SUBMIT --> |Approved| ACCEPT[Claim Accepted]
+        SUBMIT --> |Denied| DECLINE[Claim Declined]
+        ACCEPT --> PAID
+        DECLINE --> APPEAL[Appeal/Resubmit]
+    end
+</pre>
+
+<h4 id="92-bill-generation-flow">9.2 Bill Generation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Note over Doctor: After appointment, add ICD codes
+    Doctor->>Frontend: Add ICD codes to appointment
+    Frontend->>Backend: PATCH /appointments/{id}/icd-codes
+    Backend->>Database: Link ICD codes to appointment
+
+    Doctor->>Frontend: Click "Generate Bill"
+    Frontend->>Backend: POST /bills/
+    Note right of Frontend: { appointment_id, discount? }
+
+    Backend->>Database: Get appointment + ICD codes
+    Backend->>Backend: Calculate line items from ICD codes
+    Backend->>Backend: Generate unique bill_number
+    Backend->>Database: Create Bill record
+    Backend->>Database: Create BillLineItem records
+    Backend-->>Frontend: Bill with line items
+    Frontend-->>Doctor: Show bill summary
+</pre>
+
+<h4 id="93-self-pay-payment-flow">9.3 Self-Pay Payment Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Patient
+    participant Frontend
+    participant Backend
+    participant Stripe
+    participant Database
+
+    Patient->>Frontend: View bills
+    Frontend->>Backend: GET /bills/patient/{patient_id}
+    Backend-->>Frontend: List of bills
+
+    Patient->>Frontend: Click "Pay Bill"
+    Frontend->>Backend: POST /payments/create-intent/{bill_id}
+    Backend->>Stripe: Create PaymentIntent
+    Stripe-->>Backend: client_secret
+    Backend-->>Frontend: client_secret
+
+    Frontend->>Frontend: Show Stripe payment form
+    Patient->>Frontend: Enter card details
+    Frontend->>Stripe: Confirm payment
+    Stripe-->>Frontend: Payment success
+
+    Frontend->>Backend: POST /payments/confirm/{bill_id}
+    Backend->>Stripe: Verify payment status
+    Backend->>Database: Update bill status = paid
+    Backend->>Database: Create Payment record
+    Backend-->>Frontend: Success
+    Frontend-->>Patient: "Payment successful!"
+</pre>
+
+<h4 id="94-insurance-claim-flow">9.4 Insurance Claim Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant RCM
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Payer
+
+    RCM->>Frontend: Select bill for claim
+    Frontend->>Backend: POST /claims/
+    Note right of Frontend: { bill_id }
+
+    Backend->>Database: Get bill + patient insurance
+    Backend->>Backend: Generate claim_number
+    Backend->>Database: Create Claim record
+    Backend-->>Frontend: Claim created
+
+    RCM->>Frontend: Click "Check Eligibility"
+    Frontend->>Backend: POST /claims/{id}/check-eligibility
+    Backend->>Payer: Verify coverage (mock)
+    Payer-->>Backend: Eligibility result
+    Backend->>Database: Update claim eligibility
+    Backend-->>Frontend: Eligibility status
+
+    RCM->>Frontend: Click "Submit Claim"
+    Frontend->>Backend: POST /claims/{id}/submit
+    Backend->>Payer: Submit claim (mock)
+    Backend->>Database: Update status = submitted
+    Backend-->>Frontend: Claim submitted
+
+    Note over Payer: Insurance processes claim...
+
+    alt Claim Approved
+        RCM->>Frontend: Mark as accepted
+        Frontend->>Backend: POST /claims/{id}/accept
+        Backend->>Database: Update status = accepted
+        Backend->>Database: Update bill status = paid
+    else Claim Denied
+        RCM->>Frontend: Mark as declined
+        Frontend->>Backend: POST /claims/{id}/decline
+        Backend->>Database: Update status = declined
+        Note right of RCM: May appeal or convert to self-pay
+    end
+</pre>
+
+<h4 id="95-invoice-generation-flow">9.5 Invoice Generation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Staff
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Email
+
+    Staff->>Frontend: Click "Generate Invoice"
+    Frontend->>Backend: POST /invoices/
+    Note right of Frontend: { bill_id }
+
+    Backend->>Database: Get bill + hospital branding
+    Backend->>Backend: Generate invoice_number
+    Backend->>Backend: Create PDF with:
+    Note right of Backend: Hospital logo, stamp,<br/>line items, totals,<br/>payment terms
+    Backend->>Database: Create Invoice record
+    Backend-->>Frontend: Invoice created
+
+    Staff->>Frontend: Click "Send to Patient"
+    Frontend->>Backend: POST /invoices/{id}/send
+    Backend->>Email: Send invoice email
+    Note right of Email: PDF attachment
+    Backend->>Database: Update status = sent
+    Backend-->>Frontend: Invoice sent
+</pre>
+
+<h4 id="96-bill-reminder-flow">9.6 Bill Reminder Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant System
+    participant Backend
+    participant Database
+    participant Email
+
+    Note over System: Daily scheduled job
+    System->>Backend: Trigger reminder job
+
+    Backend->>Database: Query overdue bills
+    Note right of Database: due_date < today<br/>status = pending
+
+    loop For each overdue bill
+        Backend->>Database: Get patient email
+        Backend->>Email: Send reminder
+        Note right of Email: Bill amount, due date,<br/>payment link
+        Backend->>Database: Log reminder sent
+    end
+
+    Backend->>Backend: Update bills past due date
+    Backend->>Database: Set status = overdue
+</pre>
+
+<h4 id="billing-features">Billing Features:</h4>
+
+<h5 id="bill-generation">Bill Generation:</h5>
+
+<ul>
+<li><strong>Auto-Generation</strong> - From completed appointments with ICD codes</li>
+<li><strong>Bill Number</strong> - Unique identifier (e.g., BILL-20250129-A1B2)</li>
+<li><strong>Line Items</strong> - Based on ICD codes (mock pricing)</li>
+<li><strong>Discounts</strong> - Configurable discount percentage</li>
+<li><strong>Due Date</strong> - Auto-calculated or manual</li>
+</ul>
+
+<h5 id="bill-statuses">Bill Statuses:</h5>
+
+<table>
+<thead>
+<tr>
+  <th>Status</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>pending</code></td>
+  <td>Awaiting payment</td>
+</tr>
+<tr>
+  <td><code>paid</code></td>
+  <td>Full payment received</td>
+</tr>
+<tr>
+  <td><code>partially_paid</code></td>
+  <td>Partial payment made</td>
+</tr>
+<tr>
+  <td><code>overdue</code></td>
+  <td>Past due date</td>
+</tr>
+<tr>
+  <td><code>cancelled</code></td>
+  <td>Bill cancelled</td>
+</tr>
+</tbody>
+</table>
+
+<h5 id="payment-processing">Payment Processing:</h5>
+
+<ul>
+<li><strong>Stripe Integration</strong> - Secure payment processing</li>
+<li><strong>Payment Intent</strong> - Create payment intent for frontend</li>
+<li><strong>Payment Confirmation</strong> - Verify and update bill status</li>
+<li><strong>Billing Reminders</strong> - Email reminders for outstanding bills</li>
+</ul>
+
+<h5 id="claims-management">Claims Management:</h5>
+
+<ul>
+<li><strong>Claim Generation</strong> - Create insurance claims from bills</li>
+<li><strong>Eligibility Check</strong> - Verify patient coverage (mock)</li>
+<li><strong>Payer Submission</strong> - Submit to insurance (mock)</li>
+<li><strong>Accept/Decline</strong> - Process payer responses</li>
+</ul>
+
+<h4 id="key-endpoints-6">Key Endpoints:</h4>
+
+<pre><code># Bills
+POST   /bills/                        # Create bill from appointment
+GET    /bills/                        # List bills (filtered)
+GET    /bills/{id}                    # Get bill details
+GET    /bills/patient/{patient_id}    # Patient's bills
+
+# Payments
+POST   /payments/create-intent/{id}   # Create Stripe intent
+POST   /payments/confirm/{id}         # Confirm payment
+
+# Claims
+POST   /claims/                       # Create claim
+POST   /claims/{id}/check-eligibility # Check insurance
+POST   /claims/{id}/submit            # Submit to payer
+POST   /claims/{id}/accept            # Mark accepted
+POST   /claims/{id}/decline           # Mark declined
+
+# Invoices
+POST   /invoices/                     # Generate invoice
+GET    /invoices/{id}/pdf             # Download PDF
+POST   /invoices/{id}/send            # Email to patient
+</code></pre>
+
+<hr />
+
+<h3 id="10-lab-requests-ai-integration">10. Lab Requests &amp; AI Integration</h3>
+
+<p>Laboratory workflow with AI-powered image analysis.</p>
+
+<h4 id="101-complete-lab-request-lifecycle">10.1 Complete Lab Request Lifecycle</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Request Creation
+        DR[Doctor] --> CREATE[Create Lab Request]
+        CREATE --> TYPE{Request Type}
+        TYPE --> |Brain Tumor MRI| BTD[Brain Tumor Detection]
+        TYPE --> |Blood Work| BLOOD[Standard Lab]
+        TYPE --> |X-Ray| XRAY[Radiology]
+    end
+
+    subgraph Lab Processing
+        BTD --> PENDING[Status: Pending]
+        PENDING --> ACCEPT[Lab Tech Accepts]
+        ACCEPT --> PROCESSING[Status: Processing]
+        PROCESSING --> UPLOAD[Upload Image]
+        UPLOAD --> AI[AI Analysis API]
+        AI --> RESULT[Result Saved]
+    end
+
+    subgraph Doctor Review
+        RESULT --> AWAIT[Status: Awaiting Review]
+        AWAIT --> REVIEW[Doctor Reviews]
+        REVIEW --> |Approved| COMPLETE[Status: Completed]
+        REVIEW --> |Rejected| REPROCESS[Request Reprocess]
+        REPROCESS --> PROCESSING
+    end
+</pre>
+
+<h4 id="102-doctor-creates-lab-request-flow">10.2 Doctor Creates Lab Request Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Doctor->>Frontend: Open patient record
+    Doctor->>Frontend: Click "Create Lab Request"
+    Frontend->>Frontend: Show request form
+
+    Doctor->>Frontend: Fill request details
+    Note right of Frontend: Type, priority, notes,<br/>specific tests
+
+    Frontend->>Backend: POST /lab-requests/
+    Note right of Frontend: { patient_profile_id, type, priority, notes }
+
+    Backend->>Database: Create LabRequest record
+    Note right of Database: status = pending
+    Backend->>Database: Link to patient & doctor
+    Backend-->>Frontend: Request created
+    Frontend-->>Doctor: Success notification
+</pre>
+
+<h4 id="103-lab-technician-accepts-request-flow">10.3 Lab Technician Accepts Request Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant LabTech
+    participant Frontend
+    participant Backend
+    participant Database
+
+    LabTech->>Frontend: View pending requests
+    Frontend->>Backend: GET /lab-requests/?status=pending
+    Backend-->>Frontend: List of pending requests
+
+    LabTech->>Frontend: Click "Accept" on request
+    Frontend->>Backend: PATCH /lab-requests/{id}/accept
+
+    Backend->>Database: Update status = accepted
+    Backend->>Database: Set lab_technician_id
+    Backend-->>Frontend: Request accepted
+    Frontend-->>LabTech: Request added to "My Requests"
+</pre>
+
+<h4 id="104-brain-tumor-ai-analysis-flow">10.4 Brain Tumor AI Analysis Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant LabTech
+    participant Frontend
+    participant Backend
+    participant Cloudinary
+    participant AIService
+    participant Database
+
+    LabTech->>Frontend: Open accepted request
+    LabTech->>Frontend: Select MRI image file
+    Frontend->>Frontend: Validate file type (JPEG, PNG)
+    Frontend->>Frontend: Validate file size (< 10MB)
+
+    Frontend->>Backend: POST /lab-requests/{id}/upload-image
+    Note right of Frontend: multipart/form-data
+
+    Backend->>Cloudinary: Upload image
+    Cloudinary-->>Backend: CDN URL
+    Backend->>Database: Update request with image_url
+
+    Backend->>AIService: POST /predict
+    Note right of Backend: Send image to port 8001
+
+    AIService->>AIService: Run inference model
+    AIService-->>Backend: { class, confidence, predictions }
+
+    Backend->>Database: Create BrainTumorResult record
+    Note right of Database: result_class, confidence,<br/>image_url
+    Backend->>Database: Update status = awaiting_review
+    Backend-->>Frontend: Analysis complete
+    Frontend-->>LabTech: Show AI result preview
+</pre>
+
+<h4 id="105-doctor-reviews-ai-result-flow">10.5 Doctor Reviews AI Result Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Doctor->>Frontend: View "Awaiting Review" requests
+    Frontend->>Backend: GET /lab-requests/?status=awaiting_review
+    Backend-->>Frontend: Requests with AI results
+
+    Doctor->>Frontend: Open request details
+    Frontend->>Backend: GET /lab-requests/{id}
+    Backend-->>Frontend: Request + BrainTumorResult
+
+    Note over Doctor: Review AI classification,<br/>confidence score, image
+
+    alt Approve Result
+        Doctor->>Frontend: Click "Approve"
+        Doctor->>Frontend: Add rating (1-5) + comments
+        Frontend->>Backend: POST /lab-requests/{id}/review
+        Note right of Frontend: { rating, comments, approved: true }
+        Backend->>Database: Update status = completed
+        Backend->>Database: Save doctor_rating, doctor_comments
+        Backend-->>Frontend: Result approved
+    else Reject / Request Reprocess
+        Doctor->>Frontend: Click "Request Reprocess"
+        Doctor->>Frontend: Add rejection notes
+        Frontend->>Backend: POST /lab-requests/{id}/reject
+        Backend->>Database: Update status = processing
+        Backend->>Database: Clear previous result
+        Backend-->>Frontend: Sent back for reprocessing
+    end
+</pre>
+
+<h4 id="lab-request-features">Lab Request Features:</h4>
+
+<h5 id="request-types">Request Types:</h5>
+
+<ul>
+<li><code>brain_tumor_detection</code> - MRI image analysis</li>
+<li><code>blood_work</code> - Standard laboratory tests</li>
+<li><code>x_ray</code> - Radiological imaging</li>
+<li><code>urinalysis</code> - Urine tests</li>
+<li><code>other</code> - Custom tests</li>
+</ul>
+
+<h5 id="request-statuses">Request Statuses:</h5>
+
+<table>
+<thead>
+<tr>
+  <th>Status</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>pending</code></td>
+  <td>Awaiting lab tech acceptance</td>
+</tr>
+<tr>
+  <td><code>accepted</code></td>
+  <td>Lab tech assigned</td>
+</tr>
+<tr>
+  <td><code>rejected</code></td>
+  <td>Lab tech declined</td>
+</tr>
+<tr>
+  <td><code>processing</code></td>
+  <td>Analysis in progress</td>
+</tr>
+<tr>
+  <td><code>awaiting_review</code></td>
+  <td>Results ready for doctor</td>
+</tr>
+<tr>
+  <td><code>completed</code></td>
+  <td>Doctor approved</td>
+</tr>
+</tbody>
+</table>
+
+<h5 id="ai-integration-brain-tumor-detection">AI Integration (Brain Tumor Detection):</h5>
+
+<ol>
+<li><strong>Image Upload</strong> - Lab tech uploads MRI scan</li>
+<li><strong>Cloudinary Storage</strong> - Image stored in CDN</li>
+<li><strong>AI API Call</strong> - Send to inference service (port 8001)</li>
+<li><strong>Result Storage</strong> - Class, confidence, image URL</li>
+<li><strong>Doctor Review</strong> - Rating, comments, approval</li>
+</ol>
+
+<h5 id="brain-tumor-result-model">Brain Tumor Result Model:</h5>
+
+<pre><code>class BrainTumorResult:
+    id: int
+    request_id: int
+    image_url: str         # Cloudinary URL
+    result_class: str      # e.g., "glioma", "meningioma", "no_tumor"
+    confidence: float      # 0.0 - 1.0
+    doctor_rating: int     # 1-5 stars
+    doctor_comments: str
+    created_at: datetime
+</code></pre>
+
+<h4 id="key-endpoints-7">Key Endpoints:</h4>
+
+<pre><code># Lab Requests
+POST   /lab-requests/                     # Create request
+GET    /lab-requests/                     # List requests (filtered)
+GET    /lab-requests/{id}                 # Get request details
+PATCH  /lab-requests/{id}/accept          # Lab tech accepts
+PATCH  /lab-requests/{id}/reject          # Lab tech rejects
+POST   /lab-requests/{id}/upload-image    # Upload for AI analysis
+POST   /lab-requests/{id}/review          # Doctor approves
+POST   /lab-requests/{id}/request-reprocess # Doctor requests redo
+</code></pre>
+
+<hr />
+
+<h3 id="11-clinical-documentation">11. Clinical Documentation</h3>
+
+<p>AI-powered clinical documentation for comprehensive patient records.</p>
+
+<h4 id="111-soap-notes-from-audio-flow">11.1 SOAP Notes from Audio Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Cloudinary
+    participant Gemini
+    participant Database
+
+    Doctor->>Frontend: Open appointment
+    Doctor->>Frontend: Record/Upload audio
+    Frontend->>Frontend: Validate audio format (MP3, WAV, M4A)
+
+    Frontend->>Backend: POST /soap-notes/from-audio
+    Note right of Frontend: multipart/form-data<br/>{ appointment_id, audio_file }
+
+    Backend->>Cloudinary: Upload audio file
+    Cloudinary-->>Backend: Audio URL
+
+    Backend->>Gemini: Send audio for transcription
+    Gemini->>Gemini: Speech-to-Text
+    Gemini-->>Backend: Text transcript
+
+    Backend->>Gemini: Generate SOAP note from transcript
+    Note right of Backend: Prompt: "Structure this<br/>transcript into SOAP format"
+    Gemini-->>Backend: { subjective, objective, assessment, plan }
+
+    Backend->>Database: Create SOAPNote record
+    Backend->>Database: Link to appointment
+    Backend-->>Frontend: SOAP note saved
+    Frontend-->>Doctor: Display editable SOAP note
+</pre>
+
+<h4 id="112-manual-soap-note-entry-flow">11.2 Manual SOAP Note Entry Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Gemini
+    participant Database
+
+    Doctor->>Frontend: Open SOAP note form
+    Doctor->>Frontend: Enter transcript manually
+
+    alt AI-Assisted Generation
+        Frontend->>Backend: POST /soap-notes/generate
+        Note right of Frontend: { transcript, appointment_id }
+        Backend->>Gemini: Structure into SOAP format
+        Gemini-->>Backend: SOAP sections
+        Backend-->>Frontend: Suggested SOAP content
+        Frontend-->>Doctor: Pre-filled form
+    else Manual Entry
+        Doctor->>Frontend: Fill S, O, A, P sections
+    end
+
+    Doctor->>Frontend: Review and edit
+    Doctor->>Frontend: Click "Save"
+    Frontend->>Backend: POST /soap-notes/
+    Backend->>Database: Create SOAPNote record
+    Backend-->>Frontend: Saved successfully
+</pre>
+
+<h4 id="113-handoff-note-generation-flow">11.3 Handoff Note Generation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Gemini
+
+    Doctor->>Frontend: Select patient
+    Doctor->>Frontend: Click "Generate Handoff"
+    Frontend->>Backend: POST /handoff-notes/generate
+
+    Backend->>Database: Gather patient context
+    Note right of Database: Recent appointments,<br/>vitals, SOAP notes,<br/>lab results, prescriptions
+
+    Backend->>Backend: Format context into prompt
+    Backend->>Gemini: Generate handoff note
+    Note right of Gemini: Structured prompt with<br/>all patient data
+
+    Gemini-->>Backend: Handoff note content
+    Note right of Backend: Summary, acute issues,<br/>critical alerts, tasks,<br/>recommendations
+
+    Backend->>Database: Create HandoffNote record
+    Backend-->>Frontend: Generated handoff
+    Frontend-->>Doctor: Display handoff for review
+
+    Doctor->>Frontend: Edit if needed
+    Doctor->>Frontend: Click "Finalize"
+    Frontend->>Backend: PATCH /handoff-notes/{id}
+    Backend->>Database: Update status = finalized
+</pre>
+
+<h4 id="114-patient-summary-generation-flow">11.4 Patient Summary Generation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Gemini
+
+    Doctor->>Frontend: Open patient profile
+    Doctor->>Frontend: Click "Generate Summary"
+    Frontend->>Backend: POST /patient-summaries/generate
+
+    Backend->>Database: Get comprehensive patient data
+    Note right of Database: Demographics, conditions,<br/>medications, recent visits,<br/>lab results
+
+    Backend->>Gemini: Generate patient-friendly summary
+    Note right of Gemini: Prompt: "Create a summary<br/>using simple non-medical<br/>language"
+
+    Gemini-->>Backend: Plain-language summary
+    Backend->>Database: Create PatientSummary record
+    Backend-->>Frontend: Generated summary
+
+    Doctor->>Frontend: Review content
+    Doctor->>Frontend: Select export format
+
+    alt PDF Export
+        Frontend->>Backend: GET /patient-summaries/{id}/pdf
+        Backend-->>Frontend: PDF file
+    else Word Export
+        Frontend->>Backend: GET /patient-summaries/{id}/docx
+        Backend-->>Frontend: DOCX file
+    end
+</pre>
+
+<h4 id="115-discharge-summary-flow">11.5 Discharge Summary Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Gemini
+
+    Doctor->>Frontend: Open patient record
+    Doctor->>Frontend: Click "Create Discharge Summary"
+    Frontend->>Backend: POST /discharge-summaries/
+
+    Backend->>Database: Gather admission data
+    Note right of Database: Admission date, diagnoses,<br/>procedures, hospital course,<br/>medications, follow-up
+
+    Backend->>Gemini: Auto-generate summary
+    Gemini-->>Backend: Draft discharge summary
+
+    Backend->>Database: Create DischargeSummary record
+    Backend-->>Frontend: Draft summary
+
+    Doctor->>Frontend: Review and edit sections
+    Doctor->>Frontend: Add final instructions
+    Doctor->>Frontend: Add signature
+    Frontend->>Backend: PATCH /discharge-summaries/{id}/finalize
+
+    Backend->>Database: Update status = finalized
+    Backend->>Database: Store doctor signature
+    Backend-->>Frontend: Finalized
+
+    Doctor->>Frontend: Download/Print
+    Frontend->>Backend: GET /discharge-summaries/{id}/pdf
+    Backend-->>Frontend: Professional PDF document
+</pre>
+
+<h4 id="soap-note-features">SOAP Note Features:</h4>
+
+<ul>
+<li><strong>Audio Upload</strong> - Record or upload audio file</li>
+<li><strong>AI Transcription</strong> - Gemini converts speech to text</li>
+<li><strong>SOAP Generation</strong> - AI structures into SOAP format</li>
+<li><strong>Text Input</strong> - Direct transcript entry</li>
+<li><strong>Appointment Link</strong> - Associated with specific appointment</li>
+<li><strong>Historical View</strong> - All SOAP notes for patient</li>
+</ul>
+
+<h4 id="handoff-note-features">Handoff Note Features:</h4>
+
+<ul>
+<li><strong>Auto-Generation</strong> - AI creates from patient data</li>
+<li><strong>Comprehensive Context</strong> - Pulls all relevant patient info</li>
+<li><strong>Structured Sections</strong> - Summary, acute issues, alerts, tasks, recommendations</li>
+<li><strong>PDF Export</strong> - Professional printable document</li>
+<li><strong>Acknowledgment</strong> - Receiving provider can acknowledge</li>
+</ul>
+
+<h4 id="patient-summary-features">Patient Summary Features:</h4>
+
+<ul>
+<li><strong>Simple Language</strong> - Non-medical terminology</li>
+<li><strong>Personalized</strong> - Specific to patient's conditions</li>
+<li><strong>Actionable</strong> - Clear next steps</li>
+<li><strong>Multiple Formats</strong> - PDF and Word export</li>
+</ul>
+
+<h4 id="discharge-summary-sections">Discharge Summary Sections:</h4>
+
+<ul>
+<li>Patient demographics</li>
+<li>Admission/discharge dates</li>
+<li>Primary diagnosis</li>
+<li>Hospital course</li>
+<li>Procedures performed</li>
+<li>Medications at discharge</li>
+<li>Follow-up instructions</li>
+<li>Attending physician signature</li>
+</ul>
+
+<h4 id="key-endpoints-8">Key Endpoints:</h4>
+
+<pre><code># SOAP Notes
+POST   /soap-notes/                     # Create SOAP note
+POST   /soap-notes/from-audio           # Generate from audio
+POST   /soap-notes/generate             # Generate from transcript
+GET    /soap-notes/appointment/{id}     # Get notes for appointment
+
+# Handoff Notes
+POST   /handoff-notes/generate          # Generate handoff
+GET    /handoff-notes/{id}              # Get handoff details
+PATCH  /handoff-notes/{id}              # Update/finalize
+GET    /handoff-notes/{id}/pdf          # Download PDF
+
+# Patient Summaries
+POST   /patient-summaries/generate      # Generate summary
+GET    /patient-summaries/{id}/pdf      # Download PDF
+GET    /patient-summaries/{id}/docx     # Download Word
+
+# Discharge Summaries
+POST   /discharge-summaries/            # Create discharge
+PATCH  /discharge-summaries/{id}/finalize # Finalize
+GET    /discharge-summaries/{id}/pdf    # Download PDF
+</code></pre>
+
+<hr />
+
+<h3 id="12-messaging-system">12. Messaging System</h3>
+
+<p>Real-time internal messaging between healthcare providers.</p>
+
+<h4 id="121-create-conversation-flow">12.1 Create Conversation Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant UserA
+    participant Frontend
+    participant Backend
+    participant Database
+    participant SocketIO
+
+    UserA->>Frontend: Click "New Conversation"
+    Frontend->>Frontend: Open participant selector
+    UserA->>Frontend: Select participants (UserB, UserC)
+    UserA->>Frontend: Enter subject (optional)
+
+    Frontend->>Backend: POST /conversations/
+    Note right of Frontend: { participant_ids, subject }
+
+    Backend->>Database: Create Conversation record
+    Backend->>Database: Create ConversationParticipant records
+    Backend-->>Frontend: Conversation created
+    Frontend-->>UserA: Open conversation view
+</pre>
+
+<h4 id="122-send-message-flow">12.2 Send Message Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant UserA
+    participant Frontend
+    participant Backend
+    participant Database
+    participant SocketIO
+    participant UserB
+    participant UserC
+
+    UserA->>Frontend: Type message
+    UserA->>Frontend: Click "Send"
+    Frontend->>Backend: POST /conversations/{id}/messages
+    Note right of Frontend: { content }
+
+    Backend->>Database: Create Message record
+    Backend->>SocketIO: Emit "new_message" event
+    Note right of SocketIO: To all conversation<br/>participants
+
+    SocketIO-->>UserB: Real-time notification
+    SocketIO-->>UserC: Real-time notification
+    Backend-->>Frontend: Message sent
+
+    Note over UserB,UserC: Receive message instantly<br/>without page refresh
+</pre>
+
+<h4 id="123-real-time-connection-flow">12.3 Real-Time Connection Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant SocketIO
+    participant Backend
+
+    User->>Frontend: Open messaging
+    Frontend->>SocketIO: Connect with JWT token
+    SocketIO->>Backend: Verify token
+    Backend-->>SocketIO: User authenticated
+
+    SocketIO->>SocketIO: Join user to rooms
+    Note right of SocketIO: One room per<br/>conversation
+
+    loop While connected
+        SocketIO-->>Frontend: Emit new messages
+        SocketIO-->>Frontend: Emit typing indicators
+        SocketIO-->>Frontend: Emit read receipts
+    end
+</pre>
+
+<h4 id="messaging-features">Messaging Features:</h4>
+
+<ul>
+<li><strong>Create Conversations</strong> - One-on-one or group</li>
+<li><strong>Subject Line</strong> - Optional topic</li>
+<li><strong>Real-time</strong> - Socket.IO for instant delivery</li>
+<li><strong>Hospital Scoped</strong> - Only within same hospital</li>
+<li><strong>Inbox View</strong> - List of conversations</li>
+<li><strong>Message History</strong> - Full conversation thread</li>
+<li><strong>Profile Pictures</strong> - Sender identification</li>
+</ul>
+
+<h4 id="key-endpoints-9">Key Endpoints:</h4>
+
+<pre><code>POST   /conversations/                  # Create conversation
+GET    /conversations/                  # List user's conversations
+GET    /conversations/{id}/messages     # Get messages
+POST   /conversations/{id}/messages     # Send message
+</code></pre>
+
+<hr />
+
+<h3 id="13-analytics-dashboard">13. Analytics &amp; Dashboard</h3>
+
+<p>Comprehensive analytics for hospital administrators.</p>
+
+<h4 id="131-dashboard-data-flow">13.1 Dashboard Data Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Admin
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Admin->>Frontend: Open Dashboard
+    Frontend->>Backend: GET /analytics/overview
+
+    Backend->>Database: Query aggregated data
+    Note right of Database: Parallel queries for:<br/>patients, doctors, appts,<br/>revenue, claims
+
+    Backend->>Backend: Calculate metrics
+    Note right of Backend: Totals, averages,<br/>growth rates, trends
+
+    Backend-->>Frontend: Dashboard data
+    Frontend-->>Admin: Render charts & widgets
+</pre>
+
+<h4 id="132-dashboard-sections">13.2 Dashboard Sections</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Hospital Dashboard
+        OVERVIEW[Overview Cards]
+        PATIENTS[Patient Analytics]
+        DOCTORS[Doctor Analytics]
+        APPTS[Appointment Charts]
+        FINANCE[Financial Metrics]
+        CLAIMS[Claims Status]
+    end
+
+    OVERVIEW --> |Total Patients| PAT_COUNT[Active/Inactive]
+    OVERVIEW --> |Total Doctors| DOC_COUNT[By Department]
+    OVERVIEW --> |Today's Appointments| TODAY[Confirmed/Completed]
+    OVERVIEW --> |Revenue| REV[MTD/YTD]
+
+    PATIENTS --> NEW_REG[New Registrations]
+    PATIENTS --> BILLING_DIST[Billing Type Distribution]
+    PATIENTS --> TOP_DIAG[Top Diagnoses]
+
+    APPTS --> TREND[Daily/Weekly/Monthly]
+    APPTS --> STATUS_DIST[Status Distribution]
+    APPTS --> TELE_RATIO[Telehealth Ratio]
+</pre>
+
+<h4 id="133-role-specific-dashboards">13.3 Role-Specific Dashboards</h4>
+
+<pre class="mermaid">
+flowchart TD
+    LOGIN[User Login] --> ROLE{User Role?}
+
+    ROLE --> |Super Admin| SA_DASH[All Hospitals Overview]
+    ROLE --> |Hospital Admin| HA_DASH[Hospital Dashboard]
+    ROLE --> |Doctor| DR_DASH[My Patients & Appointments]
+    ROLE --> |Receptionist| REC_DASH[Today's Schedule]
+    ROLE --> |Lab Technician| LAB_DASH[Pending Requests]
+    ROLE --> |RCM Staff| RCM_DASH[Billing Overview]
+    ROLE --> |Patient| PAT_DASH[My Health Overview]
+</pre>
+
+<h4 id="analytics-available">Analytics Available:</h4>
+
+<h5 id="hospital-overview">Hospital Overview:</h5>
+
+<ul>
+<li>Total patients (active/inactive)</li>
+<li>Total doctors by department</li>
+<li>Appointment counts by status</li>
+<li>Revenue metrics</li>
+<li>Trends and growth</li>
+</ul>
+
+<h5 id="patient-analytics">Patient Analytics:</h5>
+
+<ul>
+<li>New registrations over time</li>
+<li>Billing type distribution</li>
+<li>Client type breakdown</li>
+<li>Top diagnoses</li>
+</ul>
+
+<h5 id="doctor-analytics">Doctor Analytics:</h5>
+
+<ul>
+<li>Appointments per doctor</li>
+<li>Patient load distribution</li>
+<li>Revenue by doctor</li>
+<li>Department performance</li>
+</ul>
+
+<h5 id="appointment-analytics">Appointment Analytics:</h5>
+
+<ul>
+<li>Daily/weekly/monthly trends</li>
+<li>Status distribution</li>
+<li>No-show rates</li>
+<li>Telehealth vs in-person</li>
+</ul>
+
+<h5 id="financial-analytics">Financial Analytics:</h5>
+
+<ul>
+<li>Revenue by period</li>
+<li>Outstanding payments</li>
+<li>Payment collection rate</li>
+<li>Average bill amount</li>
+</ul>
+
+<h4 id="key-endpoints-10">Key Endpoints:</h4>
+
+<pre><code>GET    /analytics/overview              # Dashboard overview
+GET    /analytics/patients              # Patient metrics
+GET    /analytics/doctors               # Doctor metrics
+GET    /analytics/appointments          # Appointment trends
+GET    /analytics/revenue               # Financial metrics
+GET    /analytics/claims                # Claims status
+</code></pre>
+
+<hr />
+
+<h3 id="14-signature-management">14. Signature Management</h3>
+
+<p>Electronic signature system for document signing.</p>
+
+<h4 id="141-signature-upload-flow">14.1 Signature Upload Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Doctor
+    participant Frontend
+    participant Backend
+    participant Storage
+    participant Database
+
+    Doctor->>Frontend: Open signature settings
+    Doctor->>Frontend: Select signature image
+    Frontend->>Frontend: Validate file type (PNG, JPG)
+    Frontend->>Frontend: Validate file size (< 2MB)
+    Frontend->>Frontend: Show image preview
+
+    Doctor->>Frontend: Confirm upload
+    Frontend->>Backend: POST /doctors/me/signature
+    Note right of Frontend: multipart/form-data
+
+    Backend->>Backend: Validate image with PIL
+    Backend->>Storage: Save to static folder
+    Note right of Storage: /static/signatures/{uuid}.png
+    Backend->>Database: Update doctor.signature_path
+    Backend-->>Frontend: Signature saved
+    Frontend-->>Doctor: Success notification
+</pre>
+
+<h4 id="142-signature-usage-in-documents">14.2 Signature Usage in Documents</h4>
+
+<pre class="mermaid">
+flowchart TD
+    SIG[Signature Image] --> DB[(Database)]
+
+    subgraph Document Generation
+        DB --> DISCHARGE[Discharge Summary PDF]
+        DB --> INVOICE[Invoice PDF]
+        DB --> RX[Prescription PDF]
+        DB --> REPORTS[Lab Reports]
+    end
+
+    DISCHARGE --> EMBED[Embed in PDF]
+    INVOICE --> EMBED
+    RX --> EMBED
+    REPORTS --> EMBED
+</pre>
+
+<h4 id="signature-features">Signature Features:</h4>
+
+<ul>
+<li><strong>Image Upload</strong> - PNG, JPG, JPEG formats</li>
+<li><strong>Size Limit</strong> - 2MB maximum</li>
+<li><strong>Image Validation</strong> - PIL verification</li>
+<li><strong>Update/Replace</strong> - Change signature anytime</li>
+<li><strong>Document Integration</strong> - Embed in PDFs</li>
+</ul>
+
+<h4 id="key-endpoints-11">Key Endpoints:</h4>
+
+<pre><code>POST   /doctors/me/signature            # Upload signature
+GET    /doctors/me/signature            # Get signature URL
+DELETE /doctors/me/signature            # Remove signature
+</code></pre>
+
+<hr />
+
+<h3 id="15-patient-tracker-board">15. Patient Tracker Board</h3>
+
+<p>Real-time patient tracking dashboard for staff.</p>
+
+<h4 id="151-tracker-board-flow">15.1 Tracker Board Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Staff
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Staff->>Frontend: Open Patient Tracker
+    Frontend->>Backend: GET /patients/tracker
+    Note right of Frontend: Hospital-scoped query
+
+    Backend->>Database: Query active patients
+    Note right of Database: Today's registrations,<br/>active appointments,<br/>not discharged
+
+    Backend->>Backend: Get user's role
+    Backend->>Backend: Filter columns by role
+    Backend-->>Frontend: Tracker data + visible columns
+
+    Frontend->>Frontend: Render tracker grid
+    Frontend-->>Staff: Real-time patient board
+</pre>
+
+<h4 id="152-column-configuration-flow">15.2 Column Configuration Flow</h4>
+
+<pre class="mermaid">
+sequenceDiagram
+    participant Admin
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Admin->>Frontend: Open Tracker Settings
+    Frontend->>Backend: GET /tracker/columns
+    Backend-->>Frontend: Available columns + current config
+
+    Admin->>Frontend: Configure columns per role
+    Note right of Frontend: Drag & drop, toggle visibility
+
+    Admin->>Frontend: Save configuration
+    Frontend->>Backend: PATCH /tracker/columns
+    Backend->>Database: Save TrackerColumnConfig
+    Backend-->>Frontend: Configuration saved
+</pre>
+
+<h4 id="153-tracker-column-configuration">15.3 Tracker Column Configuration</h4>
+
+<pre class="mermaid">
+flowchart TD
+    subgraph Available Columns
+        NAME[Patient Name]
+        MD[Assigned MD]
+        STATUS[Visit Status]
+        CC[Chief Complaint]
+        LOS[Length of Stay]
+        ROOM[Bay/Room]
+        RN[Assigned RN]
+        LAB[Lab Status]
+        RAD[Radiology Status]
+        MEDS[Medication Status]
+        DISP[Disposition]
+    end
+
+    subgraph Role Views
+        DOCTOR[Doctor View] --> NAME
+        DOCTOR --> STATUS
+        DOCTOR --> CC
+        DOCTOR --> LAB
+        DOCTOR --> MEDS
+
+        NURSE[Staff View] --> NAME
+        NURSE --> MD
+        NURSE --> STATUS
+        NURSE --> ROOM
+        NURSE --> LOS
+    end
+</pre>
+
+<h4 id="tracker-features">Tracker Features:</h4>
+
+<ul>
+<li><strong>Customizable Columns</strong> - Admin configures per role</li>
+<li><strong>Role-Based Views</strong> - Different columns visible per role</li>
+<li><strong>Real-time Updates</strong> - Patient status changes</li>
+<li><strong>Hospital Scoped</strong> - Only current hospital patients</li>
+<li><strong>Sorting</strong> - By registration date (newest first)</li>
+<li><strong>Status Indicators</strong> - Color-coded patient states</li>
+</ul>
+
+<h4 id="key-endpoints-12">Key Endpoints:</h4>
+
+<pre><code>GET    /patients/tracker                # Get tracker data
+GET    /tracker/columns                 # Get column config
+PATCH  /tracker/columns                 # Update column config
+</code></pre>
+
+<hr />
+
+<h2 id="database-models">Database Models</h2>
+
+<h3 id="entity-relationship-diagram">Entity Relationship Diagram</h3>
+
+<pre class="mermaid">
+erDiagram
+    User ||--o| PatientProfile : has
+    User ||--o| DoctorProfile : has
+    User ||--o| StaffProfile : has
+    User }o--|| Role : has
+    Role }o--o{ Permission : has
+
+    Hospital ||--o{ User : contains
+    Hospital ||--o{ Department : has
+
+    DoctorProfile ||--o{ AppointmentSession : creates
+    AppointmentSession ||--o{ AppointmentSlot : contains
+    AppointmentSlot ||--o| Appointment : books
+
+    PatientProfile ||--o{ Appointment : has
+    Appointment ||--o{ AppointmentICDCode : has
+    AppointmentICDCode }o--|| ICDCode : references
+
+    Appointment ||--o| Vitals : has
+    Appointment ||--o| SoapNote : has
+
+    PatientProfile ||--o| MedicalHistory : has
+    PatientProfile ||--o{ Bill : has
+    Bill ||--o{ BillItem : contains
+
+    PatientProfile ||--o{ LabRequest : has
+    LabRequest ||--o| BrainTumorResult : has
+
+    PatientProfile ||--o{ WaitlistEntry : has
+    WaitlistEntry ||--o{ WaitlistBookingToken : has
+
+    PatientProfile ||--o{ DischargeSummary : has
+    PatientProfile ||--o{ HandoffNote : has
+    PatientProfile ||--o{ PatientSummary : has
+</pre>
+
+<h3 id="key-models">Key Models</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Model</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>User</code></td>
+  <td>Base user account</td>
+</tr>
+<tr>
+  <td><code>PatientProfile</code></td>
+  <td>Patient-specific data</td>
+</tr>
+<tr>
+  <td><code>DoctorProfile</code></td>
+  <td>Doctor credentials/info</td>
+</tr>
+<tr>
+  <td><code>StaffProfile</code></td>
+  <td>Staff member data</td>
+</tr>
+<tr>
+  <td><code>Hospital</code></td>
+  <td>Hospital entity</td>
+</tr>
+<tr>
+  <td><code>Department</code></td>
+  <td>Hospital department</td>
+</tr>
+<tr>
+  <td><code>Role</code></td>
+  <td>User role definition</td>
+</tr>
+<tr>
+  <td><code>Permission</code></td>
+  <td>Granular permission</td>
+</tr>
+<tr>
+  <td><code>AppointmentSession</code></td>
+  <td>Doctor's time block</td>
+</tr>
+<tr>
+  <td><code>AppointmentSlot</code></td>
+  <td>Bookable time unit</td>
+</tr>
+<tr>
+  <td><code>Appointment</code></td>
+  <td>Patient appointment</td>
+</tr>
+<tr>
+  <td><code>Bill</code></td>
+  <td>Patient billing record</td>
+</tr>
+<tr>
+  <td><code>Claim</code></td>
+  <td>Insurance claim</td>
+</tr>
+<tr>
+  <td><code>LabRequest</code></td>
+  <td>Lab test request</td>
+</tr>
+<tr>
+  <td><code>SoapNote</code></td>
+  <td>Clinical SOAP note</td>
+</tr>
+<tr>
+  <td><code>WaitlistEntry</code></td>
+  <td>Waitlist record</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2 id="api-structure">API Structure</h2>
+
+<h3 id="route-organization">Route Organization</h3>
+
+<pre><code>/api
+├── /auth           # Authentication
+├── /users          # User management
+├── /hospitals      # Hospital CRUD
+├── /doctors        # Doctor management
+├── /patients       # Patient management
+├── /staff          # Staff management
+├── /departments    # Department CRUD
+├── /appointments   # Appointment booking
+├── /sessions       # Session management
+├── /slots          # Slot management
+├── /waitlist       # Waitlist system
+├── /billing        # Bills and payments
+├── /claims         # Insurance claims
+├── /invoices       # Invoice generation
+├── /lab-requests   # Lab test requests
+├── /lab-results    # Lab result management
+├── /soap-notes     # SOAP documentation
+├── /handoff-notes  # Shift handoffs
+├── /patient-summaries  # Patient summaries
+├── /discharge-summaries # Discharge docs
+├── /messaging      # Internal messaging
+├── /analytics      # Dashboard analytics
+├── /signatures     # E-signature management
+├── /tracker        # Patient tracker
+├── /prescriptions  # Prescription management
+├── /clinical-data  # Vitals &amp; medical history
+└── /icd-codes      # ICD code lookup
+</code></pre>
+
+<hr />
+
+<h2 id="integration-points">Integration Points</h2>
+
+<h3 id="external-services">External Services</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Service</th>
+  <th>Purpose</th>
+  <th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Google Gemini</strong></td>
+  <td>AI text generation</td>
+  <td><code>GEMINI_API_KEY</code></td>
+</tr>
+<tr>
+  <td><strong>Cloudinary</strong></td>
+  <td>Image/file storage</td>
+  <td><code>CLOUDINARY_*</code> keys</td>
+</tr>
+<tr>
+  <td><strong>Stripe</strong></td>
+  <td>Payment processing</td>
+  <td><code>STRIPE_*</code> keys</td>
+</tr>
+<tr>
+  <td><strong>SMTP</strong></td>
+  <td>Email delivery</td>
+  <td><code>EMAIL_*</code> config</td>
+</tr>
+<tr>
+  <td><strong>Google OAuth</strong></td>
+  <td>Social login</td>
+  <td><code>GOOGLE_*</code> credentials</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="ai-services">AI Services</h3>
+
+<h4 id="brain-tumor-detection-api">Brain Tumor Detection API</h4>
+
+<ul>
+<li><strong>Endpoint</strong>: <code>http://localhost:8001/predict</code></li>
+<li><strong>Method</strong>: POST with image file</li>
+<li><strong>Returns</strong>: Classification and confidence</li>
+</ul>
+
+<h4 id="gemini-ai-uses">Gemini AI Uses:</h4>
+
+<ol>
+<li>Audio transcription</li>
+<li>SOAP note generation</li>
+<li>Handoff note creation</li>
+<li>Patient summary generation</li>
+</ol>
+
+<hr />
+
+<h2 id="deployment">Deployment</h2>
+
+<h3 id="docker-deployment">Docker Deployment</h3>
+
+<pre><code># Build and start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Run database migrations
+docker-compose exec backend alembic upgrade head
+</code></pre>
+
+<h3 id="services-deployed">Services Deployed:</h3>
+
+<ul>
+<li><strong>Frontend</strong> - Port 3000</li>
+<li><strong>Backend</strong> - Port 8000</li>
+<li><strong>Database</strong> - PostgreSQL</li>
+<li><strong>Nginx</strong> - Reverse proxy (80/443)</li>
+</ul>
+
+<h3 id="environment-variables">Environment Variables</h3>
+
+<p>See <code>.env.example</code> for required configuration:
+- Database credentials
+- JWT secret key
+- Encryption key
+- API keys (Gemini, Cloudinary, Stripe)
+- Email configuration
+- Google OAuth credentials</p>
+
+<hr />
+
+<h2 id="security-features">Security Features</h2>
+
+<ul>
+<li>🔐 <strong>JWT Authentication</strong> - Token-based security</li>
+<li>🔒 <strong>Password Hashing</strong> - Bcrypt encryption</li>
+<li>🛡️ <strong>RBAC</strong> - Role-based access control</li>
+<li>📝 <strong>Audit Logging</strong> - All actions logged</li>
+<li>🔑 <strong>Data Encryption</strong> - Sensitive fields encrypted</li>
+<li>🚫 <strong>CORS</strong> - Cross-origin protection</li>
+<li>⏰ <strong>Token Expiry</strong> - Automatic session timeout</li>
+</ul>
+
+<hr />
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>NexGenEMR is a comprehensive, enterprise-grade EMR system designed for modern healthcare facilities. It provides:</p>
+
+<ul>
+<li><strong>Complete Patient Journey</strong> - From registration to discharge</li>
+<li><strong>Flexible Scheduling</strong> - Multiple booking methods and waitlist management</li>
+<li><strong>Financial Management</strong> - Full billing and claims workflow</li>
+<li><strong>Clinical Excellence</strong> - AI-powered documentation</li>
+<li><strong>Security First</strong> - HIPAA-ready architecture</li>
+<li><strong>Scalability</strong> - Multi-hospital support</li>
+</ul>
+
+<p>For detailed implementation guidance, refer to:
+- <code>DEPLOYMENT_GUIDE.md</code> - Production deployment
+- <code>WAITLIST_TESTING_GUIDE.md</code> - Waitlist feature testing
+- <code>DOCKER_SETUP.md</code> - Docker configuration</p>
+
+<hr />
+
+<p><em>Last Updated: January 29, 2026</em></p>
+
+</body>
+</html>

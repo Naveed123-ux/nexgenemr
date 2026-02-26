@@ -17,6 +17,7 @@ import {
   User,
   ChevronLeft,
   ChevronRight,
+  MessageSquare,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -30,6 +31,7 @@ import { toast } from "react-hot-toast";
 const navigation = [
   { name: "Dashboard", href: "/hospital-admin/dashboard", icon: Home },
   { name: "Tracker", href: "/hospital-admin", icon: AudioLines },
+  { name: "Secure Messaging", href: "/hospital-admin/chat", icon: MessageSquare },
   { name: "Add Staff", href: "/hospital-admin/addStaff", icon: Plus },
   { name: "Hospital Staff", href: "/hospital-admin/staff", icon: Users },
   { name: "Departments", href: "/hospital-admin/departments", icon: Building2 },

@@ -15,6 +15,7 @@ export interface Appointment {
     id: number;
     patient_id: number;
     patient_profile_id: number;
+    doctor_user_id: number;
     patient_name: string;
     doctor_name: string;
     start_time: string;

@@ -60,6 +60,8 @@ import { SoapNoteDialog } from "./SoapNoteDialog";
 import { IcdCodeManager } from "@/components/appointments/IcdCodeManager";
 import { useState } from "react";
 import { LabRequestDialog } from "./LabRequestDialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { differenceInMinutes } from "date-fns";
 
 export const AppointmentCard = ({
   appointment,
@@ -215,15 +217,42 @@ export const AppointmentCard = ({
       </CardContent>
       <CardFooter className="flex flex-col sm:flex-row justify-end gap-2 bg-gray-50 border-t pt-4">
         {appointment.google_meet_link && (
-          <a
-            href={appointment.google_meet_link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(buttonVariants({ variant: "outline" }), "flex-1 sm:flex-none border-blue-300 text-blue-600 hover:bg-blue-50")}
-          >
-            <Video className="w-4 h-4 mr-2" />
-            Join Meet
-          </a>
+          (() => {
+            const now = new Date();
+            const start = new Date(appointment.start_time);
+            const diff = differenceInMinutes(start, now);
+            const canJoin = diff <= 5;
+
+            if (!canJoin) {
+              return (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className={cn(buttonVariants({ variant: "outline" }), "flex-1 sm:flex-none border-gray-200 text-gray-400 cursor-not-allowed opacity-60")}>
+                        <Video className="w-4 h-4 mr-2" />
+                        Join Meet (Soon)
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>You can join 5 minutes before the appointment starts.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            }
+
+            return (
+              <a
+                href={appointment.google_meet_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: "outline" }), "flex-1 sm:flex-none border-blue-300 text-blue-600 hover:bg-blue-50 font-bold animate-pulse")}
+              >
+                <Video className="w-4 h-4 mr-2" />
+                Join Meet
+              </a>
+            );
+          })()
         )}
 
         {/* Lab Action Button */}

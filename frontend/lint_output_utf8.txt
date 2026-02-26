@@ -1,0 +1,5068 @@
+﻿
+> my-v0-project@0.1.0 lint
+> next lint
+
+node.exe : `next 
+lint` is deprecated 
+and will be removed 
+in Next.js 16.
+At C:\Program Files\n
+odejs\npm.ps1:29 
+char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (`next l   
+ int` is ... in N    
+ext.js 16.:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+For new projects, 
+use create-next-app 
+to choose your 
+preferred linter.
+For existing 
+projects, migrate to 
+the ESLint CLI:
+npx 
+@next/codemod@canary 
+next-lint-to-eslint-c
+li .
+
+
+./app/auth/login/page
+.tsx
+61:9  Error: Use 
+"@ts-expect-error" 
+instead of 
+"@ts-ignore", as 
+"@ts-ignore" will do 
+nothing if the 
+following line is 
+error-free.  @typescr
+ipt-eslint/ban-ts-com
+ment
+93:28  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/doctor/appointm
+ents/page.tsx
+18:20  Warning: 
+'List' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/doctor/appointm
+ents/_components/AllA
+ppointmentsHistory.ts
+x
+19:80  Warning: 
+'FileText' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+19:102  Warning: 
+'CalendarIcon' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/doctor/appointm
+ents/_components/Appo
+intmentCard.tsx
+34:3  Warning: 
+'Book' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+37:3  Warning: 
+'ExternalLink' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+44:3  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+48:3  Warning: 
+'AlertCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+49:3  Warning: 
+'CheckCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+56:10  Warning: 'Upda
+teResultsDialog' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+57:10  Warning: 
+'RescheduleDialog' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+88:9  Warning: 
+'handleAddSoapNote' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/doctor/appointm
+ents/_components/Canc
+elAppointmentButton.t
+sx
+60:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/doctor/appointm
+ents/_components/Cust
+omWeekCalendar.tsx
+11:18  Warning: 
+'buttonVariants' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+17:50  Warning: 
+'ExternalLink' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/doctor/appointm
+ents/_components/Swap
+ConfirmationDialog.ts
+x
+62:13  Warning: 
+'response' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+77:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/doctor/appointm
+ents/_components/Swap
+ModeBanner.tsx
+3:10  Warning: 
+'Alert' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+3:17  Warning: 
+'AlertDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/doctor/appointm
+ents/_components/Upco
+mingAppointments.tsx
+8:20  Warning: 
+'Clock' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+8:27  Warning: 
+'TrendingUp' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/doctor/book-app
+ointment/page.tsx
+20:3  Warning: 
+'Select' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+21:3  Warning: 
+'SelectContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:3  Warning: 
+'SelectItem' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+23:3  Warning: 
+'SelectTrigger' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+24:3  Warning: 
+'SelectValue' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+150:6  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 
+'searchIcd'. Either 
+include it or remove 
+the dependency 
+array.  react-hooks/e
+xhaustive-deps
+300:30  Warning: 
+'field' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/doctor/chat/pag
+e.tsx
+5:10  Warning: 
+'Card' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+5:16  Warning: 
+'CardContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:29  Warning: 
+'CardHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:41  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:3  Warning: 
+'Select' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+13:3  Warning: 
+'SelectContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:3  Warning: 
+'SelectItem' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:3  Warning: 
+'SelectTrigger' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:3  Warning: 
+'SelectValue' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:3  Warning: 
+'DialogDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+25:3  Warning: 
+'DialogTrigger' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+28:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+30:3  Warning: 
+'Search' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+38:3  Warning: 'X' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+39:3  Warning: 
+'AlertCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+40:3  Warning: 
+'Bell' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+41:3  Warning: 
+'Smile' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+46:10  Warning: 
+'Alert' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+46:17  Warning: 
+'AlertDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+55:3  Warning: 
+'ConversationDetail' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+62:25  Warning: 
+'getSocket' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+83:5  Warning: 
+'detailLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+84:5  Warning: 
+'contactsLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+85:5  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+193:14  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+209:14  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/doctor/clinical
+-records/_components/
+ClinicalRecordsList.t
+sx
+8:10  Warning: 
+'toast' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+12:10  Warning: 
+'Table' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+12:17  Warning: 
+'TableBody' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:28  Warning: 
+'TableCell' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:39  Warning: 
+'TableHead' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:50  Warning: 
+'TableHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:63  Warning: 
+'TableRow' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/doctor/clinical
+-records/_components/
+ManageClinicalRecords
+Modal.tsx
+22:10  Warning: 
+'Badge' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+43:38  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/doctor/connect/
+page.tsx
+58:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/doctor/dashboar
+d/page.tsx
+21:10  Warning: 
+'NotificationsPanel' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+67:15  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+181:6  Warning: 
+React Hook useEffect 
+has missing 
+dependencies: 
+'page', 'pageSize', 
+'total', and 
+'totalPages'. Either 
+include them or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+
+./app/doctor/lab-repo
+rts/page.tsx
+17:5  Warning: 
+'AlertCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+18:5  Warning: 
+'ArrowRight' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+46:5  Warning: 'Pagin
+atedLabRequests' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+114:12  Warning: 
+'loadingPatients' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+135:12  Warning: 
+'totalPages' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+135:24  Warning: 
+'setTotalPages' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+147:8  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 
+'fetchLabRequests'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+173:41  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+439:108  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+439:139  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+719:41  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/doctor/lab-repo
+rts/[id]/page.tsx
+101:37  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+204:33  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+204:73  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./app/doctor/layout.t
+sx
+7:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:3  Warning: 
+'BaggageClaim' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+17:3  Warning: 
+'BrickWallIcon' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+23:3  Warning: 
+'Icon' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+25:3  Warning: 
+'PartyPopper' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+29:3  Warning: 
+'Stethoscope' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+43:9  Warning: 
+'hospital' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+82:9  Warning: 
+'sideBarnavigation' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/doctor/page.tsx
+12:33  Warning: 
+'DynamicData' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:10  Warning: 
+'Button' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+18:3  Warning: 
+'useReactTable' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+19:3  Warning: 
+'getCoreRowModel' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:3  Warning: 'getPa
+ginationRowModel' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:3  Warning: 
+'flexRender' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:3  Warning: 
+'ColumnDef' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+25:8  Warning: 
+'Link' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+26:10  Warning: 
+'useRouter' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+28:8  Warning: 
+'PatientCards' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/doctor/patient-
+records/page.tsx
+94:9  Warning: 
+'staffSummary' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/doctor/patient-
+summaries/page.tsx
+80:58  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+87:56  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+88:58  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+96:56  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+179:39  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+184:45  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+189:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+189:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+194:46  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+199:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+199:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+229:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+229:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+234:39  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+260:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+260:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+757:68  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+922:50  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+950:86  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+998:54  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+1023:75  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/doctor/register
+-patient/page.tsx
+62:7  Warning: 
+'formSchema' is 
+assigned a value but 
+only used as a type. 
+ @typescript-eslint/n
+o-unused-vars
+168:51  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+347:41  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/doctor/reschedu
+le-appointment/page.t
+sx
+3:31  Warning: 
+'useMemo' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+67:6  Warning: React 
+Hook useEffect has 
+missing 
+dependencies: 'loadAp
+pointmentDetails' 
+and 'router'. Either 
+include them or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+81:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+97:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+138:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/doctor/soap-not
+es/page.tsx
+118:17  Warning: 
+'buffer' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+231:36  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+256:16  Error: 
+'line' is never 
+reassigned. Use 
+'const' instead.  
+prefer-const
+489:29  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/hospital-admin/
+addStaff/page.tsx
+3:10  Warning: 
+'Card' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+4:10  Warning: 
+'MoreHorizontal' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/hospital-admin/
+audit-log/page.tsx
+169:38  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/hospital-admin/
+chat/page.tsx
+3:39  Warning: 
+'useCallback' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:5  Warning: 
+'DialogDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:5  Warning: 
+'Search' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+70:9  Warning: 
+'detailLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+71:9  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+143:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+159:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+266:94  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+266:119  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./app/hospital-admin/
+dashboard/page.tsx
+11:18  Warning: 
+'LineChart' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+11:29  Warning: 
+'Line' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+35:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+62:54  Warning: 
+'financial' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/hospital-admin/
+departments/page.tsx
+3:17  Warning: 
+'useEffect' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:10  Warning: 
+'Textarea' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+34:3  Warning: 
+'Heart' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+35:3  Warning: 
+'Baby' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+36:3  Warning: 
+'Stethoscope' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+39:3  Warning: 
+'Briefcase' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+42:10  Warning: 
+'useDispatch' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+43:10  Warning: 
+'AppDispatch' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+46:10  Warning: 
+'fetchDepartments' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+79:22  Warning: 
+'setDepLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+84:9  Warning: 
+'name' is assigned a 
+value but never 
+used.  @typescript-es
+lint/no-unused-vars
+129:13  Warning: 
+'response' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+229:25  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/hospital-admin/
+discharge-summaries/p
+age.tsx
+9:10  Warning: 
+'Badge' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+62:58  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+68:50  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+69:56  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+70:58  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+111:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+139:39  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+144:45  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+149:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+149:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+154:46  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+159:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+159:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+190:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+682:24  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/hospital-admin/
+doctor-reassignment/p
+age.tsx
+11:10  Warning: 
+'Separator' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+36:3  Warning: 
+'ArrowRightIcon' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+42:3  Warning: 
+'StethoscopeIcon' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+44:3  Warning: 
+'ArrowLeftRight' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+73:10  Warning: 
+'doctorStats' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+73:50  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+85:6  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'loadAppointments'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+92:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+115:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+157:23  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+185:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+657:41  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/hospital-admin/
+layout.tsx
+8:10  Warning: 'Hospi
+talAdminMobileNav' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:10  Warning: 
+'SuperAdminHeader' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+19:3  Warning: 
+'Menu' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+25:3  Warning: 'X' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+42:9  Warning: 
+'hospital' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+94:9  Warning: 'sideB
+arMainnavigation' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/hospital-admin/
+page.tsx
+11:33  Warning: 
+'DynamicData' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+18:8  Warning: 
+'PatientCards' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/hospital-admin/
+permissions/page.tsx
+157:73  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/hospital-admin/
+scheduling/page.tsx
+46:5  Warning: 
+'watch' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+314:37  Warning: 
+'timeIndex' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/hospital-admin/
+staff/page.tsx
+3:20  Warning: 
+'useMemo' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+30:23  Warning: 
+'doctorsList' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+31:21  Warning: 
+'staffList' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+36:9  Warning: 
+'newThisMonth' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+78:65  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/hospital-admin/
+_Components/AllDoctor
+s.tsx
+16:10  Warning: 
+'Card' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+16:16  Warning: 
+'CardContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:29  Warning: 
+'CardHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:41  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:10  Warning: 
+'Trash2' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+20:18  Warning: 
+'ArrowUpDown' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:37  Warning: 
+'Phone' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+20:44  Warning: 
+'MapPin' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+20:52  Warning: 
+'Edit' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+192:6  Warning: 
+React Hook useEffect 
+has missing 
+dependencies: 
+'page', 'pageSize', 
+'total', and 
+'totalPages'. Either 
+include them or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+257:53  Warning: 
+'index' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/hospital-admin/
+_Components/AllStaff.
+tsx
+13:10  Warning: 
+'fetchAllDoctors' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:10  Warning: 
+'Card' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+16:16  Warning: 
+'CardContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:29  Warning: 
+'CardHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:41  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:16  Warning: 
+'Edit' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/hospital-admin/
+_Components/CreateDoc
+tor.tsx
+31:10  Warning: 
+'Department' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+184:13  Warning: 
+'response' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+432:27  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/hospital-admin/
+_Components/CreateSta
+ff.tsx
+87:13  Warning: 
+'response' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+257:27  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/hospital-admin/
+_Components/UpdateInf
+o.tsx
+12:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+207:35  Warning: 
+'data' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+674:29  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+729:29  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/lab-technician/
+chat/page.tsx
+3:39  Warning: 
+'useCallback' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:5  Warning: 
+'DialogDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:5  Warning: 
+'Search' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+25:5  Warning: 
+'MessageSquare' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+27:5  Warning: 
+'Loader2' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+30:5  Warning: 
+'UserMinus' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+31:5  Warning: 
+'UserCheck' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+33:5  Warning: 
+'Smile' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+69:9  Warning: 
+'listLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+70:9  Warning: 
+'detailLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+71:9  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+143:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+159:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+330:30  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/lab-technician/
+page.tsx
+13:5  Warning: 
+'CalendarIcon' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+93:64  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+93:71  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/lab-technician/
+reports/[id]/page.tsx
+9:44  Warning: 
+'AlertTriangle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+81:37  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+138:37  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+138:62  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+143:76  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+145:41  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+145:66  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./app/lab-technician/
+requests/page.tsx
+23:8  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'fetchRequests'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+49:18  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+60:18  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+162:94  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+162:110  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./app/lab-technician/
+upload/page.tsx
+19:58  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/patient/billing
+/page.tsx
+70:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+82:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+93:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+112:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+288:45  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/patient/book-wa
+itlist/[token]/page.t
+sx
+41:6  Warning: React 
+Hook useEffect has a 
+missing dependency: '
+fetchBookingDetails'.
+ Either include it 
+or remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+48:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+48:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+74:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+184:73  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+213:16  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/patient/chat/pa
+ge.tsx
+3:39  Warning: 
+'useCallback' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:5  Warning: 
+'DialogDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:5  Warning: 
+'Search' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+68:9  Warning: 
+'detailLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+69:9  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+141:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+157:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/patient/dischar
+ge-summaries/page.tsx
+9:10  Warning: 
+'Badge' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+48:58  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+74:39  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+79:45  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+84:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+84:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+89:46  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+94:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+94:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/patient/lab-res
+ults/page.tsx
+4:47  Warning: 
+'LabRequest' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:29  Warning: 
+'CardHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:41  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:52  Warning: 
+'CardDescription' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:18  Warning: 
+'setPage' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+36:8  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'fetchResults'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+73:36  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/patient/lab-res
+ults/[id]/page.tsx
+6:52  Warning: 
+'CardDescription' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:46  Warning: 
+'FileText' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:56  Warning: 
+'CheckCircle2' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:70  Warning: 
+'XCircle' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+9:79  Warning: 
+'AlertCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+157:54  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+164:45  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+164:70  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./app/patient/page.ts
+x
+68:63  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/patient/patient
+-summaries/page.tsx
+78:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+78:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+83:45  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+88:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+88:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+93:46  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+98:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+98:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/patient/profile
+/page.tsx
+13:10  Warning: 
+'fetchStaffInfo' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:26  Warning: 
+'fetchDoctorInfo' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:43  Warning: 
+'login' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+13:50  Warning: 'upda
+teUserPictureUrl' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:27  Warning: 
+'Upload' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+17:11  Warning: 
+'dispatch' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+17:34  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+53:25  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+75:19  Warning: 
+'res' is assigned a 
+value but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/rcm/chat/page.t
+sx
+3:39  Warning: 
+'useCallback' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:5  Warning: 
+'DialogDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:5  Warning: 
+'Search' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+25:5  Warning: 
+'MessageSquare' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+27:5  Warning: 
+'Loader2' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+30:5  Warning: 
+'UserMinus' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+31:5  Warning: 
+'UserCheck' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+33:5  Warning: 
+'Smile' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+70:9  Warning: 
+'listLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+71:9  Warning: 
+'detailLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+141:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+155:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/rcm/claims/page
+.tsx
+104:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+130:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+150:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/rcm/invoices/pa
+ge.tsx
+24:31  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+100:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+100:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+109:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+109:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+131:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+131:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+435:110  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+435:119  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+459:53  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+459:73  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./app/rcm/layout.tsx
+11:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:10  Warning: 
+'sidebarOpen' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+22:23  Warning: 
+'setSidebarOpen' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/rcm/patient-bil
+ling/page.tsx
+5:5  Warning: 
+'BarChart3' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:5  Warning: 
+'FileBarChart' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:5  Warning: 
+'FileText' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:5  Warning: 
+'Receipt' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/staff/addVitals
+/page.tsx
+38:8  Warning: 
+'axios' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+39:10  Warning: 
+'privateApi' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+112:9  Error: 
+'toastId' is never 
+reassigned. Use 
+'const' instead.  
+prefer-const
+136:9  Error: 
+'toastId' is never 
+reassigned. Use 
+'const' instead.  
+prefer-const
+208:33  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+369:4  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+397:4  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/staff/appointme
+nts/_components/Appoi
+ntmentBookingModal.ts
+x
+10:10  Warning: 
+'Popover' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+10:19  Warning: 
+'PopoverContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:35  Warning: 
+'PopoverTrigger' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+54:47  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+101:22  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+120:36  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+135:18  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+154:11  Warning: 'han
+dleWaitlistAdded' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+173:73  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/staff/appointme
+nts/_components/Dashb
+oardStats.tsx
+24:64  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/staff/appointme
+nts/_components/Docto
+rSelectionTable.tsx
+25:17  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/staff/appointme
+nts/_components/Today
+sAppointmentsView.tsx
+43:22  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/staff/chat/page
+.tsx
+5:10  Warning: 
+'Card' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+5:16  Warning: 
+'CardContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:29  Warning: 
+'CardHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:41  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:3  Warning: 
+'Select' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+13:3  Warning: 
+'SelectContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:3  Warning: 
+'SelectItem' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:3  Warning: 
+'SelectTrigger' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:3  Warning: 
+'SelectValue' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:3  Warning: 
+'DialogDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+25:3  Warning: 
+'DialogTrigger' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+28:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+30:3  Warning: 
+'Search' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+38:3  Warning: 'X' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+39:3  Warning: 
+'AlertCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+40:3  Warning: 
+'Bell' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+41:3  Warning: 
+'Smile' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+46:10  Warning: 
+'Alert' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+46:17  Warning: 
+'AlertDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+55:3  Warning: 
+'ConversationDetail' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+62:25  Warning: 
+'getSocket' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+83:5  Warning: 
+'detailLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+84:5  Warning: 
+'contactsLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+85:5  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+193:14  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+209:14  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./app/staff/dashboard
+/page.tsx
+5:10  Warning: 
+'useEffect' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:21  Warning: 
+'useState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+6:10  Warning: 
+'useDispatch' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:10  Warning: 
+'AppDispatch' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:10  Warning: 
+'fetchDepartments' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:8  Warning: 
+'toast' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/staff/handoff-n
+otes/page.tsx
+81:52  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+88:50  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+89:56  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+90:58  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+100:50  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+165:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+194:33  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+199:42  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+204:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+204:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+213:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+213:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+244:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+244:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+249:33  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+273:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+273:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+1005:51  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/staff/layout.ts
+x
+7:10  Warning: 'Hospi
+talAdminMobileNav' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:10  Warning: 
+'StaffMoblileNav' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+11:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:10  Warning: 
+'SuperAdminHeader' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:3  Warning: 
+'Menu' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+18:3  Warning: 
+'Users' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+19:3  Warning: 
+'Building2' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:3  Warning: 
+'Shield' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+22:3  Warning: 'X' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+29:3  Warning: 
+'Plus' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+30:3  Warning: 
+'LogOut' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+36:10  Warning: 
+'Sidebar' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+43:9  Warning: 
+'name' is assigned a 
+value but never 
+used.  @typescript-es
+lint/no-unused-vars
+44:10  Warning: 
+'sidebarOpen' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+44:23  Warning: 
+'setSidebarOpen' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+45:9  Warning: 
+'hospital' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+79:9  Warning: 
+'sideBarNavigation' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/staff/page.tsx
+8:10  Warning: 
+'useRouter' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:33  Warning: 
+'DynamicData' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:10  Warning: 
+'Button' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+18:3  Warning: 
+'useReactTable' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+19:3  Warning: 
+'getCoreRowModel' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:3  Warning: 'getPa
+ginationRowModel' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:3  Warning: 
+'flexRender' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+22:3  Warning: 
+'ColumnDef' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+27:8  Warning: 
+'PatientCards' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/staff/patientIn
+take/page.tsx
+57:7  Warning: 
+'formSchema' is 
+assigned a value but 
+only used as a type. 
+ @typescript-eslint/n
+o-unused-vars
+
+./app/staff/_componen
+ts/AppointmentSchedul
+er.tsx
+19:3  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+36:8  Warning: 
+'toast' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+285:71  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/superadmin/chat
+/page.tsx
+3:39  Warning: 
+'useCallback' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:5  Warning: 
+'DialogDescription' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+17:5  Warning: 
+'DialogTrigger' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+27:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+30:5  Warning: 
+'Plus' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+32:5  Warning: 
+'MessageSquare' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+37:5  Warning: 
+'UserMinus' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+38:5  Warning: 
+'UserCheck' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+79:9  Warning: 
+'detailLoading' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+81:9  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+87:31  Warning: 'setC
+ontactSearchTerm' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+151:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+165:18  Warning: 
+'err' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+174:11  Warning: 
+'getRoleBadgeColor' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/superadmin/conf
+igure/page.tsx
+6:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+70:73  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./app/superadmin/crea
+te-hospital/page.tsx
+12:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+165:13  Warning: 
+'response' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+582:29  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+636:29  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/superadmin/page
+.tsx
+18:10  Warning: 
+'Trash2' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+20:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:10  Warning: 
+'PencilSvg' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+100:17  Warning: 
+Using `<img>` could 
+result in slower LCP 
+and higher 
+bandwidth. Consider 
+using `<Image />` 
+from `next/image` or 
+a custom image 
+loader to 
+automatically 
+optimize images. 
+This may incur 
+additional usage or 
+cost from your 
+provider. See: https:
+//nextjs.org/docs/mes
+sages/no-img-element 
+ @next/next/no-img-el
+ement
+
+./app/superadmin/subs
+criptions/page.tsx
+29:10  Warning: 
+'AdminHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/_apis/appointme
+ntIcdCodes.ts
+35:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+51:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+67:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+83:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/auth/auth
+.ts
+1:21  Warning: 
+'privateApi' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+4:10  Warning: 'Hospi
+talCreationData' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./app/_apis/discharge
+Summaries.ts
+48:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+58:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+72:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+82:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+98:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+110:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+122:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+134:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+149:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/handoffNo
+tes.ts
+54:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+64:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+74:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+87:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+97:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+109:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+121:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+131:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/hospital_
+Admin/analytics.ts
+62:24  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+117:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/hospital_
+Admin/api.ts
+3:10  Warning: 
+'Staff' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./app/_apis/invoices.
+ts
+41:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+50:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+61:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+71:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+80:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+89:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+100:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+109:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+119:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+130:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/patient/b
+illing.ts
+131:12  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/patientSu
+mmaries.ts
+54:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+64:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+76:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+86:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+102:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+114:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+126:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+138:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+148:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/patientTa
+sks.ts
+41:19  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./app/_apis/staff/rec
+eptionist.ts
+33:44  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/add-slot
+-dialog.tsx
+73:60  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+107:6  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 'validate
+CurrentSlot'. Either 
+include it or remove 
+the dependency 
+array.  react-hooks/e
+xhaustive-deps
+125:6  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 'title'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+269:55  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/appointm
+ent-booking-example.t
+sx
+8:3  Warning: 'fetchM
+yAvailableSlots' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:3  Warning: 'blockA
+ppointmentSlot' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:3  Warning: 'unblo
+ckAppointmentSlot' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+59:9  Warning: 
+'homeVisitSlots' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+156:13  Warning: 
+'date' is assigned a 
+value but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/appointm
+ents/IcdCodeManager.t
+sx
+10:10  Warning: 'X' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+39:10  Warning: 
+'saving' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+52:6  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'loadCurrentCodes'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+68:16  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+84:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+107:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+122:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+252:42  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+252:56  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./components/billing/
+BillingManagement.tsx
+16:16  Warning: 
+'BillItem' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+16:26  Warning: 
+'HospitalPatient' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+28:5  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+105:25  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+131:25  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+142:25  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+161:25  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+178:25  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+487:132  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+487:141  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+511:75  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+511:95  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+673:88  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/billing/
+PaymentDialog.tsx
+12:10  Warning: 
+'CardElement' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:23  Warning: 
+'Elements' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:10  Warning: 
+'getStripe' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:11  Warning: 
+'PaymentDialogProps' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+25:7  Warning: 'CARD_
+ELEMENT_OPTIONS' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+43:10  Warning: 
+'PaymentForm' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+48:3  Warning: 
+'onClose' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+56:9  Warning: 
+'stripe' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+57:9  Warning: 
+'elements' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+196:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/billing/
+StripePaymentDialog.t
+sx
+143:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/chat-pan
+el.tsx
+1:10  Warning: 
+'MessageCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/create-s
+ession-with-slots-bac
+kup.tsx
+3:27  Warning: 
+'useEffect' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+418:50  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+418:59  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+513:87  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+542:73  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/create-s
+ession-with-slots.tsx
+3:27  Warning: 
+'useEffect' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:3  Warning: 'create
+SessionPattern' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:3  Warning: 'fetchS
+essionPatterns' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:3  Warning: 'delete
+SessionPattern' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:3  Warning: 
+'clearCreateStatus' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+11:3  Warning: 
+'RecurrenceConfig' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:3  Warning: 
+'AdvancedSession' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:8  Warning: 
+'toast' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+15:10  Warning: 
+'InfinitySpin' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+39:72  Warning: 
+'Info' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+39:78  Warning: 
+'Trash2' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+39:86  Warning: 
+'Loader2' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+39:95  Warning: 
+'CheckCircle2' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+42:10  Warning: 
+'Textarea' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+66:7  Warning: 
+'DURATIONS' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+78:7  Warning: 
+'shortDays' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+79:7  Warning: 
+'weekOptions' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+84:7  Warning: 
+'daysOfWeek' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+87:9  Warning: 
+'dispatch' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+88:11  Warning: 
+'patterns' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+88:21  Warning: 
+'status' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+88:29  Warning: 
+'createStatus' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+88:43  Warning: 
+'deleteStatus' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+88:57  Warning: 
+'error' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+93:10  Warning: 
+'sessionMode' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+93:23  Warning: 
+'setSessionMode' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+96:10  Warning: 
+'simpleName' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+96:22  Warning: 
+'setSimpleName' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+97:10  Warning: 
+'simpleDayOfWeek' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+97:27  Warning: 
+'setSimpleDayOfWeek' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+98:10  Warning: 
+'simpleStartTime' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+98:27  Warning: 
+'setSimpleStartTime' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+99:10  Warning: 
+'simpleEndTime' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+99:25  Warning: 
+'setSimpleEndTime' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+100:10  Warning: 
+'simpleSessionType' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+100:29  Warning: 'set
+SimpleSessionType' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+101:10  Warning: 'sim
+pleDurationWeeks' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+101:31  Warning: 'set
+SimpleDurationWeeks' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+113:10  Warning: 
+'selectedDays' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+113:24  Warning: 
+'setSelectedDays' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+114:10  Warning: 
+'monthDays' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+114:21  Warning: 
+'setMonthDays' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+115:10  Warning: 
+'monthDaysInput' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+115:26  Warning: 
+'setMonthDaysInput' 
+is assigned a value 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+116:10  Warning: 
+'week' is assigned a 
+value but never 
+used.  @typescript-es
+lint/no-unused-vars
+116:16  Warning: 
+'setWeek' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+117:10  Warning: 
+'weekDay' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+117:19  Warning: 
+'setWeekDay' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+449:50  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+449:59  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+558:59  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+576:65  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/doctor-h
+eader.tsx
+4:3  Warning: 'Home' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:3  Warning: 
+'Users' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+6:3  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:3  Warning: 
+'FileText' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:3  Warning: 
+'MessageCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:3  Warning: 
+'Settings' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:3  Warning: 
+'LogOut' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+17:8  Warning: 
+'Link' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+19:10  Warning: 'cn' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+28:32  Warning: 
+'navigation' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/doctor-m
+obile-nav.tsx
+3:10  Warning: 
+'useState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:3  Warning: 'Menu' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:3  Warning: 'X' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:3  Warning: 'Home' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:3  Warning: 
+'Users' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+11:3  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:3  Warning: 
+'FileText' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:3  Warning: 
+'MessageSquare' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:3  Warning: 
+'Settings' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+19:10  Warning: 
+'useDispatch' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+19:23  Warning: 
+'useSelector' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:10  Warning: 
+'RootState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:32  Warning: 'togg
+leDoctorSidebar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+29:9  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/doctor-s
+idebar.tsx
+27:9  Warning: 
+'router' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+30:9  Warning: 
+'hospital' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./components/doctor-s
+lot-management.tsx
+22:3  Warning: 
+'XCircle' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+105:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+128:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./components/Document
+SignButton.tsx
+52:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+79:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/EditHosp
+italProfile.tsx
+71:33  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./components/hospital
+-admin-sidebar.tsx
+3:10  Warning: 
+'useState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:3  Warning: 
+'BarChart3' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:3  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:3  Warning: 
+'Shield' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+55:9  Warning: 
+'router' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/lab-tech
+nician-sidebar.tsx
+3:10  Warning: 
+'useState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+38:11  Warning: 
+'router' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/manage-a
+vailability.tsx
+68:7  Warning: 
+'weekOptions' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./components/notifica
+tions-panel.tsx
+2:10  Warning: 
+'Progress' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/patient-
+stats.tsx
+104:53  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./components/PatientS
+ynopsis.tsx
+69:75  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+82:39  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+
+./components/patientT
+able.tsx
+5:17  Warning: 
+'useEffect' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:28  Warning: 
+'useMemo' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+6:10  Warning: 
+'useSelector' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+6:23  Warning: 
+'useDispatch' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:8  Warning: 
+'toast' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+10:10  Warning: 
+'AppDispatch' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:23  Warning: 
+'RootState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+11:10  Warning: 
+'fetchAllPatients' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:10  Warning: 'crea
+teColumnsFromData' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:10  Warning: 
+'Card' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+15:16  Warning: 
+'CardContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:29  Warning: 
+'CardHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:41  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+24:10  Warning: 
+'InfinitySpin' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+25:8  Warning: 
+'Link' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+44:32  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/practice
+-management-sidebar.t
+sx
+4:3  Warning: 
+'BarChart3' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+6:3  Warning: 
+'Building2' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:3  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:3  Warning: 
+'Shield' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+9:3  Warning: 'Plus' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+11:3  Warning: 
+'BookAudio' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:3  Warning: 
+'AudioLines' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+44:9  Warning: 
+'router' is assigned 
+a value but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/prescrip
+tions/PrescriptionLis
+t.tsx
+20:49  Warning: 
+'Clock' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./components/prescrip
+tions/PrescriptionMan
+ager.tsx
+23:34  Warning: 
+'Phone' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+23:41  Warning: 
+'Mail' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+23:47  Warning: 
+'MapPin' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+130:57  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+141:42  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+144:46  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/session-
+management-wizard.tsx
+3:38  Warning: 
+'useMemo' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+11:3  Warning: 'Sessi
+onCreateRequest' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:3  Warning: 
+'SessionType' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+19:3  Warning: 'forma
+tValidationErrors' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+20:3  Warning: 
+'hasFieldError' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+21:3  Warning: 'getFi
+eldErrorMessage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+26:10  Warning: 'Sess
+ionManagementWizardPr
+ops' is defined but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+49:3  Warning: 
+'Dialog' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+50:3  Warning: 
+'DialogContent' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+51:3  Warning: 
+'DialogHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+52:3  Warning: 
+'DialogTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+53:3  Warning: 
+'DialogFooter' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+98:7  Warning: 
+'weekOptions' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+220:60  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+366:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+368:33  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+555:53  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+690:72  Error: `'` 
+can be escaped with 
+`&apos;`, `&lsquo;`, 
+`&#39;`, `&rsquo;`.  
+react/no-unescaped-en
+tities
+1156:144  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+1319:37  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+1319:46  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+1377:78  Warning: 
+'index' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+
+./components/shared-p
+rofile.tsx
+3:18  Warning: 
+'useState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+54:40  Warning: 
+'uploadError' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./components/sidebar.
+tsx
+4:3  Warning: 
+'Settings' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:3  Warning: 
+'DollarSign' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:34  Warning: 
+'AvatarImage' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/Signatur
+ePad.tsx
+34:16  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+172:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+203:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+355:25  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+355:31  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+356:25  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+356:40  Error: `"` 
+can be escaped with 
+`&quot;`, `&ldquo;`, 
+`&#34;`, `&rdquo;`.  
+react/no-unescaped-en
+tities
+
+./components/staff-mo
+bile-nav.tsx
+7:3  Warning: 
+'Users' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+8:3  Warning: 
+'Building2' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:3  Warning: 
+'Shield' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+13:3  Warning: 
+'ClipboardList' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+
+./components/superadm
+in-header.tsx
+4:3  Warning: 'Home' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+5:3  Warning: 
+'Users' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+6:3  Warning: 
+'Calendar' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:3  Warning: 
+'FileText' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+8:3  Warning: 
+'MessageCircle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+9:3  Warning: 
+'Settings' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+10:3  Warning: 
+'LogOut' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+18:10  Warning: 'cn' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+24:7  Warning: 
+'navigation' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+31:9  Warning: 
+'pathname' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+
+./components/waitlist
+/triage-interface.tsx
+22:18  Warning: 
+'differenceInDays' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+73:6  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'loadTriageData'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+81:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+93:13  Warning: 
+'response' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+106:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+120:13  Warning: 
+'response' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+135:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/waitlist
+/waitlist-management-
+panel.tsx
+132:6  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 
+'loadInitialData'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+139:6  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 
+'doctorId'. Either 
+include it or remove 
+the dependency 
+array.  react-hooks/e
+xhaustive-deps
+146:6  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 
+'doctorId'. Either 
+include it or remove 
+the dependency 
+array.  react-hooks/e
+xhaustive-deps
+150:6  Warning: 
+React Hook useEffect 
+has a missing 
+dependency: 
+'calculateStats'. 
+Either include it or 
+remove the 
+dependency array.  re
+act-hooks/exhaustive-
+deps
+161:14  Warning: 
+'error' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+161:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+328:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+346:22  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+366:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+389:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+506:53  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+532:65  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+761:42  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/waitlist
+/waitlist-summary.tsx
+40:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/_compone
+nts/PatientSnapShot/M
+edicalHistoryCard.tsx
+44:74  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/_compone
+nts/PatientSnapShot/P
+atientSidebar.tsx
+3:16  Warning: 
+'CardHeader' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+3:28  Warning: 
+'CardTitle' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+3:39  Warning: 
+'CardDescription' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+7:16  Warning: 
+'User2' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+9:69  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./components/_compone
+nts/PatientSnapShot/P
+atientTasks.tsx
+31:6  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'loadTasks'. Either 
+include it or remove 
+the dependency 
+array.  react-hooks/e
+xhaustive-deps
+57:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/appointment-slo
+t-api-examples.ts
+19:28  Warning: 
+'RootState' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+34:28  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+94:28  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+142:26  Warning: 
+'fetchSlots' is 
+assigned a value but 
+never used.  @typescr
+ipt-eslint/no-unused-
+vars
+145:8  Warning: 
+'ApiStatus' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+183:28  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+206:28  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+349:43  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/error-handling.
+ts
+16:28  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+19:48  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+34:48  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+69:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+81:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+93:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+116:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+139:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+151:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+163:49  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+173:38  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+232:28  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+256:83  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+339:39  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+339:69  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+385:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/session-api-int
+egration-example.ts
+18:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+36:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+71:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+100:21  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/session-api-ser
+vice.ts
+2:10  Warning: 
+'handleApiError' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+12:5  Warning: 
+'CacheOptions' is 
+defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+13:5  Warning: 'Advan
+cedSessionFilters' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+14:5  Warning: 
+'PaginationOptions' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+15:5  Warning: 'Pagin
+atedSessionResponse' 
+is defined but never 
+used.  @typescript-es
+lint/no-unused-vars
+68:48  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+564:68  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+574:37  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+886:35  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/session-api-typ
+es.ts
+144:18  Error: An 
+interface declaring 
+no members is 
+equivalent to its 
+supertype.  @typescri
+pt-eslint/no-empty-ob
+ject-type
+
+./lib/session-request
+-builder.ts
+35:47  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+145:17  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/session-validat
+ion.ts
+239:3  Warning: 
+'week' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+240:3  Warning: 
+'weekDay' is defined 
+but never used.  @typ
+escript-eslint/no-unu
+sed-vars
+583:57  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/socket.ts
+40:40  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+67:42  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+89:50  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/tableUtils.tsx
+7:42  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+38:35  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+./lib/waitlist-api.ts
+290:12  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+318:12  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-es
+lint/no-explicit-any
+
+info  - Need to 
+disable some ESLint 
+rules? Learn more 
+here: https://nextjs.
+org/docs/app/api-refe
+rence/config/eslint#d
+isabling-rules

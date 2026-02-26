@@ -11,6 +11,7 @@ from schemas.billing_schema import (
     BillPaymentRequest, BillPaymentResponse, StripePaymentIntentRequest,
     StripePaymentIntentResponse, BillUpdateRequest
 )
+from models.lab_request_model import LabRequest, LabRequestStatus
 from utils.stripe_utils import create_payment_intent, retrieve_payment_intent
 from utils.email_utils import send_billing_reminder_email
 from datetime import datetime, timedelta
@@ -98,12 +99,13 @@ def generate_bill_for_patient(db: Session, bill_data: BillCreate, current_user: 
         if apt.id not in billed_appointment_ids
     ]
     
-    # Check if there are any unbilled appointments
+    # Check if there are any unbilled appointments OR unbilled lab requests
+    # We delay raising the exception until we check lab requests too
+    has_billable_items = bool(unbilled_appointments)
+
+    # We will check lab requests later, so we just log if no appointments found
     if not unbilled_appointments:
-        raise HTTPException(
-            status_code=400,
-            detail=f"All appointments for this patient already have bills. No new appointments to bill."
-        )
+         logger.info(f"No new unbilled appointments for patient {bill_data.patient_user_id}. Checking for lab requests...")
     
     # Log information about skipped appointments
     if billed_appointment_ids:
@@ -141,7 +143,62 @@ def generate_bill_for_patient(db: Session, bill_data: BillCreate, current_user: 
         
         bill_items.append(bill_item)
         total_amount += amount
+
+    # --- START OF LAB REQUEST BILLING ---
+    # Get all COMPLETED lab requests for this patient
+    lab_requests = db.query(LabRequest).filter(
+        LabRequest.patient_id == bill_data.patient_user_id,
+        LabRequest.status == LabRequestStatus.COMPLETED
+    ).all()
+
+    if lab_requests:
+        # Filter out lab requests that already have bills
+        lab_request_ids = [req.id for req in lab_requests]
+        existing_lab_bill_items = db.query(BillItem).filter(
+            BillItem.lab_request_id.in_(lab_request_ids)
+        ).all()
+        
+        billed_lab_request_ids = {item.lab_request_id for item in existing_lab_bill_items}
+        
+        unbilled_lab_requests = [
+            req for req in lab_requests
+            if req.id not in billed_lab_request_ids
+        ]
+        
+        if billed_lab_request_ids:
+             logger.info(
+                f"Skipping {len(billed_lab_request_ids)} already-billed lab requests for patient user_id {bill_data.patient_user_id}. "
+                f"Billing {len(unbilled_lab_requests)} new lab requests."
+            )
+
+        for req in unbilled_lab_requests:
+            # Use price from request, or default if missing
+            # If price is missing, we might want to assign a default based on type
+            # For now, let's assume a default of $150 if not set
+            amount = req.price if req.price is not None else 150.0
+            unit_price = amount
+            
+            bill_item = BillItem(
+                lab_request_id=req.id,
+                description=f"Lab Test - {req.request_type} ({req.priority})",
+                service_date=req.updated_at or datetime.utcnow(),
+                amount=amount,
+                quantity=1,
+                unit_price=unit_price,
+                # appointment_id is nullable now, so we can leave it null or link it if available
+                appointment_id=req.appointment_id 
+            )
+            
+            bill_items.append(bill_item)
+            total_amount += amount
+    # --- END OF LAB REQUEST BILLING ---
     
+    if not bill_items:
+        raise HTTPException(
+            status_code=400,
+            detail="No billable items (appointments or lab requests) found for this patient."
+        )
+
     # Create the bill
     bill_number = generate_bill_number()
     due_date = datetime.utcnow() + timedelta(days=30)  # 30 days to pay
@@ -785,6 +842,7 @@ def _build_bill_detail_response(db: Session, bill: Bill) -> BillDetailResponse:
             id=item.id,
             bill_id=item.bill_id,
             appointment_id=item.appointment_id,
+            lab_request_id=item.lab_request_id,
             description=item.description,
             icd_code=item.icd_code,
             icd_description=item.icd_description,

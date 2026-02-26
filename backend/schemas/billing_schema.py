@@ -4,7 +4,8 @@ from datetime import datetime
 from typing import Optional, List
 
 class BillItemBase(BaseModel):
-    appointment_id: int
+    appointment_id: Optional[int] = None
+    lab_request_id: Optional[int] = None
     description: str
     icd_code: Optional[str] = None
     icd_description: Optional[str] = None

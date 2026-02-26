@@ -38,6 +38,7 @@ class LabRequestResponse(BaseModel):
     notes: Optional[str] = None
     doctor_comment: Optional[str] = None
     doctor_rating: Optional[int] = None
+    price: Optional[float] = None
     created_at: datetime
     updated_at: datetime
     patient_name: Optional[str] = None
@@ -62,6 +63,7 @@ class LabRequestCreate(BaseModel):
     appointment_id: Optional[int] = None
     notes: Optional[str] = None
     priority: str = "NORMAL"
+    price: Optional[float] = None
 
 class LabReviewInput(BaseModel):
     comment: str
@@ -98,7 +100,8 @@ def create_lab_request(
         request_type=data.request_type,
         status=LabRequestStatus.PENDING,
         notes=data.notes,
-        priority=data.priority
+        priority=data.priority,
+        price=data.price
     )
     db.add(new_request)
     db.commit()

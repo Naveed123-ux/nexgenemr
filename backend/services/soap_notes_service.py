@@ -4,16 +4,18 @@ from fastapi import UploadFile, HTTPException, status
 from pydantic import BaseModel
 from typing import Optional
 from sqlalchemy.orm import Session
-from models.patient_profile_model import PatientProfile # <-- ADD THIS IMPORT
+from models.patient_profile_model import PatientProfile
 from typing import List, Optional 
 
-# Import Gemini API
-import google.generativeai as genai
+# Import Google GenAI
+from google import genai
+from google.genai.types import GenerateContentConfig
 
 from db.db import get_db
 from models.soap_note_model import SoapNote as SoapNoteModel
 from models.appointment_model import Appointment
 from models.appointment_session_model import AppointmentSession
+
 # Pydantic models
 class SoapNote(BaseModel):
     subjective: str
@@ -38,6 +40,13 @@ ALLOWED_AUDIO_TYPES = {
     "audio/wav",
     "audio/x-wav",
 }
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise RuntimeError("GEMINI_API_KEY is not set")
+
+# Initialize the GenAI client
+gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 
 def _validate_audio_file(audio_file: UploadFile, audio_content: bytes) -> None:
@@ -83,26 +92,14 @@ def _validate_audio_file(audio_file: UploadFile, audio_content: bytes) -> None:
 def _transcribe_audio_with_gemini(audio_content: bytes, mime_type: str, filename: str) -> str:
     """
     Uses Gemini API to transcribe audio content.
-    Gemini 2.5 Flash supports audio input directly.
+    Gemini 2.0 Flash supports audio input directly.
     """
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
-
-    if not gemini_api_key:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="GEMINI_API_KEY is not set in the environment."
-        )
-
     print("--- 🗣️ Transcribing audio with Gemini API ---")
     
     import tempfile
     temp_file_path = None
     
     try:
-        genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-2.0-flash-exp')
-        
-        # Save audio to temporary file
         print("   💾 Saving audio to temporary file...")
         with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(filename)[1]) as temp_file:
             temp_file.write(audio_content)
@@ -110,12 +107,10 @@ def _transcribe_audio_with_gemini(audio_content: bytes, mime_type: str, filename
         
         print(f"   📤 Uploading audio file to Gemini... ({temp_file_path})")
         
-        # Upload audio file to Gemini
-        audio_file = genai.upload_file(
-            path=temp_file_path,
-            mime_type=mime_type
-        )
-        print(f"   ✅ Audio file uploaded successfully")
+        # Upload audio file using the client's files API
+        with open(temp_file_path, 'rb') as f:
+         uploaded_file = gemini_client.files.upload(file=temp_file_path)
+        print(f"   ✅ Audio file uploaded successfully: {uploaded_file.name}")
         
         # Create transcription prompt
         prompt = """You are a medical transcription assistant. Listen to this audio recording of a doctor-patient conversation and provide an accurate, detailed transcription.
@@ -131,7 +126,13 @@ Instructions:
 Provide ONLY the transcription, no additional commentary."""
 
         print("   🎧 Generating transcription...")
-        response = model.generate_content([prompt, audio_file])
+        
+        # Generate content with the uploaded file - simple approach
+        response = gemini_client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=[prompt, uploaded_file]
+        )
+        
         transcript = response.text.strip()
         
         if not transcript:
@@ -143,6 +144,13 @@ Provide ONLY the transcription, no additional commentary."""
         print(f"   ✅ Transcription completed: {len(transcript)} characters")
         print(f"   📝 Preview: {transcript[:200]}...")
         
+        # Clean up uploaded file from Gemini
+        try:
+            gemini_client.files.delete(name=uploaded_file.name)
+            print(f"   🗑️ Uploaded file deleted from Gemini")
+        except Exception as e:
+            print(f"   ⚠️ Failed to delete uploaded file from Gemini: {e}")
+        
         return transcript
 
     except HTTPException:
@@ -150,6 +158,8 @@ Provide ONLY the transcription, no additional commentary."""
     except Exception as e:
         print(f"   ❌ Gemini Transcription Error: {str(e)}")
         print(f"   ❌ Error type: {type(e).__name__}")
+        import traceback
+        print(f"   ❌ Traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to transcribe audio with Gemini API: {str(e)}"
@@ -169,21 +179,10 @@ def _generate_soap_notes_from_text(transcript: str) -> SoapNote:
     Calls the Gemini API to generate structured SOAP notes from a transcript.
     Returns a clean SoapNote object with only the four required fields.
     """
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
-
-    if not gemini_api_key:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="GEMINI_API_KEY is not set in the environment."
-        )
-
     print(f"--- 🧠 Generating SOAP notes with Gemini API ---")
     print(f"   📝 Transcript length: {len(transcript)} characters")
     
     try:
-        genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-2.0-flash-exp')
-        
         prompt = f"""You are a medical documentation assistant. Extract clinical information from this doctor-patient conversation and format it as SOAP notes.
 
 Return ONLY a valid JSON object with these four fields:
@@ -205,7 +204,15 @@ Rules:
 Conversation Transcript:
 {transcript}"""
 
-        response = model.generate_content(prompt)
+        response = gemini_client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=prompt,
+            config=GenerateContentConfig(
+                temperature=0.1,
+                response_mime_type="application/json"
+            )
+        )
+        
         soap_text = response.text.strip()
         
         print(f"   📄 Raw Gemini response length: {len(soap_text)} characters")
@@ -247,6 +254,8 @@ Conversation Transcript:
     except Exception as e:
         print(f"   ❌ Gemini API Error: {str(e)}")
         print(f"   ❌ Error type: {type(e).__name__}")
+        import traceback
+        print(f"   ❌ Traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate SOAP notes with Gemini API: {str(e)}"
@@ -396,6 +405,7 @@ def save_soap_note(db: Session, appointment_id: int, soap_note_data: SoapNote) -
     print(f"   ✅ SOAP note saved successfully with ID: {db_soap_note.id}")
     return db_soap_note
 
+
 def get_all_soap_notes_for_patient(patient_user_id: int, db: Session) -> List[SoapNoteResponse]:
     """
     Retrieves all historical SOAP notes for a specific patient using their user_id,
@@ -420,7 +430,6 @@ def get_all_soap_notes_for_patient(patient_user_id: int, db: Session) -> List[So
     ).order_by(
         AppointmentSession.start_time.desc()
     ).all()
-    # --- END OF CHANGES ---
 
     return [
         SoapNoteResponse(

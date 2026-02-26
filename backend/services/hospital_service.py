@@ -12,6 +12,7 @@ from models.hospital_model import Hospital
 from models.user_model import User
 from models.role_model import Role
 from services.user_service import get_password_hash
+from utils.encryption import encrypt_field
 from utils.email_utils import send_welcome_email
 from utils.cloudinary_utils import upload_image
 
@@ -130,8 +131,7 @@ def create_hospital_and_admin(
         if not admin_role:
             raise HTTPException(status_code=500, detail="The 'Hospital_Admin' role has not been configured.")
 
-        all_users = db.query(User).all()
-        if any(user.email == hospital_data.email for user in all_users):
+        if db.query(User).filter(User.email == encrypt_field(hospital_data.email)).first():
             raise HTTPException(status_code=400, detail="A user with this email already exists.")
 
         temp_password = generate_temporary_password()

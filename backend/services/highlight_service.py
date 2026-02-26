@@ -6,13 +6,19 @@ import os
 from typing import List, Dict, Any
 
 # Import Gemini API
-import google.generativeai as genai
+from google import genai
 
 # Import necessary models
 from models.soap_note_model import SoapNote
 from models.appointment_model import Appointment
 from models.patient_profile_model import PatientProfile
 from models.clinical_data_model import MedicalHistory, Vitals
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise RuntimeError("GEMINI_API_KEY is not set")
+
+gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 
 # Pydantic models to structure the API response
 class Highlight(BaseModel):
@@ -27,36 +33,29 @@ def _generate_highlights_from_ai(prompt: str) -> Dict[str, Any]:
     """
     Calls the Gemini 1.5 Flash model and ensures the output is valid JSON.
     """
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
-    if not gemini_api_key:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="GEMINI_API_KEY is not set in the environment."
+    try:
+        response = gemini_client.models.generate_content(
+            model="gemini-2.0-flash",  # or 'gemini-2.0-flash' if available
+            contents=[prompt]
         )
 
-    try:
-        genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        
-        # The detailed prompt instructs the AI to return a JSON object.
-        raw_response_text = model.generate_content(prompt).text
-        
-        # Clean the response to ensure it's a valid JSON string
-        cleaned_json_string = raw_response_text.strip().replace("```json", "").replace("```", "").strip()
-        
-        return json.loads(cleaned_json_string)
+        raw_text = response.text.strip()
+        # Remove accidental markdown/code fences
+        raw_text = raw_text.replace("```json", "").replace("```", "").strip()
+
+        return json.loads(raw_text)
 
     except json.JSONDecodeError:
-        print(f"  ❌ AI Response (JSON Decode Error): Could not parse the following text into JSON:\n{raw_response_text}")
+        print(f"❌ AI Response JSON Decode Error:\n{raw_text}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to parse highlights from AI. The response was not valid JSON."
         )
     except Exception as e:
-        print(f"  ❌ AI Generation Error: {e}")
+        print(f"❌ AI Generation Error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An unexpected error occurred while generating highlights with the AI: {e}"
+            detail=f"Unexpected error while generating highlights with AI: {e}"
         )
 
 def generate_contextual_highlights(soap_note_id: int, db: Session) -> HighlightResponse:

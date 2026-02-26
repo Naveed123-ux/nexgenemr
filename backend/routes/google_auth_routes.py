@@ -52,6 +52,28 @@ def google_auth_callback(
     if not current_user:
         raise HTTPException(status_code=404, detail="User from state token not found.")
 
-    result = google_auth_service.handle_google_callback(code, current_user, db)
+    google_auth_service.handle_google_callback(code, current_user, db)
     
-    return result
+    from fastapi.responses import HTMLResponse
+    html_content = """
+    <html>
+        <body>
+            <script>
+                window.opener.postMessage('google-auth-success', '*');
+                window.close();
+            </script>
+            <p>Authentication successful! This window will close automatically.</p>
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+    
+@router.delete("/disconnect")
+def disconnect_google(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Disconnects the Google account by deleting the saved tokens.
+    """
+    return google_auth_service.disconnect_google_token(current_user, db)

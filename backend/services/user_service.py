@@ -123,10 +123,8 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     role = db.query(Role).filter(Role.id == user.role_id).first()
     if not role:
         raise HTTPException(status_code=404, detail=f"Role with id {user.role_id} not found")
-    all_users = db.query(User).all()
-    for existing_user in all_users:
-        if existing_user.email == user.email:
-            raise HTTPException(status_code=400, detail="Email already registered")
+    if db.query(User).filter(User.email == encrypt_field(user.email)).first():
+        raise HTTPException(status_code=400, detail="Email already registered")
     hashed_password = get_password_hash(user.password)
     now_str = str(datetime.utcnow())
     db_user = User(

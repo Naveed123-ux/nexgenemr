@@ -16,6 +16,14 @@ export const connectGoogle = async () => {
   }
 };
 
-// Note: Audio generation is now handled through Redux (generateSoapNoteFromAudio)
-// Text generation is also handled through Redux (generateSoapNoteFromText)
-// See soapSlice.ts for the implementation
+export const disconnectGoogle = async () => {
+  try {
+    const response = await privateApi.delete("/google/auth/disconnect");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.detail || "Failed to disconnect");
+    }
+    throw new Error("Failed to disconnect");
+  }
+};

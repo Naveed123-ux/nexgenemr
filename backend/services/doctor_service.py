@@ -12,6 +12,7 @@ from models.department_model import Department
 from models.doctor_profile_model import DoctorProfile
 from services.user_service import get_password_hash
 from services.hospital_service import generate_temporary_password
+from utils.encryption import encrypt_field
 from utils.email_utils import send_welcome_email
 from utils.cloudinary_utils import upload_image
 
@@ -79,6 +80,7 @@ class DoctorProfileResponse(BaseModel):
     biography: str
     languages_spoken: List[str]
     profile_picture_url: Optional[str]
+    is_google_connected: bool
 
 def create_doctor(
     db: Session,
@@ -101,7 +103,7 @@ def create_doctor(
         if not department:
             raise HTTPException(status_code=400, detail="Department not found in your hospital.")
 
-        if db.query(User).filter(User.email == doctor_data.email).first():
+        if db.query(User).filter(User.email == encrypt_field(doctor_data.email)).first():
             raise HTTPException(status_code=400, detail="A user with this email already exists.")
 
         # Upload profile picture only if provided
@@ -290,5 +292,6 @@ def get_my_doctor_profile(current_user: User):
         available_for_telehealth=profile.available_for_telehealth,
         biography=profile.biography,
         languages_spoken=profile.languages_spoken.split(',') if profile.languages_spoken else [],
-        profile_picture_url=profile.profile_picture_url
+        profile_picture_url=profile.profile_picture_url,
+        is_google_connected=current_user.google_auth_token is not None
     )

@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/doctor-sidebar";
 import { DoctorHeader } from "@/components/doctor-header";
 import { DoctorMobileNav } from "@/components/doctor-mobile-nav";
 import ChatbotWidget from "@/components/patient/ChatbotWidget";
-import { Home, CreditCard, FileText, Heart } from "lucide-react";
+import { Home, CreditCard, FileText, Heart, MessageSquare } from "lucide-react";
 
 const navigation = [
   { name: "Dashboard", href: "/patient", icon: Home },
@@ -14,6 +14,7 @@ const navigation = [
   { name: "Discharge Summaries", href: "/patient/discharge-summaries", icon: FileText },
   { name: "My Health Summaries", href: "/patient/patient-summaries", icon: Heart },
   { name: "Lab Results", href: "/patient/lab-results", icon: FileText },
+  { name: "Doctor Chat", href: "/patient/chat", icon: MessageSquare },
 ];
 
 import { useDispatch, useSelector } from "react-redux";

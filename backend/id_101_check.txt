@@ -1,0 +1,39 @@
+--- Checking ID: 101 ---
+appointments: 0
+soap_notes: Error - (psycopg2.errors.UndefinedColumn) column "doctor_id" does not exist
+LINE 1: SELECT count(*) FROM soap_notes WHERE doctor_id = 101
+                                              ^
+
+[SQL: SELECT count(*) FROM soap_notes WHERE doctor_id = %(uid)s]
+[parameters: {'uid': 101}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+lab_requests: Error - (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: SELECT count(*) FROM lab_requests WHERE doctor_id = %(uid)s]
+[parameters: {'uid': 101}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+audit_logs: Error - (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: SELECT count(*) FROM audit_logs WHERE user_id = %(uid)s]
+[parameters: {'uid': 101}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+doctor_profiles: Error - (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: SELECT count(*) FROM doctor_profiles WHERE user_id = %(uid)s]
+[parameters: {'uid': 101}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+google_auth_tokens: Error - (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: SELECT count(*) FROM google_auth_tokens WHERE doctor_user_id = %(uid)s]
+[parameters: {'uid': 101}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+appointment_icd_codes: Error - (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: 
+                SELECT count(*) 
+                FROM appointment_icd_codes aic
+                JOIN appointments a ON aic.appointment_id = a.id
+                WHERE a.doctor_user_id = %(uid)s
+            ]
+[parameters: {'uid': 101}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)

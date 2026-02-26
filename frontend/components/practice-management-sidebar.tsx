@@ -14,6 +14,7 @@ import {
   HandCoins,
   Sheet,
   FileText,
+  MessageSquare,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
@@ -35,6 +36,7 @@ const navigation = [
   },
   { name: "Invoices", href: "/rcm/invoices", icon: FileText },
   { name: "Payments", href: "/rcm/payments", icon: HandCoins },
+  { name: "Secure Messaging", href: "/rcm/chat", icon: MessageSquare },
 ];
 
 export function Sidebar() {

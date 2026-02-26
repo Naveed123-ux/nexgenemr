@@ -51,3 +51,14 @@ def handle_google_callback(code: str, current_user: User, db: Session):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred during Google authentication: {str(e)}")
+
+def disconnect_google_token(current_user: User, db: Session):
+    """
+    Deletes the GoogleAuthToken for the current user, effectively disconnecting
+    their Google account.
+    """
+    token = db.query(GoogleAuthToken).filter(GoogleAuthToken.doctor_user_id == current_user.id).first()
+    if token:
+        db.delete(token)
+        db.commit()
+    return {"status": "success", "message": "Google account disconnected."}

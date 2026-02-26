@@ -62,9 +62,12 @@ class BillItem(Base):
     bill_id = Column(Integer, ForeignKey('bills.id'), nullable=False)
     bill = relationship("Bill", back_populates="bill_items")
     
-    # Appointment reference
-    appointment_id = Column(Integer, ForeignKey('appointments.id'), nullable=False)
+    # Linked items (Appointment OR Lab Request)
+    appointment_id = Column(Integer, ForeignKey('appointments.id'), nullable=True)
     appointment = relationship("Appointment")
+    
+    lab_request_id = Column(Integer, ForeignKey('lab_requests.id'), nullable=True)
+    lab_request = relationship("LabRequest")
     
     # Item details
     description = Column(String, nullable=False)
