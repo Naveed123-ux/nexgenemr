@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   },
 };
 
+import DynamicFavicon from "@/components/DynamicFavicon";
+
 export default function RootLayout({
   children,
 }: {
@@ -28,7 +30,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         <Toaster position="top-right" reverseOrder={false} />
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <DynamicFavicon />
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );

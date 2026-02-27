@@ -92,7 +92,7 @@ export function HospitalAdminMobileNav() {
             {/* User Profile */}
             <div className="p-4 border-t mt-auto">
               <Link
-                href="/hospital-admin/profile"
+                href={`/${pathname.split("/")[1]}/profile`}
                 onClick={() => setOpen(false)}
               >
                 <div className="flex items-center gap-3 hover:bg-gray-100 rounded-lg p-2 transition-colors">

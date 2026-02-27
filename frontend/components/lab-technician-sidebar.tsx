@@ -39,6 +39,8 @@ export function LabTechnicianSidebar({ isCollapsed, onToggle }: SidebarProps) {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.auth); // Assuming auth slice holds user info directly or via another property
 
+    const hospital = useSelector((state: RootState) => state.auth?.hospital);
+
     function signOut() {
         dispatch(Logout());
         toast.success("Logged out successfully!");
@@ -51,19 +53,24 @@ export function LabTechnicianSidebar({ isCollapsed, onToggle }: SidebarProps) {
     return (
         <div
             className={cn(
-                "h-full bg-[#1e293b] flex flex-col transition-all duration-300 ease-in-out relative",
+                "h-full flex flex-col transition-all duration-300 ease-in-out relative",
                 isCollapsed ? "w-20" : "w-64"
             )}
+            style={{ backgroundColor: hospital?.sidebar_color || "#1e293b" }}
         >
             {/* Logo Section */}
-            <div className="flex items-center h-16 px-4 bg-[#0f172a]/50">
+            <div className="flex items-center h-16 px-4" style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>
                 <div className={cn("flex items-center gap-3", isCollapsed ? "justify-center w-full" : "")}>
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                        N
-                    </div>
+                    {hospital?.logo_url ? (
+                        <img src={hospital.logo_url} alt="Logo" className="w-8 h-8 rounded-lg object-contain bg-white" />
+                    ) : (
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                            N
+                        </div>
+                    )}
                     {!isCollapsed && (
                         <span className="text-white font-bold text-lg truncate tracking-tight">
-                            NexGen<span className="text-blue-400">EMR</span>
+                            {hospital?.header_text || hospital?.name || "NexGenEMR"}
                         </span>
                     )}
                 </div>
@@ -112,10 +119,11 @@ export function LabTechnicianSidebar({ isCollapsed, onToggle }: SidebarProps) {
 
             {/* Bottom Section - Logo and Logout */}
             <div className="border-t border-gray-700 p-3 space-y-2">
-                {/* User Info */}
-                <div
+                {/* User Info Section - Dynamic Route */}
+                <Link
+                    href={`/${pathname.split("/")[1]}/profile`}
                     className={cn(
-                        "flex items-center gap-3",
+                        "flex items-center gap-3 hover:bg-white/10 rounded-lg transition-all duration-200 cursor-pointer py-2",
                         isCollapsed ? "justify-center" : "px-3"
                     )}
                 >
@@ -142,7 +150,7 @@ export function LabTechnicianSidebar({ isCollapsed, onToggle }: SidebarProps) {
                             </span>
                         </div>
                     )}
-                </div>
+                </Link>
 
                 {/* Logout Button */}
                 <button

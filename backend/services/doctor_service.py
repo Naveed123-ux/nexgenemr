@@ -16,6 +16,14 @@ from utils.encryption import encrypt_field
 from utils.email_utils import send_welcome_email
 from utils.cloudinary_utils import upload_image
 
+class DoctorProfileUpdate(BaseModel):
+    specialization: Optional[str] = None
+    qualifications: Optional[str] = None
+    years_of_experience: Optional[int] = None
+    biography: Optional[str] = None
+    languages_spoken: Optional[List[str]] = None
+    available_for_telehealth: Optional[bool] = None
+
 class DoctorCreate(BaseModel):
     first_name: str
     last_name: str
@@ -295,3 +303,19 @@ def get_my_doctor_profile(current_user: User):
         profile_picture_url=profile.profile_picture_url,
         is_google_connected=current_user.google_auth_token is not None
     )
+
+def update_my_doctor_profile(db: Session, current_user: User, data: DoctorProfileUpdate):
+    profile = current_user.doctor_profile
+    if not profile:
+        raise HTTPException(status_code=404, detail="Doctor profile not found")
+    
+    if data.specialization is not None: profile.specialization = data.specialization
+    if data.qualifications is not None: profile.qualifications = data.qualifications
+    if data.years_of_experience is not None: profile.years_of_experience = data.years_of_experience
+    if data.biography is not None: profile.biography = data.biography
+    if data.languages_spoken is not None: profile.languages_spoken = ",".join(data.languages_spoken)
+    if data.available_for_telehealth is not None: profile.available_for_telehealth = data.available_for_telehealth
+    
+    db.commit()
+    db.refresh(profile)
+    return get_my_doctor_profile(current_user)

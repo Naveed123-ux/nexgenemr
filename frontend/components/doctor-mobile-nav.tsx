@@ -78,8 +78,8 @@ export function DoctorMobileNav({ navigation }: { navigation: Navigation }) {
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors ${isActive
-                      ? "bg-[#70C847] text-gray-900"
-                      : "text-gray-400 hover:bg-white/10 hover:text-white"
+                    ? "bg-[#70C847] text-gray-900"
+                    : "text-gray-400 hover:bg-white/10 hover:text-white"
                     }`}
                 >
                   <item.icon
@@ -95,7 +95,7 @@ export function DoctorMobileNav({ navigation }: { navigation: Navigation }) {
           {/* Profile Section */}
           <div className="p-4 mt-auto">
             <Link
-              href="/doctor/profile"
+              href={`/${pathname.split("/")[1]}/profile`}
               onClick={() => setIsOpen(false)}
               className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white/10"
             >

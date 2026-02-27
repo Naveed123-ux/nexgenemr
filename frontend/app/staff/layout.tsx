@@ -77,49 +77,49 @@ export default function HospitalAdminLayout({
     dispatch(fetchStaffInfo());
   }, [dispatch]);
   const sideBarNavigation = [
-  { name: "Dashboard", href: "/staff", icon: BarChart3 },
-  { name: "Patient Records", href: "/doctor/patient-records", icon: FileText },
-  { name: "Appointments", href: "/doctor/appointments", icon: Calendar },
-  {
-    name: "Patient Intake",
-    href: "/doctor/patientIntake",
-    icon: NotepadTextDashed,
-  },
-];
-const navigation = [
-  { name: "Practice Management", href: "/practice-management" },
-  { name: "Dashboard", href: "/dashboard" },
-  { name: "Manage Dashboard", href: "/manage-dashboard" },
-];
-const sideBarMainNavigation = [
-  { name: "Tracker", href: "/staff", icon: AudioLines },
+    { name: "Dashboard", href: "/staff", icon: BarChart3 },
+    { name: "Patient Records", href: "/doctor/patient-records", icon: FileText },
+    { name: "Appointments", href: "/doctor/appointments", icon: Calendar },
+    {
+      name: "Patient Intake",
+      href: "/doctor/patientIntake",
+      icon: NotepadTextDashed,
+    },
+  ];
+  const navigation = [
+    { name: "Practice Management", href: "/practice-management" },
+    { name: "Dashboard", href: "/dashboard" },
+    { name: "Manage Dashboard", href: "/manage-dashboard" },
+  ];
+  const sideBarMainNavigation = [
+    { name: "Tracker", href: "/staff", icon: AudioLines },
 
-  { name: "Appointments", href: "/staff/appointments", icon: Calendar },
-  {
-    name: "Patient Intake",
-    href: "/staff/patientIntake",
-    icon: NotepadTextDashed,
-  },
-  {
-    name: "Handoff Notes",
-    href: "/staff/handoff-notes",
-    icon: ClipboardList,
-  },
-  {
-    name: "Chat",
-    href: "/staff/chat",
-    icon: MessageSquareText,
-  },
-];
+    { name: "Appointments", href: "/staff/appointments", icon: Calendar },
+    {
+      name: "Patient Intake",
+      href: "/staff/patientIntake",
+      icon: NotepadTextDashed,
+    },
+    {
+      name: "Handoff Notes",
+      href: "/staff/handoff-notes",
+      icon: ClipboardList,
+    },
+    {
+      name: "Chat",
+      href: "/staff/chat",
+      icon: MessageSquareText,
+    },
+  ];
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="h-screen grid grid-rows-[auto_1fr]" style={{ backgroundColor: "#233141" }}>
+    <div className="h-screen grid grid-rows-[auto_1fr]" style={{ backgroundColor: hospital?.sidebar_color || "#233141" }}>
       {/* Header - Full width at top */}
       <header
         className="z-50"
         style={{
-          backgroundColor: "#233141",
+          backgroundColor: hospital?.header_color || "#233141",
         }}
       >
         <div className="lg:hidden">
@@ -131,7 +131,7 @@ const sideBarMainNavigation = [
       {/* Content area with sidebar */}
       <div className="flex overflow-hidden" style={{ backgroundColor: "#f9fafb" }}>
         {/* Desktop Sidebar - Below header */}
-        <aside className="hidden lg:block" style={{ backgroundColor: "#233141" }}>
+        <aside className="hidden lg:block" style={{ backgroundColor: hospital?.sidebar_color || "#233141" }}>
           <StaffSidebar
             isCollapsed={sidebarCollapsed}
             onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}

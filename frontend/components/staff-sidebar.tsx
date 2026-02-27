@@ -60,9 +60,10 @@ export function StaffSidebar({ isCollapsed, onToggle }: SidebarProps) {
   return (
     <div
       className={cn(
-        "h-full bg-[#233141] flex flex-col transition-all duration-300 ease-in-out relative",
+        "h-full flex flex-col transition-all duration-300 ease-in-out relative",
         isCollapsed ? "w-20" : "w-64"
       )}
+      style={{ backgroundColor: auth.hospital?.sidebar_color || "#233141" }}
     >
       {/* Navigation */}
       <nav
@@ -104,10 +105,11 @@ export function StaffSidebar({ isCollapsed, onToggle }: SidebarProps) {
 
       {/* Bottom Section - Profile and Logout */}
       <div className="border-t border-gray-700 p-3 space-y-2">
-        {/* User Profile */}
-        <div
+        {/* User Profile Section - Dynamic Route */}
+        <Link
+          href={`/${pathname.split("/")[1]}/profile`}
           className={cn(
-            "flex items-center gap-3",
+            "flex items-center gap-3 hover:bg-white/10 rounded-lg transition-all duration-200 cursor-pointer py-2",
             isCollapsed ? "justify-center" : "px-3"
           )}
         >
@@ -132,7 +134,7 @@ export function StaffSidebar({ isCollapsed, onToggle }: SidebarProps) {
               {auth?.name || "Staff"}
             </span>
           )}
-        </div>
+        </Link>
 
         {/* Logout Button */}
         <button

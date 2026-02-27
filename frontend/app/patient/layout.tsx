@@ -18,9 +18,9 @@ const navigation = [
 ];
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
-import { updateUserPictureUrl } from "@/store/slices/authSlice";
+import { updateUserPictureUrl, fetchHospitalInfo } from "@/store/slices/authSlice";
 
 export default function PatientLayout({
   children,
@@ -28,9 +28,14 @@ export default function PatientLayout({
   children: React.ReactNode;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { data: dashboardData } = useSelector((state: RootState) => state.patientDashboard);
   const auth = useSelector((state: RootState) => state.auth);
+  const hospital = auth.hospital;
+
+  useEffect(() => {
+    dispatch(fetchHospitalInfo());
+  }, [dispatch]);
 
   useEffect(() => {
     if (dashboardData && dashboardData.profile_picture_url && !auth.profile_picture_url) {
@@ -39,9 +44,9 @@ export default function PatientLayout({
   }, [dashboardData, dispatch, auth.profile_picture_url]);
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block" style={{ backgroundColor: hospital?.sidebar_color || "#233141" }}>
         <Sidebar
           navigation={navigation}
           isCollapsed={isCollapsed}
@@ -51,16 +56,13 @@ export default function PatientLayout({
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div>
+        <header className="z-50" style={{ backgroundColor: hospital?.header_color || "#233141" }}>
           <div className="lg:hidden">
             <DoctorMobileNav navigation={navigation} />
           </div>
-          <div className="">
-            {/* Using a generic header component */}
-            <DoctorHeader navigation={[]} />
-          </div>
-        </div>
-        <div className="flex-1 overflow-y-auto p-6 mt-20">{children}</div>
+          <DoctorHeader navigation={[]} />
+        </header>
+        <div className="flex-1 overflow-y-auto p-6">{children}</div>
       </div>
 
       {/* Chatbot Widget */}

@@ -104,4 +104,13 @@ def get_patient_associated_doctors(
     Note: Uses patient_user_id (not profile_id) for consistency with other snapshot endpoints
     """
     return patient_service.get_patient_associated_doctors(patient_user_id, current_user, db)
-# 🔼 --- NEW ENDPOINT END --- 🔼
+@router.put("/me", response_model=patient_service.PatientDetailResponse, dependencies=[Depends(require_permission("patients:read:one"))])
+def update_my_patient_details(
+    data: patient_service.PatientProfileUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update the profile for the currently logged-in patient.
+    """
+    return patient_service.update_my_patient_profile(db, current_user, data)

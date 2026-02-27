@@ -20,6 +20,10 @@ from utils.email_utils import send_welcome_email
 from utils.encryption import encrypt_field
 from utils.cloudinary_utils import upload_image
 
+class StaffProfileUpdate(BaseModel):
+    job_title: Optional[str] = None
+    phone_number: Optional[str] = None
+
 class StaffDashboardStats(BaseModel):
     total_doctors: int
     total_patients: int
@@ -245,6 +249,18 @@ def get_my_profile(current_user: User):
         phone_number=current_user.staff_profile.phone_number,
         profile_picture_url=current_user.staff_profile.profile_picture_url
     )
+
+def update_my_staff_profile(db: Session, current_user: User, data: StaffProfileUpdate):
+    profile = current_user.staff_profile
+    if not profile:
+        raise HTTPException(status_code=404, detail="Staff profile not found")
+    
+    if data.job_title is not None: profile.job_title = data.job_title
+    if data.phone_number is not None: profile.phone_number = data.phone_number
+    
+    db.commit()
+    db.refresh(profile)
+    return get_my_profile(current_user)
 
 
 

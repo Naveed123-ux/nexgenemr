@@ -257,14 +257,27 @@ def get_hospital_by_id(hospital_id: int, current_user: User, db: Session):
 
 def get_my_hospital(current_user: User, db: Session):
     hospital_id = None
-    user_role = current_user.role.name
-    if user_role == "Hospital_Admin":
+    
+    # 1. Check if user is the primary admin of a hospital
+    if current_user.hospital:
         hospital_id = current_user.hospital.id
-    elif user_role == "Receptionist":
+    
+    # 2. Check Staff Profile (Receptionists, Nurses, Lab Technicians, Secondary Admins)
+    elif current_user.staff_profile:
         hospital_id = current_user.staff_profile.hospital_id
-    elif user_role == "Doctor":
-        if current_user.doctor_profile and current_user.doctor_profile.department:
+        
+    # 3. Check Doctor Profile
+    elif current_user.doctor_profile:
+        if current_user.doctor_profile.department:
             hospital_id = current_user.doctor_profile.department.hospital_id
+        else:
+            # Try to find hospital via staff profile if they are also listed there
+            # (though normally they should have a department)
+            pass
+            
+    # 4. Check Patient Profile
+    elif current_user.patient_profile:
+        hospital_id = current_user.patient_profile.hospital_id
     
     if not hospital_id:
         raise HTTPException(status_code=404, detail="Could not determine the hospital for this user.")

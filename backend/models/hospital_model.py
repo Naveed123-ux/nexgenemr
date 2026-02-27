@@ -37,10 +37,28 @@ class Hospital(Base):
     def __init__(self, **kwargs):
         super().__init__()
         for key, value in kwargs.items():
-            if isinstance(value, str):
-                setattr(self, key, encrypt_field(value))
-            else:
-                setattr(self, key, value)
+            setattr(self, key, value)
+
+    def __setattr__(self, name, value):
+        string_fields = [
+            "name", "code", "email", "phone_number", "country", "address", 
+            "time_zone", "primary_language", "header_text", "tagline", 
+            "description", "logo_url", "favicon_url", "sidebar_color", "header_color"
+        ]
+        if name in string_fields and isinstance(value, str):
+            # Check if it's already encrypted (starts with a known prefix or base64 structure)
+            # For simplicity, we assume if we are setting a str, we want it encrypted.
+            # But we must be careful not to double encrypt.
+            # However, decrypt_field handles original values on failure.
+            try:
+                # If we can decrypt it, it's already encrypted.
+                decrypt_field(value)
+                super().__setattr__(name, value)
+            except Exception:
+                # Not encrypted, so encrypt it.
+                super().__setattr__(name, encrypt_field(value))
+        else:
+            super().__setattr__(name, value)
 
     def __getattribute__(self, name):
         value = super().__getattribute__(name)

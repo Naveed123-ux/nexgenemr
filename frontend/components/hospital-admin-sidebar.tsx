@@ -68,9 +68,10 @@ export function HospitalAdminSidebar({ isCollapsed, onToggle }: SidebarProps) {
   return (
     <div
       className={cn(
-        "h-full bg-[#233141] flex flex-col transition-all duration-300 ease-in-out relative",
+        "h-full flex flex-col transition-all duration-300 ease-in-out relative",
         isCollapsed ? "w-20" : "w-64"
       )}
+      style={{ backgroundColor: hospital?.sidebar_color || "#233141" }}
     >
       {/* Navigation */}
       <nav
@@ -113,10 +114,11 @@ export function HospitalAdminSidebar({ isCollapsed, onToggle }: SidebarProps) {
 
       {/* Bottom Section - Logo and Logout */}
       <div className="border-t border-gray-700 p-3 space-y-2">
-        {/* Hospital Logo and Name */}
-        <div
+        {/* Hospital Profile Section - Dynamic Route */}
+        <Link
+          href={`/${pathname.split("/")[1]}/profile`}
           className={cn(
-            "flex items-center gap-3",
+            "flex items-center gap-3 hover:bg-white/10 rounded-lg transition-all duration-200 cursor-pointer py-2",
             isCollapsed ? "justify-center" : "px-3"
           )}
         >
@@ -138,7 +140,7 @@ export function HospitalAdminSidebar({ isCollapsed, onToggle }: SidebarProps) {
               {hospital?.name || "Hospital Admin"}
             </span>
           )}
-        </div>
+        </Link>
 
         {/* Logout Button */}
         <button

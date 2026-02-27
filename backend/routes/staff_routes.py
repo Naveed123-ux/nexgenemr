@@ -14,6 +14,18 @@ def get_my_staff_profile(current_user: User = Depends(get_current_user)):
     return staff_service.get_my_profile(current_user)
 
 
+@router.put("/me", response_model=staff_service.StaffProfileResponse, dependencies=[Depends(require_permission("staff:read:me"))])
+def update_my_staff_details(
+    data: staff_service.StaffProfileUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update the profile for the currently logged-in staff member.
+    """
+    return staff_service.update_my_staff_profile(db, current_user, data)
+
+
 @router.put("/me/profile-picture")
 def update_my_staff_profile_picture(
     current_user: User = Depends(get_current_user),

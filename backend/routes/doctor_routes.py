@@ -18,6 +18,18 @@ def get_my_doctor_details(current_user: User = Depends(get_current_user)):
     return doctor_service.get_my_doctor_profile(current_user)
 
 
+@router.put("/me", response_model=doctor_service.DoctorProfileResponse, dependencies=[Depends(require_permission("doctors:read:me"))])
+def update_my_doctor_details(
+    data: doctor_service.DoctorProfileUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update the profile for the currently logged-in doctor.
+    """
+    return doctor_service.update_my_doctor_profile(db, current_user, data)
+
+
 @router.put("/me/profile-picture")
 def update_my_doctor_profile_picture(
     current_user: User = Depends(get_current_user),

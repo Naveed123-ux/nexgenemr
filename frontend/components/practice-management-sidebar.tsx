@@ -81,7 +81,7 @@ export function Sidebar() {
       {/* Bottom Avatar with Logout */}
       <div className="mt-auto flex flex-col items-center space-y-3">
         <Link
-          href="/hospital-admin/profile"
+          href={`/${pathname.split("/")[1]}/profile`}
           title={hospital?.name || "Profile"}
         >
           <Avatar className="w-10 h-10 bg-white cursor-pointer hover:ring-2 hover:ring-[#388fe5] transition-all">

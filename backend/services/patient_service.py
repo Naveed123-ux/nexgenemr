@@ -118,6 +118,15 @@ class AssociatedDoctorResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class PatientProfileUpdate(BaseModel):
+    insurer_name: Optional[str] = None
+    member_id: Optional[str] = None
+    group_id: Optional[str] = None
+    subscriber_first_name: Optional[str] = None
+    subscriber_last_name: Optional[str] = None
+    subscriber_dob: Optional[date] = None
+    subscriber_relationship_to_patient: Optional[str] = None
+
 def create_patient(db: Session, patient_data: PatientCreate, current_user: User):
     db.begin_nested()
     try:
@@ -522,4 +531,23 @@ def get_patient_associated_doctors(patient_user_id: int, current_user: User, db:
 
 #-------------------------------------------------------
 
+
+
+
+def update_my_patient_profile(db: Session, current_user: User, data: PatientProfileUpdate):
+    profile = current_user.patient_profile
+    if not profile:
+        raise HTTPException(status_code=404, detail="Patient profile not found")
+    
+    if data.insurer_name is not None: profile.insurer_name = data.insurer_name
+    if data.member_id is not None: profile.member_id = data.member_id
+    if data.group_id is not None: profile.group_id = data.group_id
+    if data.subscriber_first_name is not None: profile.subscriber_first_name = data.subscriber_first_name
+    if data.subscriber_last_name is not None: profile.subscriber_last_name = data.subscriber_last_name
+    if data.subscriber_dob is not None: profile.subscriber_dob = data.subscriber_dob
+    if data.subscriber_relationship_to_patient is not None: profile.subscriber_relationship_to_patient = data.subscriber_relationship_to_patient
+    
+    db.commit()
+    db.refresh(profile)
+    return get_patient_by_id(profile.id, current_user, db)
 

@@ -6,6 +6,7 @@ import { useEffect, useState, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchHospitalProfile, updateHospitalProfile } from "@/store/slices/hospitalProfileSlice";
+import { fetchHospitalInfo } from "@/store/slices/authSlice";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,7 +46,11 @@ export default function EditHospitalProfile() {
     const { name, phone_number, country, address, time_zone, primary_language, header_text, tagline, description, sidebar_color, header_color } = formData;
 
     toast.promise(
-      dispatch(updateHospitalProfile({ name, phone_number, country, address, time_zone, primary_language, header_text, tagline, description, sidebar_color, header_color })).unwrap(),
+      dispatch(updateHospitalProfile({ name, phone_number, country, address, time_zone, primary_language, header_text, tagline, description, sidebar_color, header_color })).unwrap()
+        .then((res) => {
+          dispatch(fetchHospitalInfo());
+          return res;
+        }),
       {
         loading: 'Updating profile...',
         success: 'Profile updated successfully!',

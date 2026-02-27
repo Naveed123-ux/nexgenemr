@@ -11,13 +11,18 @@ from services.user_service import (
     get_user,
     login_for_access_token
 )
-from utils.dependencies import get_current_user 
 from models.user_model import User
+from utils.dependencies import get_current_user
 from sqlalchemy.orm import Session
 from db.db import get_db
 from typing import List
+from pydantic import BaseModel
 
 router = APIRouter()
+
+class ChangePasswordRequest(BaseModel):
+    old_password: str
+    new_password: str
 
 @router.post("/login", response_model=TokenResponse)
 def login_user(login_data: LoginRequest, db: Session = Depends(get_db)):
@@ -56,3 +61,12 @@ def upload_user_picture(
 ):
     from services.user_service import update_profile_picture
     return update_profile_picture(current_user, file, db)
+
+@router.put("/me/change-password")
+def change_my_password(
+    request_data: ChangePasswordRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    from services.user_service import change_password
+    return change_password(db, current_user, request_data.old_password, request_data.new_password)

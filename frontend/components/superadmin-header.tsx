@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import {
   Home,
   Users,
@@ -20,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 import { toast } from "react-hot-toast";
+import { ChangePasswordModal } from "./ChangePasswordModal";
 
 const navigation = [
   { name: "Practice Management", href: "/practice-management" },
@@ -30,6 +33,7 @@ const navigation = [
 export function SuperAdminHeader() {
   const pathname = usePathname();
   const router = useRouter();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   function signOut() {
     toast.success("Logged out successfully!");
@@ -89,10 +93,17 @@ export function SuperAdminHeader() {
             </PopoverTrigger>
             <PopoverContent side="bottom" align="end" className="w-48">
               <div className="flex flex-col space-y-2">
-                <Button variant="ghost" className="justify-start">
-                  <Link href="/superadmin/profile">
+                <Button variant="ghost" className="justify-start" asChild>
+                  <Link href={`/${pathname.split("/")[1]}/profile`}>
                     Profile
                   </Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="justify-start"
+                  onClick={() => setIsPasswordModalOpen(true)}
+                >
+                  Change Password
                 </Button>
                 <Button variant="ghost" className="justify-start">
                   Settings
@@ -109,6 +120,10 @@ export function SuperAdminHeader() {
           </Popover>
         </div>
       </div>
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 }

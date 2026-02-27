@@ -214,6 +214,19 @@ def update_user_profile(db: Session, user_id: int, user_data: UserCreate, curren
     
     # We don't update email or role here for security, only name
     
+    user.updated_at = str(datetime.utcnow())
     db.commit()
     db.refresh(user)
     return user
+
+def change_password(db: Session, current_user: User, old_password: str, new_password: str):
+    """
+    Verifies old password and updates it with the new one.
+    """
+    if not verify_password(old_password, current_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Incorrect old password")
+    
+    current_user.hashed_password = get_password_hash(new_password)
+    current_user.updated_at = str(datetime.utcnow())
+    db.commit()
+    return {"detail": "Password updated successfully"}

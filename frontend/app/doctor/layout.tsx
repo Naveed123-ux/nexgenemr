@@ -103,12 +103,12 @@ export default function HospitalAdminLayout({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="h-screen grid grid-rows-[auto_1fr]" style={{ backgroundColor: "#233141" }}>
+    <div className="h-screen grid grid-rows-[auto_1fr]" style={{ backgroundColor: hospital?.sidebar_color || "#233141" }}>
       {/* Header - Full width at top */}
       <header
         className="z-50"
         style={{
-          backgroundColor: "#233141",
+          backgroundColor: hospital?.header_color || "#233141",
         }}
       >
         <div className="lg:hidden">
@@ -122,7 +122,7 @@ export default function HospitalAdminLayout({
         {/* Desktop Sidebar - Below header */}
         <aside
           className="hidden lg:block"
-          style={{ backgroundColor: "#233141" }}
+          style={{ backgroundColor: hospital?.sidebar_color || "#233141" }}
         >
           <Sidebar
             navigation={sideBarMainNavigation}

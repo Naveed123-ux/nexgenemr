@@ -108,7 +108,7 @@ export default function HospitalAdminLayout({
       <header
         className="z-50"
         style={{
-          backgroundColor: "#233141",
+          backgroundColor: hospital?.header_color || "#233141",
         }}
       >
         <div className="lg:hidden">

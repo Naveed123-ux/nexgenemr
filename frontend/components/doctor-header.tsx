@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import {
   Home,
   Users,
@@ -23,6 +25,7 @@ import { Button } from "./ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/useStore";
 import { toggleDoctorSidebar } from "@/store/slices/DoctorSidebar";
 import { toast } from 'sonner'
+import { ChangePasswordModal } from "./ChangePasswordModal";
 
 
 export function DoctorHeader({ navigation }: {
@@ -35,8 +38,10 @@ export function DoctorHeader({ navigation }: {
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const user = useAppSelector(state => state.auth)
+  const auth = useAppSelector(state => state.auth);
+  const hospital = auth.hospital;
   const dispatch = useAppDispatch();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   function signOut() {
     toast.success("Logged out successfully!");
@@ -48,13 +53,18 @@ export function DoctorHeader({ navigation }: {
   }
 
   return (
-    <div className="text-white">
+    <div className="text-white" style={{ backgroundColor: hospital?.header_color || "#233141" }}>
       <div className="flex items-center justify-between px-3 py-3">
         {/* Left side - Logo */}
 
         <div className="max-md:hidden flex space-x-3">
-          <div className="flex items-center">
-            <div className="text-[#388fe5] font-bold text-xl">NexgenEMR</div>
+          <div className="flex items-center gap-2">
+            {hospital?.logo_url && (
+              <img src={hospital.logo_url} alt="Logo" className="w-8 h-8 object-contain rounded bg-white" />
+            )}
+            <div className="text-white font-bold text-xl">
+              {hospital?.header_text || hospital?.name || "NexgenEMR"}
+            </div>
           </div>
         </div>
         <Button
@@ -100,7 +110,7 @@ export function DoctorHeader({ navigation }: {
           <Popover>
             <PopoverTrigger asChild>
               <Avatar className="w-8 h-8">
-                <AvatarImage src={user?.profile_picture_url ? user?.profile_picture_url : "/profile-avatar.jpg"} />
+                <AvatarImage src={auth?.profile_picture_url ? auth?.profile_picture_url : "/profile-avatar.jpg"} />
                 <AvatarFallback className="bg-gray-600 text-white text-sm">
                   U
                 </AvatarFallback>
@@ -112,7 +122,7 @@ export function DoctorHeader({ navigation }: {
                   variant="ghost"
                   className="justify-start"
                   onClick={() => {
-                    const jobTitle = user?.job_title?.toLowerCase();
+                    const jobTitle = auth?.job_title?.toLowerCase();
                     const path = pathname.split('/')[1]; // Get first segment of path
 
                     // Route based on current path context
@@ -136,6 +146,13 @@ export function DoctorHeader({ navigation }: {
                 >
                   Profile
                 </Button>
+                <Button
+                  variant="ghost"
+                  className="justify-start"
+                  onClick={() => setIsPasswordModalOpen(true)}
+                >
+                  Change Password
+                </Button>
                 <Button variant="ghost" className="justify-start">
                   Settings
                 </Button>
@@ -151,6 +168,10 @@ export function DoctorHeader({ navigation }: {
           </Popover>
         </div>
       </div>
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 }
