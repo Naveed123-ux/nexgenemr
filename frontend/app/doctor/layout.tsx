@@ -9,7 +9,7 @@ import { Sidebar } from "@/components/doctor-sidebar";
 import { DoctorMobileNav } from "@/components/doctor-mobile-nav";
 import { useState } from "react";
 import { useEffect } from "react";
-import { fetchDoctorInfo, fetchHospitalInfo } from "@/store/slices/authSlice";
+import { fetchDoctorInfo, fetchHospitalInfo, fetchUserInfo } from "@/store/slices/authSlice";
 
 import { DoctorHeader } from "@/components/doctor-header";
 import {
@@ -73,6 +73,7 @@ export default function HospitalAdminLayout({
   useEffect(() => {
     dispatch(fetchHospitalInfo());
     dispatch(fetchDoctorInfo());
+    dispatch(fetchUserInfo());
   }, [dispatch]);
   const navigation = [
     { name: "Practice Management", href: "/practice-management" },
@@ -96,7 +97,8 @@ export default function HospitalAdminLayout({
     { name: "Notes Taker", href: "/doctor/soap-notes", icon: ClipboardList },
     { name: "Chats", href: "/doctor/chat", icon: MessageSquare },
     { name: "Lab Reports", href: "/doctor/lab-reports", icon: FlaskConical },
-
+    { name: "Clinical Records", href: "/doctor/clinical-records", icon: FlaskConical },
+    { name: "Patient Summaries", href: "/doctor/patient-summaries", icon: FlaskConical },
 
   ];
 

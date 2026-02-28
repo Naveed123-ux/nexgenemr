@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { labRequestApi } from "@/app/_apis/lab_requests";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { Loader2, Beaker } from "lucide-react";
 
 interface LabRequestDialogProps {

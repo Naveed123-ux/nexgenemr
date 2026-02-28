@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import {
   Dialog,
@@ -64,9 +64,7 @@ export function SwapConfirmationDialog({
         appointment_id_2: secondAppointment.id,
       });
 
-      toast.success("Appointments swapped successfully!", {
-        description: "Both patients have been notified via email.",
-      });
+      toast.success("Appointments swapped successfully! Both patients have been notified via email.");
 
       // Refresh appointments
       const startDate = format(new Date(), "yyyy-MM-dd");
@@ -81,9 +79,7 @@ export function SwapConfirmationDialog({
 
       const errorMessage = error.response?.data?.detail || "Please try again.";
 
-      toast.error("Failed to swap appointments", {
-        description: errorMessage,
-      });
+      toast.error(`Failed to swap appointments: ${errorMessage}`);
     } finally {
       setIsSwapping(false);
     }

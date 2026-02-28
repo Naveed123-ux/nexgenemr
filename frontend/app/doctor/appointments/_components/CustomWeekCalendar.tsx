@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 // UI Components
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -94,7 +94,7 @@ const AppointmentDetailsDialog = ({
 
     useEffect(() => {
         if ((status === 'failed' || highlightStatus === 'failed') && error) {
-            toast.error("An error occurred", { description: error });
+            toast.error(error);
         }
     }, [status, highlightStatus, error]);
 
@@ -306,9 +306,7 @@ const AppointmentBlock = ({ appointment, position }: { appointment: FormattedApp
             // This is the first appointment selection
             startSwapMode(appointment);
             setIsOpen(false); // Close the details dialog
-            toast.success("Appointment selected for swap", {
-                description: "Now select another appointment to swap with",
-            });
+            toast.success("Appointment selected for swap. Now select another appointment to swap with.");
         }
     };
 

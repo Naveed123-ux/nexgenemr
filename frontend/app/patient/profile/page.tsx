@@ -23,12 +23,15 @@ export default function ProfilePage() {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        if (auth.name) {
+        if (auth.first_name) {
+            setFirstName(auth.first_name);
+            setLastName(auth.last_name || "");
+        } else if (auth.name) {
             const names = auth.name.split(" ");
             setFirstName(names[0] || "");
             setLastName(names.slice(1).join(" ") || "");
         }
-    }, [auth.name]);
+    }, [auth.first_name, auth.last_name, auth.name]);
 
     const handleUpdateProfile = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -153,7 +156,7 @@ export default function ProfilePage() {
                                 <div className="flex-1 space-y-1">
                                     <h3 className="font-semibold text-lg">{auth.name}</h3>
                                     <p className="text-sm text-gray-500">{auth.job_title || auth.email}</p>
-                                    <p className="text-xs text-gray-400">Role: {auth.email && "Patient"}</p>
+                                    <p className="text-xs text-gray-400">Role: Patient</p>
                                 </div>
                             </div>
 

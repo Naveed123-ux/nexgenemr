@@ -13,7 +13,7 @@ class GeminiService:
             raise ValueError("GEMINI_API_KEY environment variable not set")
         
         self.client = genai.Client(api_key=api_key)
-        self.model_id = 'gemini-2.0-flash'
+        self.model_id = 'gemini-flash-latest'
     
     def generate_handoff_note(self, patient_context: Dict[str, Any]) -> Dict[str, str]:
         """

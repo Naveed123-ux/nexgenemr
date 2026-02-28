@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { LabTechnicianSidebar } from "@/components/lab-technician-sidebar";
 import { cn } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchHospitalInfo } from "@/store/slices/authSlice";
+import { fetchHospitalInfo, fetchUserInfo } from "@/store/slices/authSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { DoctorHeader } from "@/components/doctor-header";
 import { DoctorMobileNav } from "@/components/doctor-mobile-nav";
@@ -21,6 +21,7 @@ export default function LabTechnicianLayout({
 
     useEffect(() => {
         dispatch(fetchHospitalInfo());
+        dispatch(fetchUserInfo());
     }, [dispatch]);
 
     const navigation = [

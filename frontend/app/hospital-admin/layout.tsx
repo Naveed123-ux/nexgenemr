@@ -7,7 +7,7 @@ import { HospitalAdminSidebar } from "@/components/hospital-admin-sidebar";
 
 import { HospitalAdminMobileNav } from "@/components/hospital-admin-mobile-nav";
 import { useSelector } from "react-redux";
-import { fetchHospitalInfo } from "@/store/slices/authSlice";
+import { fetchHospitalInfo, fetchUserInfo } from "@/store/slices/authSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { AdminHeader } from "@/components/admin-header";
@@ -72,6 +72,7 @@ export default function HospitalAdminLayout({
   useEffect(() => {
     dispatch(fetchHospitalInfo());
     dispatch(fetchDepartments());
+    dispatch(fetchUserInfo());
   }, [dispatch]);
   const navigation = [
     { name: "Practice Management", href: "/practice-management" },

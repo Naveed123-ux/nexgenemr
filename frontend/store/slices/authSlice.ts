@@ -12,6 +12,8 @@ interface AuthState {
   email: string | null;
   job_title: string | null;
   hospital_id: number | null;
+  first_name: string | null;
+  last_name: string | null;
   profile_picture_url: string | null;
   // Doctor-specific fields
   specialization: string | null;
@@ -56,6 +58,18 @@ interface DoctorProfile {
   profile_picture_url: string;
   is_google_connected: boolean;
 }
+
+export const fetchUserInfo = createAsyncThunk(
+  "auth/fetchUserInfo",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await privateApi.get("/users/me");
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.detail || "Failed to fetch user info");
+    }
+  }
+);
 
 export const fetchHospitalInfo = createAsyncThunk(
   "auth/fetchHospitalInfo",
@@ -102,6 +116,8 @@ const initialState: AuthState = {
   email: null,
   job_title: null,
   hospital_id: null,
+  first_name: null,
+  last_name: null,
   profile_picture_url: null,
   specialization: null,
   department_name: null,
@@ -122,11 +138,14 @@ export const authSlice = createSlice({
   reducers: {
     login(
       state,
-      action: PayloadAction<{ token: string; name: string; id: number }>
+      action: PayloadAction<{ token: string; name: string; id: number; email?: string; first_name?: string; last_name?: string }>
     ) {
       state.token = action.payload.token;
       state.id = action.payload.id;
       state.name = action.payload.name;
+      state.email = action.payload.email || null;
+      state.first_name = action.payload.first_name || null;
+      state.last_name = action.payload.last_name || null;
       state.isAuthenticated = true;
     },
     Logout(state) {
@@ -136,6 +155,8 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.id = null;
       state.email = null;
+      state.first_name = null;
+      state.last_name = null;
       state.job_title = null;
       state.hospital_id = null;
       state.profile_picture_url = null;
@@ -207,6 +228,17 @@ export const authSlice = createSlice({
         state.biography = action.payload.biography;
         state.languages_spoken = action.payload.languages_spoken;
         state.is_google_connected = action.payload.is_google_connected;
+      }
+    );
+
+    builder.addCase(
+      fetchUserInfo.fulfilled,
+      (state, action: PayloadAction<any>) => {
+        state.id = action.payload.id;
+        state.email = action.payload.email;
+        state.first_name = action.payload.first_name;
+        state.last_name = action.payload.last_name;
+        state.name = action.payload.first_name + " " + action.payload.last_name;
       }
     );
   },

@@ -32,6 +32,10 @@ def login_user(login_data: LoginRequest, db: Session = Depends(get_db)):
 def read_user_role(current_user: User = Depends(get_current_user)):
     return get_user_role(current_user)
 
+@router.get("/me", response_model=UserResponse)
+def read_user_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
 @router.post("/", response_model=UserResponse)
 def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
     return create_user(user, db)

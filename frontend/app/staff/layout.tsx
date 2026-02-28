@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { AdminHeader } from "@/components/admin-header";
 import { useEffect } from "react";
-import { fetchHospitalInfo, fetchStaffInfo } from "@/store/slices/authSlice";
+import { fetchHospitalInfo, fetchStaffInfo, fetchUserInfo } from "@/store/slices/authSlice";
 import { SuperAdminHeader } from "@/components/superadmin-header";
 import {
   Menu,
@@ -75,6 +75,7 @@ export default function HospitalAdminLayout({
     dispatch(fetchHospitalInfo());
 
     dispatch(fetchStaffInfo());
+    dispatch(fetchUserInfo());
   }, [dispatch]);
   const sideBarNavigation = [
     { name: "Dashboard", href: "/staff", icon: BarChart3 },

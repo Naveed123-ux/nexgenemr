@@ -781,7 +781,7 @@ export default function DoctorPatientSummaries() {
                   signedAt={selectedSummary.doctor_signed_at}
                   signedByName={selectedSummary.signed_by_doctor_name}
                   onSignatureChange={() => {
-                    dispatch(fetchRecentPatientSummaries({ limit: 50, offset: 0 }));
+                    dispatch(fetchRecentPatientSummaries(50));
                     dispatch(fetchUnviewedPatientSummaries());
                   }}
                 />

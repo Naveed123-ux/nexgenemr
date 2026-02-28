@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { format, isPast } from "date-fns";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchAllAppointments, cancelAppointment } from "@/store/slices/appointmentSlice";
 import { cn } from "@/lib/utils";
@@ -75,7 +75,7 @@ export const AllAppointmentsHistory = () => {
                 </div>
             );
         }
-        
+
         if (appointments.length === 0 && status === 'succeeded') {
             return (
                 <div className="text-center py-16">
@@ -104,7 +104,7 @@ export const AllAppointmentsHistory = () => {
                     <TableBody>
                         {appointments.map((appt) => {
                             const isCancellable = !['completed', 'Cancelled'].includes(appt.status.toLowerCase()) && !isPast(new Date(appt.start_time));
-                            
+
                             return (
                                 <TableRow key={appt.id} className="hover:bg-gray-50 transition-colors">
                                     <TableCell>
@@ -122,93 +122,93 @@ export const AllAppointmentsHistory = () => {
                                         </div>
                                     </TableCell>
                                     <TableCell><StatusBadge status={appt.status} /></TableCell>
-                                
-                                <TableCell className="max-w-[100px]">
-                                    {appt.results ? (
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <p className="truncate cursor-pointer hover:text-primary hover:underline">
-                                                    {appt.results}
-                                                </p>
-                                            </DialogTrigger>
-                                            <DialogContent>
-                                                <DialogHeader>
-                                                    <DialogTitle>Results for {appt.patient_name}</DialogTitle>
-                                                    <DialogDescription>
-                                                        Appointment on {format(new Date(appt.start_time), "LLL dd, yyyy")}
-                                                    </DialogDescription>
-                                                </DialogHeader>
-                                                <div className="py-4 max-h-[60vh] overflow-y-auto">
-                                                    <p className="text-sm text-gray-700 whitespace-pre-wrap">
-                                                        {appt.results}
-                                                    </p>
-                                                </div>
-                                            </DialogContent>
-                                        </Dialog>
-                                    ) : (
-                                        <span className="text-muted-foreground text-xs">N/A</span>
-                                    )}
-                                </TableCell>
 
-                                <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant="ghost" size="icon">
-                                                <MoreVertical className="h-4 w-4" />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem onClick={() => setSelectedAppointmentForIcd({
-                                                id: appt.id,
-                                                patientName: appt.patient_name,
-                                                date: format(new Date(appt.start_time), "LLL dd, yyyy 'at' p")
-                                            })}>
-                                                <Stethoscope className="h-4 w-4 mr-2" />
-                                                Manage ICD Codes
-                                            </DropdownMenuItem>
+                                    <TableCell className="max-w-[100px]">
+                                        {appt.results ? (
                                             <Dialog>
                                                 <DialogTrigger asChild>
-                                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                                        <FilePenLine className="h-4 w-4 mr-2" />
-                                                        Update Results
-                                                    </DropdownMenuItem>
+                                                    <p className="truncate cursor-pointer hover:text-primary hover:underline">
+                                                        {appt.results}
+                                                    </p>
                                                 </DialogTrigger>
-                                                <UpdateResultsDialog appointment={appt} />
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>Results for {appt.patient_name}</DialogTitle>
+                                                        <DialogDescription>
+                                                            Appointment on {format(new Date(appt.start_time), "LLL dd, yyyy")}
+                                                        </DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="py-4 max-h-[60vh] overflow-y-auto">
+                                                        <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                                                            {appt.results}
+                                                        </p>
+                                                    </div>
+                                                </DialogContent>
                                             </Dialog>
-                                            {isCancellable && (
-                                                <AlertDialog>
-                                                    <AlertDialogTrigger asChild>
-                                                        <DropdownMenuItem className="text-red-600" onSelect={(e) => e.preventDefault()}>
-                                                            <Trash2 className="h-4 w-4 mr-2" />
-                                                            Cancel Appointment
+                                        ) : (
+                                            <span className="text-muted-foreground text-xs">N/A</span>
+                                        )}
+                                    </TableCell>
+
+                                    <TableCell className="text-right">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="icon">
+                                                    <MoreVertical className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem onClick={() => setSelectedAppointmentForIcd({
+                                                    id: appt.id,
+                                                    patientName: appt.patient_name,
+                                                    date: format(new Date(appt.start_time), "LLL dd, yyyy 'at' p")
+                                                })}>
+                                                    <Stethoscope className="h-4 w-4 mr-2" />
+                                                    Manage ICD Codes
+                                                </DropdownMenuItem>
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                                            <FilePenLine className="h-4 w-4 mr-2" />
+                                                            Update Results
                                                         </DropdownMenuItem>
-                                                    </AlertDialogTrigger>
-                                                    <AlertDialogContent>
-                                                        <AlertDialogHeader>
-                                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                                            <AlertDialogDescription>
-                                                                This will permanently cancel the appointment for {appt.patient_name}.
-                                                                This action is not reversible.
-                                                            </AlertDialogDescription>
-                                                        </AlertDialogHeader>
-                                                        <AlertDialogFooter>
-                                                            <AlertDialogCancel>Back</AlertDialogCancel>
-                                                            <AlertDialogAction
-                                                                onClick={() => handleCancelAppointment(appt.id)}
-                                                                className={buttonVariants({ variant: "destructive" })}
-                                                            >
-                                                                Yes, cancel it
-                                                            </AlertDialogAction>
-                                                        </AlertDialogFooter>
-                                                    </AlertDialogContent>
-                                                </AlertDialog>
-                                            )}
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        );
-                    })}
+                                                    </DialogTrigger>
+                                                    <UpdateResultsDialog appointment={appt} />
+                                                </Dialog>
+                                                {isCancellable && (
+                                                    <AlertDialog>
+                                                        <AlertDialogTrigger asChild>
+                                                            <DropdownMenuItem className="text-red-600" onSelect={(e) => e.preventDefault()}>
+                                                                <Trash2 className="h-4 w-4 mr-2" />
+                                                                Cancel Appointment
+                                                            </DropdownMenuItem>
+                                                        </AlertDialogTrigger>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    This will permanently cancel the appointment for {appt.patient_name}.
+                                                                    This action is not reversible.
+                                                                </AlertDialogDescription>
+                                                            </AlertDialogHeader>
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel>Back</AlertDialogCancel>
+                                                                <AlertDialogAction
+                                                                    onClick={() => handleCancelAppointment(appt.id)}
+                                                                    className={buttonVariants({ variant: "destructive" })}
+                                                                >
+                                                                    Yes, cancel it
+                                                                </AlertDialogAction>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>
+                                                )}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </div>
@@ -242,7 +242,7 @@ export const AllAppointmentsHistory = () => {
                     {renderContent()}
                 </CardContent>
             </Card>
-            
+
             {/* ICD Code Manager Dialog */}
             {selectedAppointmentForIcd && (
                 <IcdCodeManager

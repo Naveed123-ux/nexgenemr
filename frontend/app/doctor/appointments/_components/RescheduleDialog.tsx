@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -18,7 +18,7 @@ import { UpcomingAppointment } from "./types";
 
 export const RescheduleDialog = ({ appointment }: { appointment: UpcomingAppointment }) => {
     const dispatch = useDispatch<AppDispatch>();
-    
+
     // Fetch data from the new slice
     const { slots: allAvailableSlots, status } = useSelector((state: RootState) => state.availableSlots);
 
@@ -42,7 +42,7 @@ export const RescheduleDialog = ({ appointment }: { appointment: UpcomingAppoint
     const slotsForSelectedDate = useMemo(() => {
         if (!selectedDate || !allAvailableSlots) return [];
         const formattedSelectedDate = format(selectedDate, 'yyyy-MM-dd');
-        return allAvailableSlots.filter(slot => 
+        return allAvailableSlots.filter(slot =>
             format(new Date(slot.start_time), 'yyyy-MM-dd') === formattedSelectedDate && slot.status === 'Available'
         );
     }, [selectedDate, allAvailableSlots]);
@@ -63,7 +63,7 @@ export const RescheduleDialog = ({ appointment }: { appointment: UpcomingAppoint
                 // The DialogClose wrapper will handle closing the modal
             })
             .catch((error) => {
-                toast.error("Failed to reschedule", { description: error });
+                toast.error(`Failed to reschedule: ${error}`);
             })
             .finally(() => {
                 setIsRescheduling(false);

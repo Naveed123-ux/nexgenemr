@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -66,7 +66,7 @@ export const SoapNoteDialog = ({ appointment }: { appointment: UpcomingAppointme
 
     useEffect(() => {
         if (status === 'failed' || highlightStatus === 'failed') {
-            toast.error("An error occurred", { description: error || "Please try again." });
+            toast.error(error || "An error occurred. Please try again.");
         }
     }, [status, highlightStatus, error]);
 

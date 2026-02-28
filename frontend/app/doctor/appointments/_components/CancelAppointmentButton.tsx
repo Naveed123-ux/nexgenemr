@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import {
   AlertDialog,
@@ -43,28 +43,24 @@ export function CancelAppointmentButton({
     try {
       await privateApi.delete(`/appointments/appointment/${appointmentId}`);
 
-      toast.success("Appointment cancelled successfully", {
-        description: "The patient has been notified via email.",
-      });
+      toast.success("Appointment cancelled successfully. The patient has been notified via email.");
 
       // Refresh appointments
       const startDate = format(new Date(), "yyyy-MM-dd");
       dispatch(fetchWeeklyAppointments(startDate));
 
       setIsOpen(false);
-      
+
       // Call onSuccess callback if provided
       if (onSuccess) {
         onSuccess();
       }
     } catch (error: any) {
       console.error("Cancel error:", error);
-      
+
       const errorMessage = error.response?.data?.detail || "Failed to cancel appointment. Please try again.";
-      
-      toast.error("Failed to cancel appointment", {
-        description: errorMessage,
-      });
+
+      toast.error(`Failed to cancel appointment: ${errorMessage}`);
     } finally {
       setIsCancelling(false);
     }
@@ -96,7 +92,7 @@ export function CancelAppointmentButton({
               <p>
                 Are you sure you want to cancel this appointment? This action cannot be undone.
               </p>
-              
+
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-2">
                 <div className="flex items-start gap-2">
                   <span className="text-sm font-medium text-gray-500 min-w-[80px]">Patient:</span>

@@ -30,7 +30,7 @@ import SessionManagementWizard from "./session-management-wizard";
 import EditHospitalProfile from "./EditHospitalProfile";
 import SignaturePad from "./SignaturePad";
 import toast from "react-hot-toast";
-// import { toast } from "sonner"; // Example for toast notifications
+// import { toast } from "react-hot-toast"; // Example for toast notifications
 
 interface SharedProfileProps {
   adminType: "Super Admin" | "Hospital Admin" | "Doctor" | "staff";

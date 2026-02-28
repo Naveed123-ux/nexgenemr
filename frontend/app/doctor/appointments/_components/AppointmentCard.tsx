@@ -3,7 +3,7 @@
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -77,12 +77,8 @@ export const AppointmentCard = ({
   const handleCancelAppointment = () => {
     dispatch(cancelAppointment(appointment.id))
       .unwrap()
-      .then(() => toast.success("Appointment cancelled successfully", {
-        description: "The patient has been notified via email."
-      }))
-      .catch((error) => toast.error("Failed to cancel appointment", {
-        description: error
-      }));
+      .then(() => toast.success("Appointment cancelled successfully. The patient has been notified via email."))
+      .catch((error) => toast.error(`Failed to cancel appointment: ${error}`));
   };
 
   const handleAddSoapNote = () => {

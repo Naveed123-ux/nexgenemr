@@ -90,7 +90,7 @@ export const fetchAllAppointments = createAsyncThunk(
     'appointments/fetchAll',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await privateApi.get<Appointment[]>('/appointments/doctor/all');
+            const response = await privateApi.get<Appointment[]>('/appointments/appointment/doctor/all');
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.detail || "Failed to fetch appointment history.");
@@ -114,7 +114,7 @@ export const rescheduleAppointment = createAsyncThunk(
     'appointments/reschedule',
     async ({ appointmentId, new_slot_id }: { appointmentId: number, new_slot_id: number }, { dispatch, rejectWithValue }) => {
         try {
-            await privateApi.put(`/appointments/${appointmentId}/reschedule`, { new_slot_id });
+            await privateApi.put(`/appointments/appointment/${appointmentId}/reschedule`, { new_slot_id });
             // Refetch data to ensure all lists are up-to-date after a reschedule
             dispatch(fetchUpcomingAppointments());
             dispatch(fetchAllAppointments());
@@ -129,7 +129,7 @@ export const updateAppointmentResults = createAsyncThunk(
     'appointments/updateResults',
     async ({ appointmentId, results }: { appointmentId: number, results: string }, { rejectWithValue }) => {
         try {
-            const response = await privateApi.put<Appointment>(`/appointments/${appointmentId}/results`, { results });
+            const response = await privateApi.put<Appointment>(`/appointments/appointment/${appointmentId}/results`, { results });
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.detail || "Failed to update results.");

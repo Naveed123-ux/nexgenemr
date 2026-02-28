@@ -34,7 +34,7 @@ def _generate_synopsis_from_ai(prompt: str) -> str:
 
     try:
         response = gemini_client.models.generate_content(
-            model="gemini-2.0-flash",  # or gemini-2.0-flash if available
+            model="gemini-flash-latest",
             contents=[prompt]
         )
         return response.text

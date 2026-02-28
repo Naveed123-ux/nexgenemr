@@ -10,6 +10,8 @@ from typing import List, Optional
 # Import Google GenAI
 from google import genai
 from google.genai.types import GenerateContentConfig
+from google.genai.errors import ClientError
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception
 
 from db.db import get_db
 from models.soap_note_model import SoapNote as SoapNoteModel
@@ -53,9 +55,9 @@ def _validate_audio_file(audio_file: UploadFile, audio_content: bytes) -> None:
     """
     Validates the audio file format and size.
     """
-    print(f"   📋 Validating audio file: {audio_file.filename}")
-    print(f"   📋 Content Type: {audio_file.content_type}")
-    print(f"   📋 File Size: {len(audio_content)} bytes")
+    print(f"    Validating audio file: {audio_file.filename}")
+    print(f"    Content Type: {audio_file.content_type}")
+    print(f"    File Size: {len(audio_content)} bytes")
     
     # Check file size
     if len(audio_content) > MAX_FILE_SIZE:
@@ -86,31 +88,45 @@ def _validate_audio_file(audio_file: UploadFile, audio_content: bytes) -> None:
             detail=f"Unsupported audio format. Supported formats: MP3, WAV"
         )
     
-    print(f"   ✅ Audio file validated successfully")
+    print(f"    Audio file validated successfully")
 
 
+def is_rate_limit_error(exception):
+    if isinstance(exception, ClientError) and getattr(exception, 'code', None) == 429:
+        return True
+    if isinstance(exception, HTTPException) and getattr(exception, 'status_code', None) == 429:
+        return True
+    return False
+    return isinstance(exception, ClientError) and exception.code == 429
+
+@retry(
+    retry=retry_if_exception(is_rate_limit_error),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    stop=stop_after_attempt(3),
+    reraise=True
+)
 def _transcribe_audio_with_gemini(audio_content: bytes, mime_type: str, filename: str) -> str:
     """
     Uses Gemini API to transcribe audio content.
     Gemini 2.0 Flash supports audio input directly.
     """
-    print("--- 🗣️ Transcribing audio with Gemini API ---")
+    print("---  Transcribing audio with Gemini API ---")
     
     import tempfile
     temp_file_path = None
     
     try:
-        print("   💾 Saving audio to temporary file...")
+        print("    Saving audio to temporary file...")
         with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(filename)[1]) as temp_file:
             temp_file.write(audio_content)
             temp_file_path = temp_file.name
         
-        print(f"   📤 Uploading audio file to Gemini... ({temp_file_path})")
+        print(f"    Uploading audio file to Gemini... ({temp_file_path})")
         
         # Upload audio file using the client's files API
         with open(temp_file_path, 'rb') as f:
          uploaded_file = gemini_client.files.upload(file=temp_file_path)
-        print(f"   ✅ Audio file uploaded successfully: {uploaded_file.name}")
+        print(f"    Audio file uploaded successfully: {uploaded_file.name}")
         
         # Create transcription prompt
         prompt = """You are a medical transcription assistant. Listen to this audio recording of a doctor-patient conversation and provide an accurate, detailed transcription.
@@ -125,11 +141,11 @@ Instructions:
 
 Provide ONLY the transcription, no additional commentary."""
 
-        print("   🎧 Generating transcription...")
+        print("    Generating transcription...")
         
         # Generate content with the uploaded file - simple approach
         response = gemini_client.models.generate_content(
-            model='gemini-2.0-flash',
+            model='gemini-flash-latest',
             contents=[prompt, uploaded_file]
         )
         
@@ -141,25 +157,36 @@ Provide ONLY the transcription, no additional commentary."""
                 detail="Failed to generate transcript from audio"
             )
         
-        print(f"   ✅ Transcription completed: {len(transcript)} characters")
-        print(f"   📝 Preview: {transcript[:200]}...")
+        print(f"    Transcription completed: {len(transcript)} characters")
+        print(f"    Preview: {transcript[:200]}...")
         
         # Clean up uploaded file from Gemini
         try:
             gemini_client.files.delete(name=uploaded_file.name)
-            print(f"   🗑️ Uploaded file deleted from Gemini")
+            print(f"    Uploaded file deleted from Gemini")
         except Exception as e:
-            print(f"   ⚠️ Failed to delete uploaded file from Gemini: {e}")
+            print(f"    Failed to delete uploaded file from Gemini: {e}")
         
         return transcript
 
+    except ClientError as e:
+        if e.code == 429:
+            print(f"    Gemini Quota Exhausted (429): {str(e)}")
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="AI service quota exhausted. Please try again in a few minutes."
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Gemini API Error ({e.code}): {str(e)}"
+        )
     except HTTPException:
         raise
     except Exception as e:
-        print(f"   ❌ Gemini Transcription Error: {str(e)}")
-        print(f"   ❌ Error type: {type(e).__name__}")
+        print(f"    Gemini Transcription Error: {str(e)}")
+        print(f"    Error type: {type(e).__name__}")
         import traceback
-        print(f"   ❌ Traceback: {traceback.format_exc()}")
+        print(f"    Traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to transcribe audio with Gemini API: {str(e)}"
@@ -169,18 +196,24 @@ Provide ONLY the transcription, no additional commentary."""
         if temp_file_path and os.path.exists(temp_file_path):
             try:
                 os.unlink(temp_file_path)
-                print(f"   🗑️ Temporary file deleted: {temp_file_path}")
+                print(f"    Temporary file deleted: {temp_file_path}")
             except Exception as e:
-                print(f"   ⚠️ Failed to delete temporary file: {e}")
+                print(f"    Failed to delete temporary file: {e}")
 
 
+@retry(
+    retry=retry_if_exception(is_rate_limit_error),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    stop=stop_after_attempt(3),
+    reraise=True
+)
 def _generate_soap_notes_from_text(transcript: str) -> SoapNote:
     """
     Calls the Gemini API to generate structured SOAP notes from a transcript.
     Returns a clean SoapNote object with only the four required fields.
     """
-    print(f"--- 🧠 Generating SOAP notes with Gemini API ---")
-    print(f"   📝 Transcript length: {len(transcript)} characters")
+    print(f"---  Generating SOAP notes with Gemini API ---")
+    print(f"    Transcript length: {len(transcript)} characters")
     
     try:
         prompt = f"""You are a medical documentation assistant. Extract clinical information from this doctor-patient conversation and format it as SOAP notes.
@@ -205,7 +238,7 @@ Conversation Transcript:
 {transcript}"""
 
         response = gemini_client.models.generate_content(
-            model='gemini-2.0-flash',
+            model='gemini-flash-latest',
             contents=prompt,
             config=GenerateContentConfig(
                 temperature=0.1,
@@ -215,7 +248,7 @@ Conversation Transcript:
         
         soap_text = response.text.strip()
         
-        print(f"   📄 Raw Gemini response length: {len(soap_text)} characters")
+        print(f"    Raw Gemini response length: {len(soap_text)} characters")
         
         # Remove markdown code blocks if present
         if soap_text.startswith("```json"):
@@ -235,27 +268,38 @@ Conversation Transcript:
                 assessment=soap_data.get("assessment", "Not documented"),
                 plan=soap_data.get("plan", "Not documented")
             )
-            print(f"   ✅ SOAP notes generated successfully.")
-            print(f"   📋 Subjective: {len(soap_note.subjective)} chars")
-            print(f"   📋 Objective: {len(soap_note.objective)} chars")
-            print(f"   📋 Assessment: {len(soap_note.assessment)} chars")
-            print(f"   📋 Plan: {len(soap_note.plan)} chars")
+            print(f"    SOAP notes generated successfully.")
+            print(f"    Subjective: {len(soap_note.subjective)} chars")
+            print(f"    Objective: {len(soap_note.objective)} chars")
+            print(f"    Assessment: {len(soap_note.assessment)} chars")
+            print(f"    Plan: {len(soap_note.plan)} chars")
             return soap_note
         except json.JSONDecodeError as je:
-            print(f"   ❌ Failed to parse JSON from Gemini response: {je}")
-            print(f"   ❌ Raw response: {soap_text[:500]}...")
+            print(f"    Failed to parse JSON from Gemini response: {je}")
+            print(f"    Raw response: {soap_text[:500]}...")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Failed to parse SOAP notes from AI response"
             )
 
+    except ClientError as e:
+        if e.code == 429:
+            print(f"    Gemini Quota Exhausted (429): {str(e)}")
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="AI service quota exhausted. Please try again in a few minutes."
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Gemini API Error ({e.code}): {str(e)}"
+        )
     except HTTPException:
         raise
     except Exception as e:
-        print(f"   ❌ Gemini API Error: {str(e)}")
-        print(f"   ❌ Error type: {type(e).__name__}")
+        print(f"    Gemini API Error: {str(e)}")
+        print(f"    Error type: {type(e).__name__}")
         import traceback
-        print(f"   ❌ Traceback: {traceback.format_exc()}")
+        print(f"    Traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate SOAP notes with Gemini API: {str(e)}"
@@ -275,7 +319,7 @@ async def orchestrate_audio_to_soap(audio_file: UploadFile, appointment_id: int,
     # Step 1: Read and validate audio file
     print(f"\n[Step 1] Reading audio file: '{audio_file.filename}'")
     audio_content = await audio_file.read()
-    print(f"   ✅ File read complete: {len(audio_content)} bytes")
+    print(f"    File read complete: {len(audio_content)} bytes")
     
     # Step 2: Validate audio file
     print(f"\n[Step 2] Validating audio file")
@@ -290,20 +334,20 @@ async def orchestrate_audio_to_soap(audio_file: UploadFile, appointment_id: int,
     else:
         mime_type = "audio/mp3"  # Default fallback
     
-    print(f"   ✅ Detected MIME type: {mime_type}")
+    print(f"    Detected MIME type: {mime_type}")
 
     # Step 3: Transcribe audio using Gemini
     print(f"\n[Step 3] Transcribing audio with Gemini...")
     transcript = _transcribe_audio_with_gemini(audio_content, mime_type, audio_file.filename)
 
     if not transcript or transcript.strip() == "":
-        print("   ⚠️ Transcription returned empty.")
+        print("    Transcription returned empty.")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to transcribe audio. Please ensure the audio file contains clear speech."
         )
 
-    print(f"   ✅ Transcription successful: {len(transcript)} characters")
+    print(f"    Transcription successful: {len(transcript)} characters")
 
     # Step 4: Generate SOAP notes from transcript
     print(f"\n[Step 4] Generating SOAP notes from transcript...")
@@ -314,10 +358,10 @@ async def orchestrate_audio_to_soap(audio_file: UploadFile, appointment_id: int,
     saved_note = save_soap_note(db, appointment_id, soap_note)
 
     print("\n" + "="*60)
-    print("✅ Workflow complete!")
-    print(f"   📝 SOAP Note ID: {saved_note.id}")
-    print(f"   📋 Appointment ID: {appointment_id}")
-    print(f"   🎤 Transcript length: {len(transcript)} chars")
+    print(" Workflow complete!")
+    print(f"    SOAP Note ID: {saved_note.id}")
+    print(f"    Appointment ID: {appointment_id}")
+    print(f"    Transcript length: {len(transcript)} chars")
     print("="*60 + "\n")
     
     return SoapNoteResponse(
@@ -342,16 +386,16 @@ def generate_soap_from_text(request: SoapNoteFromTextRequest, db: Session) -> So
         )
 
     print(f"\n[Step 1] Generating SOAP notes from text...")
-    print(f"   📝 Transcript length: {len(request.transcript)} characters")
+    print(f"    Transcript length: {len(request.transcript)} characters")
     soap_note = _generate_soap_notes_from_text(request.transcript)
 
     print(f"\n[Step 2] Saving SOAP note to database...")
     saved_note = save_soap_note(db, request.appointment_id, soap_note)
 
     print("\n" + "="*60)
-    print("✅ Workflow complete!")
-    print(f"   📝 SOAP Note ID: {saved_note.id}")
-    print(f"   📋 Appointment ID: {request.appointment_id}")
+    print(" Workflow complete!")
+    print(f"    SOAP Note ID: {saved_note.id}")
+    print(f"    Appointment ID: {request.appointment_id}")
     print("="*60 + "\n")
     
     return SoapNoteResponse(
@@ -366,7 +410,7 @@ def save_soap_note(db: Session, appointment_id: int, soap_note_data: SoapNote) -
     Saves a new SOAP note to the database.
     Patient info is derived from the appointment relationship.
     """
-    print(f"   🔍 Verifying appointment ID: {appointment_id}")
+    print(f"    Verifying appointment ID: {appointment_id}")
     
     # Verify appointment exists
     appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first()
@@ -376,7 +420,7 @@ def save_soap_note(db: Session, appointment_id: int, soap_note_data: SoapNote) -
             detail=f"Appointment with ID {appointment_id} not found."
         )
     
-    print(f"   ✅ Appointment found: {appointment.id}")
+    print(f"    Appointment found: {appointment.id}")
 
     # Check if a SOAP note for this appointment already exists
     existing_note = db.query(SoapNoteModel).filter(
@@ -402,7 +446,7 @@ def save_soap_note(db: Session, appointment_id: int, soap_note_data: SoapNote) -
     db.commit()
     db.refresh(db_soap_note)
     
-    print(f"   ✅ SOAP note saved successfully with ID: {db_soap_note.id}")
+    print(f"    SOAP note saved successfully with ID: {db_soap_note.id}")
     return db_soap_note
 
 

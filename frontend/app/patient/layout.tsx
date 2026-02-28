@@ -20,7 +20,7 @@ const navigation = [
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
-import { updateUserPictureUrl, fetchHospitalInfo } from "@/store/slices/authSlice";
+import { updateUserPictureUrl, fetchHospitalInfo, fetchUserInfo } from "@/store/slices/authSlice";
 
 export default function PatientLayout({
   children,
@@ -35,6 +35,7 @@ export default function PatientLayout({
 
   useEffect(() => {
     dispatch(fetchHospitalInfo());
+    dispatch(fetchUserInfo());
   }, [dispatch]);
 
   useEffect(() => {

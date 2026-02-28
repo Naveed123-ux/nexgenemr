@@ -29,7 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <Toaster position="top-right" reverseOrder={false} />
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            className: inter.className,
+          }}
+        />
         <StoreProvider>
           <DynamicFavicon />
           {children}
