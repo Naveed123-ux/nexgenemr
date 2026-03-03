@@ -10,6 +10,7 @@ interface AuthState {
   name: string | null;
   token: string | null;
   email: string | null;
+  role: string | null;
   job_title: string | null;
   hospital_id: number | null;
   first_name: string | null;
@@ -114,6 +115,7 @@ const initialState: AuthState = {
   hospital: null,
   token: null,
   email: null,
+  role: null,
   job_title: null,
   hospital_id: null,
   first_name: null,
@@ -171,6 +173,7 @@ export const authSlice = createSlice({
       state.biography = null;
       state.languages_spoken = null;
       state.is_google_connected = null;
+      state.role = null;
     },
     updateUserPictureUrl: (state, action: PayloadAction<string>) => {
       if (state) {
@@ -239,6 +242,7 @@ export const authSlice = createSlice({
         state.first_name = action.payload.first_name;
         state.last_name = action.payload.last_name;
         state.name = action.payload.first_name + " " + action.payload.last_name;
+        state.role = action.payload.role?.name || action.payload.role || null;
       }
     );
   },

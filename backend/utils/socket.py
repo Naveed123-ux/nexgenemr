@@ -68,6 +68,15 @@ async def connect(sid, environ, auth):
                     "user_id": user.id,
                     "email": user.email
                 }, room=sid)
+
+                # Broadcast online status to all other connected users
+                for other_user_id, other_sid in list(connected_users.items()):
+                    if other_user_id != user.id:
+                        await sio.emit("user_online", {"user_id": user.id}, room=f"user_{other_user_id}")
+                
+                # Send current online users list to the newly connected user
+                await sio.emit("online_users", {"user_ids": list(connected_users.keys())}, room=sid)
+
                 print(f"🎉 Connection success for user {user.email}")
                 return
             except Exception as e:
@@ -295,10 +304,13 @@ async def disconnect(sid):
     try:
         session = await sio.get_session(sid)
         user_id = session.get("user_id")
-        if user_id in connected_users:
+        if user_id and user_id != "anonymous" and user_id in connected_users:
             del connected_users[user_id]
-    except Exception:
-        pass
+            # Broadcast offline status to all remaining connected users
+            for other_user_id in list(connected_users.keys()):
+                await sio.emit("user_offline", {"user_id": user_id}, room=f"user_{other_user_id}")
+    except Exception as e:
+        print(f"Error in disconnect: {e}")
 
 @sio.on("ping")
 async def handle_ping(sid, data):

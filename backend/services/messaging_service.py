@@ -100,74 +100,77 @@ def get_allowed_contacts(db: Session, current_user: User) -> List[ContactRespons
     
     contacts = []
     
-    # 1. Super_Admin: All Hospital Admins
+    # 1. Super_Admin: can talk to ALL Hospital Admins
     if role_name == "Super_Admin":
-        admins = db.query(User).join(User.role).filter(User.role.has(name="Hospital_Admin")).all()
-        contacts.extend(admins)
+        admins = db.query(User).options(joinedload(User.role)).join(User.role).filter(
+            User.role.has(name="Hospital_Admin"),
+            User.id != current_user.id
+        ).all()
+        contacts = admins
     
-    # 2. Hospital_Admin: All staff in their hospital + Super Admin
+    # 2. Hospital_Admin: Super_Admin + all staff/doctors in their hospital
     elif role_name == "Hospital_Admin":
-        # Staff in hospital
-        staff = db.query(User).join(StaffProfile, User.id == StaffProfile.user_id).filter(StaffProfile.hospital_id == hospital_id).all()
-        # Doctors in hospital
-        doctors = db.query(User).join(DoctorProfile, User.id == DoctorProfile.user_id).filter(DoctorProfile.department.has(hospital_id=hospital_id)).all()
-        # Super Admins
-        super_admins = db.query(User).join(User.role).filter(User.role.has(name="Super_Admin")).all()
-        
-        # Merge all but exclude self
-        all_contacts = list(set(staff + doctors + super_admins))
-        contacts = [u for u in all_contacts if u.id != current_user.id]
+        super_admins = db.query(User).options(joinedload(User.role)).join(User.role).filter(
+            User.role.has(name="Super_Admin")
+        ).all()
+        staff = db.query(User).options(joinedload(User.role)).join(StaffProfile, User.id == StaffProfile.user_id).filter(
+            StaffProfile.hospital_id == hospital_id,
+            User.id != current_user.id
+        ).all()
+        doctors = db.query(User).options(joinedload(User.role)).join(DoctorProfile, User.id == DoctorProfile.user_id).filter(
+            DoctorProfile.department.has(hospital_id=hospital_id)
+        ).all()
+        contacts = list({u.id: u for u in super_admins + staff + doctors}.values())
 
-    # 3. Staff / Doctor / Lab Tech / Receptionist: All staff in their hospital
+    # 3. All Staff roles: Hospital_Admin + colleagues + patients in hospital
     elif role_name in ["Receptionist", "Staff", "Lab_Technician", "Doctor"]:
-        # Staff in hospital
-        staff = db.query(User).join(StaffProfile, User.id == StaffProfile.user_id).filter(StaffProfile.hospital_id == hospital_id).all()
-        # Doctors in hospital
-        doctors = db.query(User).join(DoctorProfile, User.id == DoctorProfile.user_id).filter(DoctorProfile.department.has(hospital_id=hospital_id)).all()
-        # Hospital Admins
-        admins = db.query(User).join(User.role).filter(User.role.has(name="Hospital_Admin")).join(StaffProfile, User.id == StaffProfile.user_id).filter(StaffProfile.hospital_id == hospital_id).all()
-        
-        all_contacts = list(set(staff + doctors + admins))
-        
-        # Special case: Doctors can also talk to their patients
-        if role_name == "Doctor":
-            # Patients with past appointments
-            appointment_patient_ids = [a.patient_profile.user_id for a in db.query(Appointment).filter(Appointment.doctor_user_id == current_user.id).all() if a.patient_profile]
-            # Assigned patients
-            assigned_patient_ids = [p.user_id for p in db.query(PatientProfile).filter(PatientProfile.assigned_doctor_id == current_user.id).all()]
-            
-            combined_patient_ids = list(set(appointment_patient_ids + assigned_patient_ids))
-            patients = db.query(User).filter(User.id.in_(combined_patient_ids)).all()
-            all_contacts.extend(patients)
-            
-        contacts = [u for u in all_contacts if u.id != current_user.id]
+        admins = db.query(User).options(joinedload(User.role)).join(User.role).filter(
+            User.role.has(name="Hospital_Admin")
+        ).join(StaffProfile, User.id == StaffProfile.user_id).filter(
+            StaffProfile.hospital_id == hospital_id
+        ).all()
+        staff = db.query(User).options(joinedload(User.role)).join(StaffProfile, User.id == StaffProfile.user_id).filter(
+            StaffProfile.hospital_id == hospital_id,
+            User.id != current_user.id
+        ).all()
+        doctors = db.query(User).options(joinedload(User.role)).join(DoctorProfile, User.id == DoctorProfile.user_id).filter(
+            DoctorProfile.department.has(hospital_id=hospital_id),
+            User.id != current_user.id
+        ).all()
+        patients = db.query(User).options(joinedload(User.role)).join(PatientProfile, User.id == PatientProfile.user_id).filter(
+            PatientProfile.hospital_id == hospital_id
+        ).all()
+        contacts = list({u.id: u for u in admins + staff + doctors + patients}.values())
 
-    # 4. Patient: Doctors they have had appointments with
+    # 4. Patient: all staff/doctors at their registered hospital
     elif role_name == "Patient":
-        patient_profile = db.query(PatientProfile).filter(PatientProfile.user_id == current_user.id).first()
+        patient_profile = db.query(PatientProfile).filter(
+            PatientProfile.user_id == current_user.id
+        ).first()
         if patient_profile:
-            # Doctors from past appointments
-            doctor_ids = [a.doctor_user_id for a in db.query(Appointment).filter(Appointment.patient_profile_id == patient_profile.id).all()]
-            # Assigned doctor
-            if patient_profile.assigned_doctor_id:
-                doctor_ids.append(patient_profile.assigned_doctor_id)
-            
-            doctors = db.query(User).filter(User.id.in_(list(set(doctor_ids)))).all()
-            contacts.extend(doctors)
+            patient_hospital_id = patient_profile.hospital_id
+            doctors = db.query(User).options(joinedload(User.role)).join(DoctorProfile, User.id == DoctorProfile.user_id).filter(
+                DoctorProfile.department.has(hospital_id=patient_hospital_id)
+            ).all()
+            staff = db.query(User).options(joinedload(User.role)).join(StaffProfile, User.id == StaffProfile.user_id).filter(
+                StaffProfile.hospital_id == patient_hospital_id
+            ).all()
+            contacts = list({u.id: u for u in doctors + staff}.values())
 
-    # Check who has blocked the current user (only for UI display if needed, but the rule is we filter them later)
-    # Actually, we should check if current_user has blocked them.
-    blocked_ids = [b.blocked_id for b in db.query(UserBlock).filter(UserBlock.blocker_id == current_user.id).all()]
+    blocked_ids = {b.blocked_id for b in db.query(UserBlock).filter(
+        UserBlock.blocker_id == current_user.id
+    ).all()}
 
     return [
         ContactResponse(
             user_id=u.id,
             first_name=u.first_name,
             last_name=u.last_name,
-            role=u.role.name,
-            profile_picture_url=getattr(u.doctor_profile or u.staff_profile or u.patient_profile, 'profile_picture_url', None),
+            role=u.role.name if u.role else "Unknown",
+            profile_picture_url=None,
             is_blocked=u.id in blocked_ids
-        ) for u in contacts if u
+        )
+        for u in contacts if u and u.id != current_user.id
     ]
 
 async def create_conversation(db: Session, request: CreateConversationRequest, current_user: User):
@@ -348,17 +351,17 @@ def block_user(db: Session, current_user: User, user_id_to_block: int):
     my_role = current_user.role.name
     their_role = target_user.role.name
     
-    # Staff cannot block Hospital Admin
+    # Hospital Admin cannot block Super Admin
+    if my_role == "Hospital_Admin" and their_role == "Super_Admin":
+        raise HTTPException(status_code=403, detail="You cannot block the Super Admin.")
+    
+    # Staff/Doctor/Lab/Receptionist cannot block Hospital Admin
     if my_role in ["Staff", "Doctor", "Receptionist", "Lab_Technician"] and their_role == "Hospital_Admin":
         raise HTTPException(status_code=403, detail="You cannot block the Hospital Admin.")
     
-    # Patient cannot block Doctor
-    if my_role == "Patient" and their_role == "Doctor":
-        raise HTTPException(status_code=403, detail="You cannot block a Doctor.")
-    
-    # Super Admin and Hospital Admin cannot block each other
-    if (my_role == "Super_Admin" and their_role == "Hospital_Admin") or (my_role == "Hospital_Admin" and their_role == "Super_Admin"):
-        raise HTTPException(status_code=403, detail="Admins cannot block each other.")
+    # Patient cannot block Doctor or staff
+    if my_role == "Patient":
+        raise HTTPException(status_code=403, detail="Patients cannot block staff members.")
 
     existing = db.query(UserBlock).filter(UserBlock.blocker_id == current_user.id, UserBlock.blocked_id == user_id_to_block).first()
     if not existing:

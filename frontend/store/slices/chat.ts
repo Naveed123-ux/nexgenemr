@@ -59,6 +59,7 @@ interface ConversationsState {
   contactsLoading: boolean;
   error: string | null;
   activeConversationId: number | null;
+  onlineUserIds: number[];
 }
 
 const initialState: ConversationsState = {
@@ -70,6 +71,7 @@ const initialState: ConversationsState = {
   contactsLoading: false,
   error: null,
   activeConversationId: null,
+  onlineUserIds: [],
 };
 
 // --- Thunks ---
@@ -186,7 +188,18 @@ const conversationsSlice = createSlice({
           unread_count: isFromMe || isActive ? 0 : 1
         });
       }
-    }
+    },
+    setOnlineUsers: (state, action: PayloadAction<number[]>) => {
+      state.onlineUserIds = action.payload;
+    },
+    setUserOnline: (state, action: PayloadAction<number>) => {
+      if (!state.onlineUserIds.includes(action.payload)) {
+        state.onlineUserIds.push(action.payload);
+      }
+    },
+    setUserOffline: (state, action: PayloadAction<number>) => {
+      state.onlineUserIds = state.onlineUserIds.filter(id => id !== action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -223,5 +236,5 @@ const conversationsSlice = createSlice({
   },
 });
 
-export const { resetDetail, updateDetail, setActiveConversation, updateConversationPreview } = conversationsSlice.actions;
+export const { resetDetail, updateDetail, setActiveConversation, updateConversationPreview, setOnlineUsers, setUserOnline, setUserOffline } = conversationsSlice.actions;
 export default conversationsSlice.reducer;

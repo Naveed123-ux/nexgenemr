@@ -27,8 +27,8 @@ import { Logout } from "@/store/slices/authSlice";
 import { toast } from "react-hot-toast";
 
 const navigation = [
-  { name: "Claims", href: "/rcm/claims", icon: Sheet },
-  { name: "Workflow", href: "/rcm/workflow", icon: Recycle },
+  // { name: "Claims", href: "/rcm/claims", icon: Sheet },
+  // { name: "Workflow", href: "/rcm/workflow", icon: Recycle },
   {
     name: "Patient Billing",
     href: "/rcm/billing",
@@ -36,7 +36,7 @@ const navigation = [
   },
   { name: "Invoices", href: "/rcm/invoices", icon: FileText },
   { name: "Payments", href: "/rcm/payments", icon: HandCoins },
-  { name: "Secure Messaging", href: "/rcm/chat", icon: MessageSquare },
+  // { name: "Secure Messaging", href: "/rcm/chat", icon: MessageSquare },
 ];
 
 export function Sidebar() {
