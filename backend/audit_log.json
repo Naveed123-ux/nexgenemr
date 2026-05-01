@@ -33,3 +33,4 @@
 {"timestamp": "2026-03-03T08:35:04.583326", "user_id": 100, "user_email": "naveed23xyz@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/lab-requests/5/review", "status_code": 200}
 {"timestamp": "2026-03-03T08:36:48.948331", "user_id": 100, "user_email": "naveed23xyz@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/soap-notes/generate-from-audio", "status_code": 500}
 {"timestamp": "2026-03-03T10:48:29.175944", "user_id": 100, "user_email": "naveed23xyz@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/soap-notes/generate-from-audio", "status_code": 500}
+{"timestamp": "2026-03-03T10:50:24.880503", "user_id": 100, "user_email": "naveed23xyz@gmail.com", "user_role": "Doctor", "hospital_id": 4, "http_method": "POST", "path": "/soap-notes/generate-from-audio", "status_code": 200}
