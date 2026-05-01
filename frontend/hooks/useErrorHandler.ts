@@ -30,7 +30,7 @@ export function useErrorHandler() {
     if (!error) return;
 
     let errorInfo: ErrorInfo;
-    
+
     // Convert ApiError to ErrorInfo if needed
     if (error instanceof ApiError) {
       errorInfo = {
@@ -38,7 +38,7 @@ export function useErrorHandler() {
         type: error.type,
         shouldRedirect: error.type === 'authentication'
       };
-      
+
       // Log the full error for debugging
       errorLogger.log(error, LogLevel.ERROR, context);
     } else {
@@ -53,7 +53,7 @@ export function useErrorHandler() {
           duration: 5000,
         });
         break;
-        
+
       case 'authentication':
         toast.error(errorInfo.message, {
           description: 'Redirecting to login page...',
@@ -64,35 +64,35 @@ export function useErrorHandler() {
           router.push('/auth/login');
         }, 1000);
         break;
-        
+
       case 'authorization':
         toast.error(errorInfo.message, {
           description: 'Contact your administrator if you believe this is an error.',
           duration: 5000,
         });
         break;
-        
+
       case 'not_found':
         toast.error(errorInfo.message, {
           description: 'The requested resource may have been moved or deleted.',
           duration: 4000,
         });
         break;
-        
+
       case 'conflict':
         toast.error(errorInfo.message, {
           description: 'Please resolve the conflict and try again.',
           duration: 5000,
         });
         break;
-        
+
       case 'rate_limit':
         toast.warning(errorInfo.message, {
           description: 'Please wait before making more requests.',
           duration: 4000,
         });
         break;
-        
+
       case 'network':
         toast.error(errorInfo.message, {
           description: 'Check your connection and try again.',
@@ -103,14 +103,14 @@ export function useErrorHandler() {
           },
         });
         break;
-        
+
       case 'server':
         toast.error(errorInfo.message, {
           description: 'Our team has been notified. Please try again later.',
           duration: 5000,
         });
         break;
-        
+
       default:
         toast.error(errorInfo.message || 'An unexpected error occurred', {
           description: 'Please try again or contact support if the problem persists.',
@@ -223,11 +223,11 @@ export function useFormErrorHandler() {
         message: errorMessages[0], // Show first error
         type: 'validation'
       };
-      
+
       if (errorMessages.length > 1) {
         errorInfo.message += ` (and ${errorMessages.length - 1} other error${errorMessages.length > 2 ? 's' : ''})`;
       }
-      
+
       handleError(errorInfo);
     }
   }, [handleError]);
@@ -250,23 +250,23 @@ export function useRetryHandler() {
     retryMessage?: string
   ) => {
     let lastError: any;
-    
+
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         return await operation();
       } catch (error) {
         lastError = error;
-        
+
         if (attempt < maxRetries) {
           const message = retryMessage || `Retrying... (${attempt}/${maxRetries})`;
           handleInfo(message);
-          
+
           // Wait before retrying (exponential backoff)
           await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt - 1)));
         }
       }
     }
-    
+
     // All retries failed, handle the final error
     handleError(lastError);
     throw lastError;
