@@ -53,6 +53,12 @@ from routes.slot_management_routes import router as slot_management_router # Imp
 from routes.waitlist_routes import router as waitlist_router # Import waitlist router
 from routes.lab_request_routes import router as lab_request_router # Import lab request router
 
+# Brain Tumor app
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'brainTumor'))
+from brainTumor.main import app as braintumor_app
+
 # DB + Utils
 from db.db import Base, engine, get_db
 from models.user_model import User
@@ -156,6 +162,8 @@ app.include_router(slot_management_router, tags=["Slot Management"])
 app.include_router(waitlist_router, prefix="/api/waitlist", tags=["Waitlist"])
 app.include_router(lab_request_router, prefix="/lab-requests", tags=["Lab Requests"])
 
+# Mount Brain Tumor app
+app.mount("/braintumor", braintumor_app)
 
 # Mount static files
 static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')

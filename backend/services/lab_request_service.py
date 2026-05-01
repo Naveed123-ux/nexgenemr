@@ -71,7 +71,7 @@ class LabReviewInput(BaseModel):
     approved: bool
 
 # --- AI Model API Configuration ---
-AI_API_URL = "http://localhost:8001/predict"
+AI_API_URL = "http://localhost:8000/braintumor/predict"
 
 def create_lab_request(
     db: Session,
