@@ -68,18 +68,18 @@ export function SuperAdminHeader() {
           </button>
 
           {/* Notification bell with red dot */}
-          <div className="relative">
+          {/* <div className="relative">
             <Bell className="w-5 h-5 text-gray-300 hover:text-white cursor-pointer" />
             <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-          </div>
+          </div> */}
 
           {/* Plus icon */}
-          <div className="bg-[#388fe5] p-1.5 hover:bg-bg-main transition-all rounded-md">
+          {/* <div className="bg-[#388fe5] p-1.5 hover:bg-bg-main transition-all rounded-md">
             <Plus className="w-5 h-5 hover:text-white text-black cursor-pointer " />
-          </div>
+          </div> */}
 
           {/* Search icon */}
-          <Search className="w-5 h-5 text-gray-300 hover:text-white cursor-pointer" />
+          {/* <Search className="w-5 h-5 text-gray-300 hover:text-white cursor-pointer" /> */}
 
           {/* Profile Avatar */}
           <Popover>

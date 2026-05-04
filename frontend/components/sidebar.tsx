@@ -30,8 +30,8 @@ const navigation = [
   //   icon: DollarSign,
   // },
   // { name: "Configure", href: "/superadmin/configure", icon: Settings },
-  { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
-  { name: "Secure Messaging", href: "/superadmin/chat", icon: MessageSquare },
+  // { name: "Analytics", href: "/superadmin/analytics", icon: BarChart },
+  // { name: "Secure Messaging", href: "/superadmin/chat", icon: MessageSquare },
 ];
 
 interface SidebarProps {
