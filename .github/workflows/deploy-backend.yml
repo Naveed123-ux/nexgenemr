@@ -111,6 +111,7 @@ jobs:
               -e GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}" \
               -e STRIPE_SECRET_KEY="${{ secrets.STRIPE_SECRET_KEY }}" \
               -e STRIPE_PUBLISHABLE_KEY="${{ secrets.STRIPE_PUBLISHABLE_KEY }}" \
+              -e AI_API_URL="${{ secrets.AI_API_URL }}" \
               ${{ secrets.DOCKERHUB_USERNAME }}/nex-gen-backend:latest
 
             # Prune unused images to save disk space
