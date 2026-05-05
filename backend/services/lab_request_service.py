@@ -72,7 +72,7 @@ class LabReviewInput(BaseModel):
     approved: bool
 
 # --- AI Model API Configuration ---
-AI_API_URL = os.getenv("AI_API_URL", "https://ai.nexgenemr.com/predict")
+AI_API_URL = os.getenv("AI_API_URL", "https://ai.nexgenemr.online/predict")
 
 def create_lab_request(
     db: Session,
